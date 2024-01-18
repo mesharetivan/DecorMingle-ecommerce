@@ -57,7 +57,7 @@ const Header = () => {
 
             <div className="nav__icons">
               <span className="fave__icon">
-                <i class="ri-heart-line"></i>
+                <i className="ri-heart-line"></i>
                 <span className="badge">1</span>
               </span>
               <span className="cart__icon">
