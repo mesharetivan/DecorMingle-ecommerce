@@ -43,6 +43,7 @@ const ProductDetails = () => {
     const reviewObj = { userName: reviewUserName, text: reviewUserMsg, rating };
 
     console.log(reviewObj);
+    toast.success("Review submitted");
   };
 
   const addToCart = () => {
@@ -158,6 +159,7 @@ const ProductDetails = () => {
                             type="text"
                             placeholder="Enter name"
                             ref={reviewUser}
+                            required
                           />
                         </div>
 
@@ -200,12 +202,17 @@ const ProductDetails = () => {
                             rows={4}
                             type="text"
                             placeholder="Review Message...."
+                            required
                           />
                         </div>
 
-                        <button type="submit" className="buy__btn">
+                        <motion.button
+                          whileTap={{ scale: 1.2 }}
+                          type="submit"
+                          className="buy__btn"
+                        >
                           Submit
-                        </button>
+                        </motion.button>
                       </form>
                     </div>
                   </div>
