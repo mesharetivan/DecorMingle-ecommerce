@@ -72,7 +72,7 @@ const Footer = () => {
               <ListGroup className="mb-3 footer__contact">
                 <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-2">
                   <span>
-                    <i class="ri-map-pin-line"></i>
+                    <i className="ri-map-pin-line"></i>
                   </span>
                   <p>188 Cipriano Compound Alabang , Muntinlupa City , PH</p>
                 </ListGroupItem>
