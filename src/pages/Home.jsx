@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import Helmet from "../Helmet/Helmet";
+import Helmet from "../components/Helmet/Helmet";
 import "../styles/home.css";
 
 import { Container, Row, Col } from "reactstrap";
@@ -12,7 +12,7 @@ import products from "../assets/data/products";
 import counterImg from "../assets/images/counter-timer-img.png";
 
 import Services from "../services/Services";
-import ProductList from "../components/UI/ProductList";
+import ProductsList from "../components/UI/ProductsList";
 import Clock from "../components/UI/Clock";
 
 const Home = () => {
@@ -90,7 +90,7 @@ const Home = () => {
             <Col lg="12" className="text-center">
               <h2 className="section__title">Trending Products</h2>
             </Col>
-            <ProductList data={trendingProducts} />
+            <ProductsList data={trendingProducts} />
           </Row>
         </Container>
       </section>
@@ -102,7 +102,7 @@ const Home = () => {
             <Col lg="12" className="text-center">
               <h2 className="section__title">Best Sales</h2>
             </Col>
-            <ProductList data={bestSalesProducts} />
+            <ProductsList data={bestSalesProducts} />
           </Row>
         </Container>
       </section>
@@ -139,8 +139,8 @@ const Home = () => {
               <h2 className="section__title">New Arrivals</h2>
             </Col>
 
-            <ProductList data={mobileProducts} />
-            <ProductList data={wirelessProducts} />
+            <ProductsList data={mobileProducts} />
+            <ProductsList data={wirelessProducts} />
           </Row>
         </Container>
       </section>
@@ -151,7 +151,7 @@ const Home = () => {
             <Col lg="12" className="text-center">
               <h2 className="section__title">Popular in Category</h2>
             </Col>
-            <ProductList data={popularProducts} />
+            <ProductsList data={popularProducts} />
           </Row>
         </Container>
       </section>
