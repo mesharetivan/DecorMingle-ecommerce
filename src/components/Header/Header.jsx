@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 
@@ -10,6 +10,11 @@ import userIcon from "../../assets/images/user-icon.png";
 
 import { Container, Row } from "reactstrap";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import useAuth from "../../custom-hooks/useAuth";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase.config";
+import { toast } from "react-toastify";
 
 const nav__links = [
   {
@@ -30,7 +35,10 @@ const Header = () => {
   const headerRef = useRef(null);
   const menuRef = useRef(null);
 
+  const [showProfileActions, setShowProfileActions] = useState(false);
+
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
@@ -56,6 +64,25 @@ const Header = () => {
 
   const navigateToCart = () => {
     navigate("/cart");
+  };
+
+  const toggleProfileActions = () => {
+    setShowProfileActions(!showProfileActions);
+  };
+
+  const closeProfileActions = () => {
+    setShowProfileActions(false);
+  };
+
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("Successfully Logout");
+        navigate("/home");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   return (
@@ -96,9 +123,34 @@ const Header = () => {
                 <i className="ri-shopping-bag-line"></i>
                 <span className="badge">{totalQuantity}</span>
               </span>
-              <span>
-                <motion.img whileTap={{ scale: 1.2 }} src={userIcon} alt="" />
-              </span>
+              <div className="profile">
+                <motion.img
+                  whileTap={{ scale: 1.2 }}
+                  src={currentUser ? currentUser.photoURL : userIcon}
+                  alt=""
+                  onClick={toggleProfileActions}
+                />
+
+                <div
+                  className={`profile__actions ${
+                    showProfileActions ? "show__profileActions" : ""
+                  }`}
+                  style={{ display: showProfileActions ? "block" : "none" }}
+                >
+                  {currentUser ? (
+                    <span onClick={logout}>Logout</span>
+                  ) : (
+                    <div className="d-flex align-items-center justify-content-center flex-column">
+                      <Link to="/signup" onClick={closeProfileActions}>
+                        Signup
+                      </Link>
+                      <Link to="/login" onClick={closeProfileActions}>
+                        Login
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="mobile__menu">
                 <span onClick={menuToggle}>
                   <i className="ri-menu-line"></i>

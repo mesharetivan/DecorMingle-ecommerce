@@ -39,7 +39,7 @@ const Shop = () => {
   };
 
   return (
-    <Helmet>
+    <Helmet title={"Shop"}>
       <CommonSection title="Products"></CommonSection>
 
       <section>
