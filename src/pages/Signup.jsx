@@ -41,29 +41,50 @@ const Signup = () => {
       const uploadTask = uploadBytesResumable(storageRef, image);
 
       uploadTask.on(
+        "state_changed", // This is the correct usage to monitor state changes
+        (snapshot) => {
+          // Handle progress here if needed. You can use snapshot to show upload progress
+        },
         (error) => {
+          // Handle error here
+          console.error("Upload error:", error); // Log to console for detailed error
           toast.error(error.message);
           setLoading(false);
         },
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(user, {
-              displayName: username,
-              photoURL: downloadURL,
+          // Handle successful upload here
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(async (downloadURL) => {
+              try {
+                await updateProfile(user, {
+                  displayName: username,
+                  photoURL: downloadURL,
+                });
+                await setDoc(doc(db, "users", user.uid), {
+                  uid: user.uid,
+                  displayName: username,
+                  email,
+                  photoURL: downloadURL,
+                });
+                toast.success("Account created successfully!");
+                setLoading(false);
+                navigate("/login");
+              } catch (error) {
+                console.error("Error writing document to Firestore:", error); // Log detailed error
+                toast.error("Failed to create account.");
+                setLoading(false);
+              }
+            })
+            .catch((error) => {
+              // Handle errors for getDownloadURL
+              console.error("Get download URL error:", error); // Log detailed error
+              toast.error("Failed to get download URL.");
+              setLoading(false);
             });
-            await setDoc(doc(db, "users", user.uid), {
-              uid: user.uid,
-              displayName: username,
-              email,
-              photoURL: downloadURL,
-            });
-            toast.success("Account created successfully!");
-            setLoading(false);
-            navigate("/login");
-          });
         }
       );
     } catch (error) {
+      console.error("Signup error:", error); // Log detailed error
       toast.error("Something went wrong");
       setLoading(false);
     }

@@ -147,6 +147,9 @@ const Header = () => {
                       <Link to="/login" onClick={closeProfileActions}>
                         Login
                       </Link>
+                      <Link to="/dashboard" onClick={closeProfileActions}>
+                        Dashboard
+                      </Link>
                     </div>
                   )}
                 </div>

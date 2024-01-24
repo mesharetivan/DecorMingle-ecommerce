@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCFHAMqG1JEYdSYaaRolRfe9SC7bolpxHE",
-  authDomain: "decormingle-d2e57.firebaseapp.com",
-  projectId: "decormingle-d2e57",
-  storageBucket: "decormingle-d2e57.appspot.com",
-  messagingSenderId: "349467574450",
-  appId: "1:349467574450:web:38b8330307a833589b89ab",
-  measurementId: "G-W8WQB93P1G",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
