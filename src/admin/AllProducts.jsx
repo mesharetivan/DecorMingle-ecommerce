@@ -3,6 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import { db } from "../firebase.config";
 import { doc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 import useGetData from "../custom-hooks/useGetData";
 
@@ -84,6 +85,9 @@ const AllProducts = () => {
                 )}
               </tbody>
             </table>
+            <Link to="/dashboard/add-product">
+              <button className="buy__btn">Add Produuct</button>
+            </Link>
           </Col>
         </Row>
       </Container>
