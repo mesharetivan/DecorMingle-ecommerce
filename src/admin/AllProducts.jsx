@@ -48,11 +48,11 @@ const AllProducts = () => {
                       <td>
                         <img
                           src={product.imgUrl || defaultProductImg}
-                          alt={product.title}
+                          alt={product.productName}
                           style={{ width: "50px" }}
                         />
                       </td>
-                      <td>{product.title}</td>
+                      <td>{product.productName}</td>
                       <td>{product.category}</td>
                       <td>${product.price}</td>
                       <td>
@@ -68,8 +68,8 @@ const AllProducts = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="text-center">
-                      No products available.
+                     <td colSpan="4" className="text-center">
+                      <h5 className="pt-5 fw-bold">Loading....</h5>
                     </td>
                   </tr>
                 )}
