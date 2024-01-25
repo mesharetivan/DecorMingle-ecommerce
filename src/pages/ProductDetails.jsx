@@ -20,12 +20,9 @@ const ProductDetails = () => {
   const reviewUser = useRef("");
   const reviewMsg = useRef("");
   const dispatch = useDispatch();
-
   const [rating, setRating] = useState(null);
   const { id } = useParams();
-
   const { data: products } = useGetData("products");
-
   const docRef = doc(db, "products", id);
 
   useEffect(() => {
@@ -34,7 +31,10 @@ const ProductDetails = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setProduct(docSnap.data());
+          setProduct({
+            ...docSnap.data(),
+            reviews: docSnap.data().reviews || [],
+          });
         } else {
           console.log("No product found with id:", id);
         }
@@ -50,9 +50,9 @@ const ProductDetails = () => {
     imgUrl,
     productName,
     price,
-    // avgRating,
+    avgRating,
     shortDesc,
-    // reviews,
+    reviews = [], // Default to an empty array if reviews is not defined
     description,
     category,
   } = product;
@@ -61,12 +61,9 @@ const ProductDetails = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     const reviewUserName = reviewUser.current.value;
     const reviewUserMsg = reviewMsg.current.value;
-
     const reviewObj = { userName: reviewUserName, text: reviewUserMsg, rating };
-
     console.log(reviewObj);
     toast.success("Review submitted");
   };
@@ -118,7 +115,9 @@ const ProductDetails = () => {
                       <i className="ri-star-half-line"></i>
                     </span>
                   </div>
-                  <p>{/* <span>{avgRating}</span>ratings */}</p>
+                  <p>
+                    <span>{avgRating}</span>ratings
+                  </p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
                   <span className="product__price">${price}</span>
@@ -153,10 +152,9 @@ const ProductDetails = () => {
                   className={`${tab === "rev" ? "active__tab" : ""}`}
                   onClick={() => setTab("rev")}
                 >
-                  {/* Review ({reviews.length}) */}
+                  Review ({reviews?.length || 0})
                 </h6>
               </div>
-              Category
               {tab === "desc" ? (
                 <div className="tab__content mt-5">
                   <p>{description}</p>
@@ -164,7 +162,7 @@ const ProductDetails = () => {
               ) : (
                 <div className="product__review mt-5">
                   <div className="review__wrapper">
-                    {/* <ul>
+                    <ul>
                       {reviews?.map((item, index) => (
                         <li key={index} className="mb-4">
                           <h6>John Doe</h6>
@@ -172,7 +170,7 @@ const ProductDetails = () => {
                           <p>{item.text}</p>
                         </li>
                       ))}
-                    </ul> */}
+                    </ul>
 
                     <div className="review__form">
                       <h4>Leave your experience</h4>

@@ -4,7 +4,10 @@ import "../styles/login.css";
 import Helmet from "../components/Helmet/Helmet";
 import { Container, Row, Col, Form, FormGroup } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { auth } from "../firebase.config";
 import { toast } from "react-toastify";
 
@@ -35,6 +38,19 @@ const Login = () => {
     } catch (error) {
       setLoading(false);
       toast.error("Failed to login");
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      toast.error("Please enter your email to reset password");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Password reset email sent! Check your inbox.");
+    } catch (error) {
+      toast.error("Failed to send password reset email");
     }
   };
 
@@ -70,6 +86,15 @@ const Login = () => {
                 >
                   {loading ? "Logging in..." : "Login"}
                 </button>
+                <div className="d-flex align-items-center justify-content-center">
+                  <p
+                    className="auth__btn w-50 d-flex align-items-center justify-content-center"
+                    onClick={handleResetPassword}
+                  >
+                    Forgot password?
+                  </p>
+                </div>
+
                 <p>
                   Don't have an account?{" "}
                   <Link to="/signup">Create an account</Link>

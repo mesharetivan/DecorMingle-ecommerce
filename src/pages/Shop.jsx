@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/shop.css";
 
 import CommonSection from "../components/UI/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
 import { Container, Row, Col } from "reactstrap";
 
-import products from "../assets/data/products";
 import ProductsList from "../components/UI/ProductsList";
 
+import useGetData from "../custom-hooks/useGetData";
+
 const Shop = () => {
-  const [productsData, setProductsData] = useState(products);
-  const [searchQuery, setSearchQuery] = useState(""); // Add search query state
+  const [filter, setFilter] = useState(null); // Initialize without a filter to fetch all products
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data: products, loading, error } = useGetData("products", filter);
+  const [productsData, setProductsData] = useState([]);
+
+  useEffect(() => {
+    if (!loading && products) {
+      setProductsData(products);
+    }
+  }, [products, loading]);
 
   const handleFilter = (e) => {
     const filterValue = e.target.value;
     if (filterValue === "all") {
-      // If "All" is selected, reset to all products
-      setProductsData(products);
+      setFilter(null); // Fetch all products when "All" is selected
     } else {
-      // Filter products by category
-      const filteredProducts = products.filter(
-        (item) => item.category === filterValue
-      );
-      setProductsData(filteredProducts);
+      // Set filter to only include products from the selected category
+      setFilter({ field: "category", operator: "==", value: filterValue });
     }
   };
 
@@ -30,13 +35,30 @@ const Shop = () => {
     const query = e.target.value;
     setSearchQuery(query);
 
-    const filteredProducts = products.filter((item) => {
-      const name = item.productName || "";
-      return name.toLowerCase().includes(query.toLowerCase());
-    });
-
-    setProductsData(filteredProducts);
+    if (query === "") {
+      // If the search query is empty, show all products
+      setProductsData(products);
+    } else {
+      // Filter products based on the search query
+      const filteredProducts = products.filter((item) => {
+        const name = item.productName || "";
+        return name.toLowerCase().includes(query.toLowerCase());
+      });
+      setProductsData(filteredProducts);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="fw-bold text-center">Loading...</div> // Display a loading indicator
+    );
+  }
+
+  if (error) {
+    return (
+      <div>Error: {error.message}</div> // Display error message
+    );
+  }
 
   return (
     <Helmet title={"Shop"}>
@@ -48,7 +70,6 @@ const Shop = () => {
             <Col lg="3" md="6">
               <div className="filter__widget">
                 <select onChange={handleFilter}>
-                  <option>Filter By Category</option>
                   <option value="all">All</option>
                   <option value="sofa">Sofa</option>
                   <option value="mobile">Mobile</option>
