@@ -3,7 +3,6 @@ import "../styles/product-details.css";
 
 import { Container, Row, Col } from "reactstrap";
 import { useParams } from "react-router-dom";
-import products from "../assets/data/products";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import { motion } from "framer-motion";
@@ -11,23 +10,49 @@ import ProductsList from "../components/UI/ProductsList";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../redux/slice/cartSlice";
 import { toast } from "react-toastify";
+import { db } from "../firebase.config";
+import { doc, getDoc } from "firebase/firestore";
+import useGetData from "../custom-hooks/useGetData";
 
 const ProductDetails = () => {
+  const [product, setProduct] = useState({});
   const [tab, setTab] = useState("desc");
   const reviewUser = useRef("");
   const reviewMsg = useRef("");
-  const dispatct = useDispatch();
+  const dispatch = useDispatch();
 
   const [rating, setRating] = useState(null);
   const { id } = useParams();
-  const product = products.find((item) => item.id === id);
+
+  const { data: products } = useGetData("products");
+
+  const docRef = doc(db, "products", id);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setProduct(docSnap.data());
+        } else {
+          console.log("No product found with id:", id);
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+
+    getProduct();
+  }, [id, docRef]);
+
   const {
     imgUrl,
     productName,
     price,
-    avgRating,
+    // avgRating,
     shortDesc,
-    reviews,
+    // reviews,
     description,
     category,
   } = product;
@@ -47,7 +72,7 @@ const ProductDetails = () => {
   };
 
   const addToCart = () => {
-    dispatct(
+    dispatch(
       cartActions.addItem({
         id,
         image: imgUrl,
@@ -60,7 +85,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [product]);
+  }, [id]);
 
   return (
     <Helmet title={productName}>
@@ -93,13 +118,11 @@ const ProductDetails = () => {
                       <i className="ri-star-half-line"></i>
                     </span>
                   </div>
-                  <p>
-                    (<span>{avgRating}</span>ratings)
-                  </p>
+                  <p>{/* <span>{avgRating}</span>ratings */}</p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
                   <span className="product__price">${price}</span>
-                  <span>Category: {category.toUpperCase()}</span>
+                  <span>Category: {category?.toUpperCase()}</span>
                 </div>
                 <p className="mt-3">{shortDesc}</p>
                 <motion.button
@@ -130,10 +153,10 @@ const ProductDetails = () => {
                   className={`${tab === "rev" ? "active__tab" : ""}`}
                   onClick={() => setTab("rev")}
                 >
-                  Review ({reviews.length})
+                  {/* Review ({reviews.length}) */}
                 </h6>
               </div>
-
+              Category
               {tab === "desc" ? (
                 <div className="tab__content mt-5">
                   <p>{description}</p>
@@ -141,7 +164,7 @@ const ProductDetails = () => {
               ) : (
                 <div className="product__review mt-5">
                   <div className="review__wrapper">
-                    <ul>
+                    {/* <ul>
                       {reviews?.map((item, index) => (
                         <li key={index} className="mb-4">
                           <h6>John Doe</h6>
@@ -149,7 +172,7 @@ const ProductDetails = () => {
                           <p>{item.text}</p>
                         </li>
                       ))}
-                    </ul>
+                    </ul> */}
 
                     <div className="review__form">
                       <h4>Leave your experience</h4>

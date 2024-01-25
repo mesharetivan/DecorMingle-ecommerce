@@ -66,7 +66,7 @@ const AddProducts = () => {
           // Firestore document creation
           try {
             await addDoc(collection(db, "products"), {
-              title: productTitle,
+              productName: productTitle,
               shortDesc: shortDescription,
               description: description,
               category: category,
@@ -156,6 +156,7 @@ const AddProducts = () => {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
+                    <option>Select category</option>
                     <option value="chair">Chair</option>
                     <option value="sofa">Sofa</option>
                     <option value="mobile">Mobile</option>
