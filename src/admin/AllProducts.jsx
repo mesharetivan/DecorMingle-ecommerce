@@ -9,12 +9,12 @@ import useGetData from "../custom-hooks/useGetData";
 import defaultProductImg from "../assets/images/arm-chair-01.jpg";
 
 const AllProducts = () => {
-  const { data: products } = useGetData("products");
-  const [loading, setLoading] = useState(false);
+  const { data: products, loading } = useGetData("products"); // Destructure loading from useGetData
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const deleteProduct = async (productId) => {
     try {
-      setLoading(true);
+      setIsDeleting(true);
       const productRef = doc(db, "products", productId);
       await deleteDoc(productRef);
       toast.success("Product deleted successfully");
@@ -22,7 +22,7 @@ const AllProducts = () => {
       console.error("Error deleting product: ", error);
       toast.error("Error deleting product");
     } finally {
-      setLoading(false);
+      setIsDeleting(false);
     }
   };
 
@@ -42,7 +42,15 @@ const AllProducts = () => {
                 </tr>
               </thead>
               <tbody>
-                {products.length > 0 ? (
+                {loading ? (
+                  // Show loading state while products data is being fetched
+                  <tr>
+                    <td colSpan="5" className="text-center">
+                      <h5 className="pt-5 fw-bold">Loading....</h5>
+                    </td>
+                  </tr>
+                ) : products.length > 0 ? (
+                  // Data is loaded and there are products
                   products.map((product) => (
                     <tr key={product.id}>
                       <td>
@@ -59,17 +67,18 @@ const AllProducts = () => {
                         <button
                           className="btn btn-danger"
                           onClick={() => deleteProduct(product.id)}
-                          disabled={loading}
+                          disabled={isDeleting}
                         >
-                          {loading ? "Deleting..." : "Delete"}
+                          {isDeleting ? "Deleting..." : "Delete"}
                         </button>
                       </td>
                     </tr>
                   ))
                 ) : (
+                  // Data is loaded but there are no products
                   <tr>
-                     <td colSpan="4" className="text-center">
-                      <h5 className="pt-5 fw-bold">Loading....</h5>
+                    <td colSpan="5" className="text-center">
+                      No products available.
                     </td>
                   </tr>
                 )}
