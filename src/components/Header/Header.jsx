@@ -34,6 +34,7 @@ const nav__links = [
 const Header = () => {
   const headerRef = useRef(null);
   const menuRef = useRef(null);
+  const profileActionsRef = useRef(null);
 
   const [showProfileActions, setShowProfileActions] = useState(false);
 
@@ -74,6 +75,26 @@ const Header = () => {
   const closeProfileActions = () => {
     setShowProfileActions(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        profileActionsRef.current &&
+        !profileActionsRef.current.contains(event.target)
+      ) {
+        closeProfileActions();
+      }
+    };
+
+    if (showProfileActions) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showProfileActions]);
 
   const logout = () => {
     signOut(auth)
@@ -134,13 +155,14 @@ const Header = () => {
                 />
 
                 <div
+                  ref={profileActionsRef}
                   className={`profile__actions ${
                     showProfileActions ? "show__profileActions" : ""
                   }`}
                   style={{ display: showProfileActions ? "block" : "none" }}
                 >
                   {currentUser ? (
-                    <span className="d-flex align-items-center justify-content-center flex-column">
+                    <span className="d-flex align-items-center justify-content-center flex-column gap-2">
                       <Link to="/dashboard" onClick={closeProfileActions}>
                         <button className="Btn">
                           <div className="sign">

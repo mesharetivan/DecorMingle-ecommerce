@@ -14,13 +14,13 @@
   column-gap: 3rem;
 }
 
-.admin__nav-top-right img {
+.admin__icons img {
   width: 40px;
   height: 40px;
   border-radius: 50px;
 }
 
-.admin__nav-top-right {
+.admin__icons {
   display: flex;
   align-items: center;
   column-gap: 2rem;
@@ -32,7 +32,7 @@
   justify-content: space-between;
 }
 
-.admin__nav-top-right span i {
+.admin__icons span i {
   color: whitesmoke;
   cursor: pointer;
 }
@@ -68,4 +68,43 @@
 
 .active__admin-menu {
   background: whitesmoke;
+}
+
+.admin__icons {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.admin__icons .profile img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.admin__icons .profile {
+  position: relative;
+  z-index: 9;
+}
+
+.admin__icons .profile .profile__actions {
+  position: absolute;
+  top: 175%;
+  left: -200%;
+  width: 150px;
+  z-index: 10;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: var(--primary-color);
+  line-height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none;
+}
+
+.show__profileActions {
+  display: block;
 }
