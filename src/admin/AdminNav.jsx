@@ -26,10 +26,10 @@ const admin__nav = [
     display: "Orders",
     path: "/dashboard/orders",
   },
-  {
-    display: "Users",
-    path: "/dashboard/users",
-  },
+  // {
+  //   display: "Users",
+  //   path: "/dashboard/users",
+  // },
 ];
 
 const AdminNav = () => {
@@ -75,7 +75,7 @@ const AdminNav = () => {
       .then(() => {
         setShowProfileActions(false);
         toast.success("Successfully Logout");
-        navigate("/home");
+        navigate("/login");
       })
       .catch((err) => {
         toast.error(err.message);

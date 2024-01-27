@@ -45,6 +45,7 @@ const Users = () => {
                   <th>Image</th>
                   <th>Username</th>
                   <th>Email</th>
+                  <th>Role</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -63,6 +64,7 @@ const Users = () => {
                       </td>
                       <td>{user.displayName}</td>
                       <td>{user.email}</td>
+                      <td>{user.role}</td>
                       <td>
                         <button
                           className="btn btn-danger"
