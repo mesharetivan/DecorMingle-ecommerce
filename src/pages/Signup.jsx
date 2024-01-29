@@ -16,6 +16,8 @@ import { db } from "../firebase.config";
 
 import { toast } from "react-toastify";
 
+import Loader from "../components/Loader/Loader";
+
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -42,18 +44,14 @@ const Signup = () => {
       const uploadTask = uploadBytesResumable(storageRef, image);
 
       uploadTask.on(
-        "state_changed", // This is the correct usage to monitor state changes
-        (snapshot) => {
-          // Handle progress here if needed. You can use snapshot to show upload progress
-        },
+        "state_changed",
+        (snapshot) => {},
         (error) => {
-          // Handle error here
-          console.error("Upload error:", error); // Log to console for detailed error
+          console.error("Upload error:", error);
           toast.error(error.message);
-          setLoading(false);
+          setTimeout(() => setLoading(false), 1000);
         },
         () => {
-          // Handle successful upload here
           getDownloadURL(uploadTask.snapshot.ref)
             .then(async (downloadURL) => {
               try {
@@ -69,26 +67,27 @@ const Signup = () => {
                   role: role,
                 });
                 toast.success("Account created successfully!");
-                setLoading(false);
-                navigate("/home");
+                setTimeout(() => {
+                  setLoading(false);
+                  navigate("/home");
+                }, 1000);
               } catch (error) {
-                console.error("Error writing document to Firestore:", error); // Log detailed error
+                console.error("Error writing document to Firestore:", error);
                 toast.error("Failed to create account.");
-                setLoading(false);
+                setTimeout(() => setLoading(false), 1000);
               }
             })
             .catch((error) => {
-              // Handle errors for getDownloadURL
-              console.error("Get download URL error:", error); // Log detailed error
+              console.error("Get download URL error:", error);
               toast.error("Failed to get download URL.");
-              setLoading(false);
+              setTimeout(() => setLoading(false), 1000);
             });
         }
       );
     } catch (error) {
-      console.error("Signup error:", error); // Log detailed error
+      console.error("Signup error:", error);
       toast.error("Something went wrong");
-      setLoading(false);
+      setTimeout(() => setLoading(false), 1000);
     }
   };
 
@@ -168,7 +167,7 @@ const Signup = () => {
                   className="buy__auth auth__btn"
                   disabled={loading}
                 >
-                  {loading ? "Creating Account..." : "Create an Account"}
+                  {loading ? <Loader /> : "Create an Account"}
                 </button>
                 <p>
                   Already have an account? <Link to="/login">Login</Link>

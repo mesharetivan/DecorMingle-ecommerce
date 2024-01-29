@@ -9,6 +9,8 @@ import ProductsList from "../components/UI/ProductsList";
 
 import useGetData from "../custom-hooks/useGetData";
 
+import Loader from "../components/Loader/Loader";
+
 const Shop = () => {
   const [filter, setFilter] = useState(null); // Initialize without a filter to fetch all products
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,7 +52,9 @@ const Shop = () => {
 
   if (loading) {
     return (
-      <div className="fw-bold text-center">Loading...</div> // Display a loading indicator
+      <div className="d-flex align-items-center justify-content-center">
+        <Loader />
+      </div>
     );
   }
 

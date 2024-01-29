@@ -27,11 +27,13 @@ const useGetData = (collectionName, filter = null) => {
           id: doc.id,
         }));
         setData(updatedData);
-        setLoading(false);
+        // Set loading to false after a delay of 1 second
+        setTimeout(() => setLoading(false), 1000);
       },
       (error) => {
         setError(error);
-        setLoading(false);
+        // Set loading to false after a delay of 1 second
+        setTimeout(() => setLoading(false), 1000);
       }
     );
 

@@ -11,6 +11,8 @@ import {
 import { auth } from "../firebase.config";
 import { toast } from "react-toastify";
 
+import Loader from "../components/Loader/Loader";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,12 +34,16 @@ const Login = () => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      setLoading(false);
-      toast.success("Login successful");
-      navigate("/home");
+      setTimeout(() => {
+        setLoading(false);
+        toast.success("Login successful");
+        navigate("/home");
+      }, 1000);
     } catch (error) {
-      setLoading(false);
-      toast.error("Failed to login");
+      setTimeout(() => {
+        setLoading(false);
+        toast.error("Failed to login");
+      }, 1000);
     }
   };
 
@@ -84,7 +90,7 @@ const Login = () => {
                   className="buy__auth auth__btn"
                   disabled={loading}
                 >
-                  {loading ? "Logging in..." : "Login"}
+                  {loading ? <Loader /> : "Login"}
                 </button>
                 <div className="d-flex align-items-center justify-content-center">
                   <p

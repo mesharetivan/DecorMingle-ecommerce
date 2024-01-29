@@ -113,12 +113,14 @@ const Header = () => {
       <Container>
         <Row>
           <div className="nav__wrapper">
-            <div className="logo">
-              <img src={logo} alt="logo" />
-              <div>
-                <h1>DecorMingle</h1>
+            <Link to="/home">
+              <div className="logo">
+                <motion.img whileTap={{ scale: 1.2 }} src={logo} alt="logo" />
+                <div>
+                  <h1>DecorMingle</h1>
+                </div>
               </div>
-            </div>
+            </Link>
 
             <div className="navigation" ref={menuRef} onClick={menuToggle}>
               <ul className="menu">
