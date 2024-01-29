@@ -42,6 +42,9 @@ const Header = () => {
   const { currentUser, role } = useUserRole();
 
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const totalWishlistQuantity = useSelector(
+    (state) => state.cart.totalWishlistQuantity
+  );
 
   const stickyHeaderFunc = () => {
     window.addEventListener("scroll", () => {
@@ -66,6 +69,10 @@ const Header = () => {
 
   const navigateToCart = () => {
     navigate("/cart");
+  };
+
+  const navigateToWishList = () => {
+    navigate("/wishlist");
   };
 
   const toggleProfileActions = () => {
@@ -140,9 +147,9 @@ const Header = () => {
             </div>
 
             <div className="nav__icons">
-              <span className="fave__icon">
+              <span className="fave__icon" onClick={navigateToWishList}>
                 <i className="ri-heart-line"></i>
-                <span className="badge">1</span>
+                <span className="badge">{totalWishlistQuantity}</span>
               </span>
               <span className="cart__icon" onClick={navigateToCart}>
                 <i className="ri-shopping-bag-line"></i>

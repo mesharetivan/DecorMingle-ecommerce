@@ -8,6 +8,7 @@ import Checkout from "../pages/Checkout";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import ProtectedRoute from "./ProtectedRoute";
+import WishList from "../pages/WishList";
 
 import AddProducts from "../admin/AddProducts";
 import AllProducts from "../admin/AllProducts";
@@ -21,6 +22,7 @@ const Routers = () => {
       <Route path="home" element={<Home />} />
       <Route path="shop" element={<Shop />} />
       <Route path="cart" element={<Cart />} />
+      <Route path="wishlist" element={<WishList />} />
       <Route path="shop/:id" element={<ProductDetails />} />
 
       <Route path="/*" element={<ProtectedRoute />}>

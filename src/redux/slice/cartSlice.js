@@ -2,8 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   cartItems: [],
+  wishlistItems: [],
   totalAmount: 0,
   totalQuantity: 0,
+  totalWishlistQuantity: 0,
 };
 
 const cartSlice = createSlice({
@@ -47,6 +49,28 @@ const cartSlice = createSlice({
       state.totalAmount = state.cartItems.reduce((total, item) => {
         return total + Number(item.price) * Number(item.quantity);
       }, 0);
+    },
+    addToWishlist: (state, action) => {
+      const newItem = action.payload;
+      const existingItem = state.wishlistItems.find(
+        (item) => item.id === newItem.id
+      );
+
+      if (!existingItem) {
+        state.wishlistItems.push({ ...newItem });
+        state.totalWishlistQuantity++;
+      }
+    },
+    removeFromWishlist: (state, action) => {
+      const id = action.payload;
+      const existingItem = state.wishlistItems.find((item) => item.id === id);
+
+      if (existingItem) {
+        state.wishlistItems = state.wishlistItems.filter(
+          (item) => item.id !== id
+        );
+        state.totalWishlistQuantity--;
+      }
     },
   },
 });
