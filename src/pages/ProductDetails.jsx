@@ -52,7 +52,7 @@ const ProductDetails = () => {
     price,
     avgRating,
     shortDesc,
-    reviews = [], // Default to an empty array if reviews is not defined
+    reviews = [],
     description,
     category,
   } = product;

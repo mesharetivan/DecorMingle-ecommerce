@@ -64,7 +64,7 @@ const AdminNav = () => {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-    // Cleanup the event listener
+    
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };

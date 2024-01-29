@@ -8,13 +8,13 @@ const useGetData = (collectionName, filter = null) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Serialize the filter for useEffect dependency
+ 
   const serializedFilter = JSON.stringify(filter);
 
   useEffect(() => {
     const collectionRef = collection(db, collectionName);
 
-    // Create a query object if filter is provided
+   
     const queryObj = filter
       ? query(collectionRef, where(filter.field, filter.operator, filter.value))
       : collectionRef;
@@ -27,17 +27,17 @@ const useGetData = (collectionName, filter = null) => {
           id: doc.id,
         }));
         setData(updatedData);
-        // Set loading to false after a delay of 1 second
+       
         setTimeout(() => setLoading(false), 1000);
       },
       (error) => {
         setError(error);
-        // Set loading to false after a delay of 1 second
+      
         setTimeout(() => setLoading(false), 1000);
       }
     );
 
-    // Clean up function
+   
     return () => unsubscribe();
   }, [collectionName, serializedFilter]);
 

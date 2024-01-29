@@ -12,12 +12,14 @@ import useGetData from "../custom-hooks/useGetData";
 import Loader from "../components/Loader/Loader";
 
 const Shop = () => {
-  const [filter, setFilter] = useState(null); // Initialize without a filter to fetch all products
+  const [filter, setFilter] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { data: products, loading, error } = useGetData("products", filter);
   const [productsData, setProductsData] = useState([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     if (!loading && products) {
       setProductsData(products);
     }
@@ -26,9 +28,8 @@ const Shop = () => {
   const handleFilter = (e) => {
     const filterValue = e.target.value;
     if (filterValue === "all") {
-      setFilter(null); // Fetch all products when "All" is selected
+      setFilter(null);
     } else {
-      // Set filter to only include products from the selected category
       setFilter({ field: "category", operator: "==", value: filterValue });
     }
   };
@@ -38,10 +39,8 @@ const Shop = () => {
     setSearchQuery(query);
 
     if (query === "") {
-      // If the search query is empty, show all products
       setProductsData(products);
     } else {
-      // Filter products based on the search query
       const filteredProducts = products.filter((item) => {
         const name = item.productName || "";
         return name.toLowerCase().includes(query.toLowerCase());
@@ -60,7 +59,7 @@ const Shop = () => {
 
   if (error) {
     return (
-      <div>Error: {error.message}</div> // Display error message
+      <div>Error: {error.message}</div> 
     );
   }
 

@@ -38,7 +38,7 @@ const AddProducts = () => {
       return;
     }
 
-    // Image upload
+   
     const imageRef = ref(
       storage,
       `productImages/${Date.now() + productImage.name}`
@@ -48,33 +48,33 @@ const AddProducts = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        // handle progress
+        
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
       },
       (error) => {
-        // Handle unsuccessful uploads
+   
         toast.error("Image upload failed: " + error);
         setLoading(false);
       },
       () => {
-        // Handle successful uploads on complete
+     
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           console.log("File available at", downloadURL);
 
-          // Firestore document creation
+         
           try {
             await addDoc(collection(db, "products"), {
               productName: productTitle,
               shortDesc: shortDescription,
               description: description,
               category: category,
-              price: Number(price), // Ensure this is a number
+              price: Number(price),  
               imgUrl: downloadURL,
             });
             toast.success("Product added successfully!");
-            // Reset form after successful submission
+           
             setProductTitle("");
             setShortDescription("");
             setDescription("");
@@ -135,11 +135,11 @@ const AddProducts = () => {
                     value={price.startsWith("$") ? price : `$${price}`}
                     onChange={(e) => {
                       const value = e.target.value;
-                      // Ensure input value starts with $ and followed by numbers
+                    
                       const formattedValue = value.startsWith("$")
                         ? value
                         : `$${value}`;
-                      // Remove $ and non-numeric chars for state
+                    
                       const numericValue = formattedValue.replace(
                         /[^0-9.]/g,
                         ""

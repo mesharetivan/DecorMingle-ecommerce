@@ -16,17 +16,17 @@ const Users = () => {
         return;
       }
 
-      // Construct the user document reference
+   
       const userDocRef = doc(db, "users", id);
 
-      // Delete the user document from Firestore
+     
       await deleteDoc(userDocRef);
 
-      // Show a success toast
+     
       toast.success("User deleted successfully!");
     } catch (error) {
       console.error("Error deleting user:", error);
-      // Show an error toast
+    
       toast.error("Error deleting user. Please try again later.");
     }
   };

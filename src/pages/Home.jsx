@@ -62,12 +62,14 @@ const Home = () => {
             <Col lg="6" md="6">
               <div className="hero__content">
                 <p className="hero__subtitle">Trending Products {year}</p>
-                <h2>Make Your Interior More Minimalistic & Modern</h2>
+                <h2>Enhance Your Space with DecorMingle</h2>
                 <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius
-                  voluptatem accusamus ratione minima quos quo magnam nobis.
-                  Unde ad odio eveniet quibusdam aliquam ipsa expedita libero,
-                  ullam sapiente animi sunt!
+                  Dive into the world of modern interior design with
+                  DecorMingle. Discover our curated selection of trending
+                  furniture pieces and decor that promise to bring a fresh,
+                  sophisticated touch to your living space. Join us in
+                  celebrating the art of contemporary living where style meets
+                  functionality.
                 </p>
                 <motion.button whileTap={{ scale: 1.2 }} className="buy__btn">
                   <Link to={"/shop"}>SHOP NOW</Link>
@@ -117,14 +119,14 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-      {/*timer counter */}
+      {/* timer counter */}
       <section className="timer__count">
         <Container>
           <Row>
             <Col lg="6" md="12" className="count__down-col">
               <div className="clock__top-content">
-                <h4 className="text-white fs-6 mb-2">Limited Offers</h4>
-                <h3 className="text-white fs-5 mb-3">Quality Armchair</h3>
+                <h4 className="text-white fs-6 mb-2">Exclusive Deals</h4>
+                <h3 className="text-white fs-5 mb-3">On Trending Furniture</h3>
               </div>
 
               <Clock />
@@ -133,7 +135,7 @@ const Home = () => {
                 whileTap={{ scale: 1.2 }}
                 className="buy__btn store__btn"
               >
-                <Link to="/shop">Visit Store</Link>
+                <Link to="/shop">Explore Offers</Link>
               </motion.button>
             </Col>
             <Col lg="6" md="12" className="text-end counter__img">
@@ -160,7 +162,7 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-      {/* popular catergory */}
+      {/* popular category */}
       <section className="popular__category">
         <Container>
           <Row>

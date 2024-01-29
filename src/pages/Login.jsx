@@ -52,11 +52,22 @@ const Login = () => {
       toast.error("Please enter your email to reset password");
       return;
     }
+
     try {
       await sendPasswordResetEmail(auth, email);
-      toast.success("Password reset email sent! Check your inbox.");
+      toast.info(
+        "If your email is registered, you will receive a password reset link. Please check your inbox."
+      );
     } catch (error) {
-      toast.error("Failed to send password reset email");
+      if (error.code === "auth/user-not-found") {
+        toast.error("Email not found in our system.");
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("Invalid email address.");
+      } else {
+        toast.error(
+          "An error occurred while trying to send a password reset email."
+        );
+      }
     }
   };
 

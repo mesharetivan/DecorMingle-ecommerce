@@ -44,14 +44,14 @@ const AllProducts = () => {
               </thead>
               <tbody>
                 {loading ? (
-                  // Show loading state while products data is being fetched
+                 
                   <tr>
                     <td colSpan="5" className="text-center">
                       <h5 className="pt-5 fw-bold">Loading....</h5>
                     </td>
                   </tr>
                 ) : products.length > 0 ? (
-                  // Data is loaded and there are products
+                 
                   products.map((product) => (
                     <tr key={product.id}>
                       <td>
@@ -76,7 +76,7 @@ const AllProducts = () => {
                     </tr>
                   ))
                 ) : (
-                  // Data is loaded but there are no products
+                 
                   <tr>
                     <td colSpan="5" className="text-center">
                       No products available.

@@ -10,7 +10,6 @@ const Clock = () => {
 
   let interval;
 
-  // Call the countdown function when your component mounts
   useEffect(() => {
     const countDown = () => {
       const destination = new Date("Jan 31, 2024").getTime();
@@ -18,7 +17,6 @@ const Clock = () => {
         const now = new Date().getTime();
         const difference = destination - now;
 
-        // Calculate days, hours, minutes, and seconds
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
           (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -28,23 +26,21 @@ const Clock = () => {
         );
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        // Update state variables with the calculated values
         setDays(days);
         setHours(hours);
         setMinutes(minutes);
         setSeconds(seconds);
 
-        // Check if the countdown has reached zero, and if so, stop the interval
         if (difference <= 0) {
           clearInterval(interval);
         }
-      }, 1000); // Update every 1 second
+      }, 1000);
     };
 
     countDown();
 
     return () => {
-      clearInterval(interval); // Clear the interval when the component unmounts
+      clearInterval(interval);
     };
   }, []);
 
