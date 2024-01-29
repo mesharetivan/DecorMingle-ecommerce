@@ -82,6 +82,9 @@ const cartSlice = createSlice({
       state.cartItems = [];
       state.totalAmount = 0;
       state.totalQuantity = 0;
+    },
+    resetWishlist: (state) => {
+      state.wishlistItems = [];
       state.totalWishlistQuantity = 0;
     },
   },

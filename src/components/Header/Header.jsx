@@ -110,6 +110,7 @@ const Header = () => {
     signOut(auth)
       .then(() => {
         dispatch(cartActions.resetCart());
+        dispatch(cartActions.resetWishlist());
 
         setShowProfileActions(false);
         toast.success("Successfully Logout");
@@ -207,7 +208,7 @@ const Header = () => {
                       </button>
                     </span>
                   ) : (
-                    <div className="d-flex align-items-center justify-content-center flex-column">
+                    <div className="d-flex align-items-center justify-content-center flex-column gap-2">
                       <Link to="/signup" onClick={closeProfileActions}>
                         <button className="Btn">
                           <div className="sign">
