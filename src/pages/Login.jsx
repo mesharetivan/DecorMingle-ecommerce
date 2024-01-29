@@ -11,7 +11,7 @@ import {
 import { auth } from "../firebase.config";
 import { toast } from "react-toastify";
 
-import Loader from "../components/Loader/Loader";
+import LoaderLogin from "../components/Loader/LoaderLogin";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -90,7 +90,7 @@ const Login = () => {
                   className="buy__auth auth__btn"
                   disabled={loading}
                 >
-                  {loading ? <Loader /> : "Login"}
+                  {loading ? <LoaderLogin /> : "Login"}
                 </button>
                 <div className="d-flex align-items-center justify-content-center">
                   <p

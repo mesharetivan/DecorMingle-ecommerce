@@ -16,7 +16,7 @@ import { db } from "../firebase.config";
 
 import { toast } from "react-toastify";
 
-import Loader from "../components/Loader/Loader";
+import LoaderSignUp from "../components/Loader/LoaderSignUp";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -167,7 +167,16 @@ const Signup = () => {
                   className="buy__auth auth__btn"
                   disabled={loading}
                 >
-                  {loading ? <Loader /> : "Create an Account"}
+                  {loading ? (
+                    <h4>
+                      Creating account{" "}
+                      <span>
+                        <LoaderSignUp />
+                      </span>
+                    </h4>
+                  ) : (
+                    "Create an Account"
+                  )}
                 </button>
                 <p>
                   Already have an account? <Link to="/login">Login</Link>
