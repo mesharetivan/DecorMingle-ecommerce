@@ -9,7 +9,8 @@ import logo from "../../assets/images/eco-logo.png";
 import userIcon from "../../assets/images/user-icon.png";
 
 import { Container, Row } from "reactstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { cartActions } from "../../redux/slice/cartSlice";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase.config";
@@ -40,6 +41,8 @@ const Header = () => {
 
   const navigate = useNavigate();
   const { currentUser, role } = useUserRole();
+
+  const dispatch = useDispatch();
 
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const totalWishlistQuantity = useSelector(
@@ -106,6 +109,8 @@ const Header = () => {
   const logout = () => {
     signOut(auth)
       .then(() => {
+        dispatch(cartActions.resetCart());
+
         setShowProfileActions(false);
         toast.success("Successfully Logout");
         navigate("/login");

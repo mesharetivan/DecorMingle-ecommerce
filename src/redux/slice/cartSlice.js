@@ -44,7 +44,10 @@ const cartSlice = createSlice({
 
       if (existingItem) {
         state.cartItems = state.cartItems.filter((item) => item.id !== id);
-        state.totalQuantity = state.totalQuantity - existingItem.quantity;
+        state.totalQuantity = Math.max(
+          0,
+          state.totalQuantity - existingItem.quantity
+        );
       }
       state.totalAmount = state.cartItems.reduce((total, item) => {
         return total + Number(item.price) * Number(item.quantity);
@@ -69,8 +72,17 @@ const cartSlice = createSlice({
         state.wishlistItems = state.wishlistItems.filter(
           (item) => item.id !== id
         );
-        state.totalWishlistQuantity--;
+        state.totalWishlistQuantity = Math.max(
+          0,
+          state.totalWishlistQuantity - 1
+        );
       }
+    },
+    resetCart: (state) => {
+      state.cartItems = [];
+      state.totalAmount = 0;
+      state.totalQuantity = 0;
+      state.totalWishlistQuantity = 0;
     },
   },
 });
