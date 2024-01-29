@@ -89,9 +89,11 @@ const AdminNav = () => {
         <div className="admin__nav-top">
           <Container>
             <div className="admin__nav-wrapper-top">
-              <div className="logo">
-                <h2>DecorMingle</h2>
-              </div>
+              <Link to="/dashboard">
+                <div className="logo">
+                  <h2>DecorMingle</h2>
+                </div>
+              </Link>
 
               <div className="search__box">
                 <input type="text" placeholder="Search....." />

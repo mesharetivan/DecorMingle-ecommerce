@@ -23,7 +23,9 @@ const WishList = () => {
           <Row>
             <Col lg="9">
               {wishlistItems.length === 0 ? (
-                <h2 className="fs-4 text-center">No item added to the cart</h2>
+                <h2 className="fs-4 text-center">
+                  No item added to your wish list
+                </h2>
               ) : (
                 <table className="table bordered">
                   <thead>
@@ -51,9 +53,6 @@ const WishList = () => {
                   <span className="fs-4 fw-bold">{totalWishlistQuantity}</span>
                 </h6>
               </div>
-              <p className="fs-6 mt-2">
-                taxes and shipping will calculate in checkout
-              </p>
               <div>
                 <button className="buy__btn w-100 mt-3">
                   <Link to="/shop">Continue Shopping</Link>

@@ -86,7 +86,7 @@ const AllProducts = () => {
               </tbody>
             </table>
             <Link to="/dashboard/add-product">
-              <button className="buy__btn">Add Produuct</button>
+              <button className="buy__btn">Add Product</button>
             </Link>
           </Col>
         </Row>
