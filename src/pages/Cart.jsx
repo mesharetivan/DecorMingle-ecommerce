@@ -84,7 +84,9 @@ const Tr = ({ item }) => {
       <td>
         <img src={item.imgUrl} alt="" />
       </td>
-      <td>{item.productName}</td>
+      <td>
+        <Link to={`/shop/${item.id}`}>{item.productName}</Link>
+      </td>
       <td>${item.price}</td>
       <td>{item.quantity}</td>
       <td>

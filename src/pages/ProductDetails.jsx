@@ -13,6 +13,8 @@ import { toast } from "react-toastify";
 import { db } from "../firebase.config";
 import { doc, getDoc } from "firebase/firestore";
 import useGetData from "../custom-hooks/useGetData";
+import useAuth from "../custom-hooks/useAuth";
+import { updateDoc, arrayUnion } from "firebase/firestore";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
@@ -25,15 +27,33 @@ const ProductDetails = () => {
   const { data: products } = useGetData("products");
   const docRef = doc(db, "products", id);
 
+  const { currentUser } = useAuth();
+
   useEffect(() => {
     const getProduct = async () => {
       try {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
+          const productData = docSnap.data();
+          let avgRating = 0;
+
+          // Calculate the average rating if reviews are available
+          if (productData.reviews && productData.reviews.length > 0) {
+            const totalRating = productData.reviews.reduce(
+              (acc, review) => acc + review.rating,
+              0
+            );
+            avgRating = totalRating / productData.reviews.length;
+
+            // Round to one decimal place
+            avgRating = parseFloat(avgRating.toFixed(1));
+          }
+
           setProduct({
-            ...docSnap.data(),
-            reviews: docSnap.data().reviews || [],
+            ...productData,
+            avgRating, // Set the calculated avgRating rounded to one decimal
+            reviews: productData.reviews || [],
           });
         } else {
           console.log("No product found with id:", id);
@@ -59,13 +79,38 @@ const ProductDetails = () => {
 
   const relatedProducts = products.filter((item) => item.category === category);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    if (!currentUser) {
+      toast.error("You must be logged in to submit a review.");
+      return;
+    }
+
     const reviewUserName = reviewUser.current.value;
     const reviewUserMsg = reviewMsg.current.value;
-    const reviewObj = { userName: reviewUserName, text: reviewUserMsg, rating };
-    console.log(reviewObj);
-    toast.success("Review submitted");
+    const reviewObj = {
+      userName: reviewUserName,
+      text: reviewUserMsg,
+      rating,
+      userId: currentUser.uid, // Include the user ID in the review
+      createdAt: new Date(), // Optional: include timestamp
+    };
+
+    try {
+      // Update the product document in Firebase with the new review
+      await updateDoc(docRef, {
+        reviews: arrayUnion(reviewObj),
+      });
+      // Update the local state to reflect the new review
+      setProduct((prevState) => ({
+        ...prevState,
+        reviews: [...prevState.reviews, reviewObj],
+      }));
+      toast.success("Review submitted successfully");
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      toast.error("Error submitting review");
+    }
   };
 
   const addToCart = () => {
@@ -116,7 +161,7 @@ const ProductDetails = () => {
                     </span>
                   </div>
                   <p>
-                    <span>{avgRating}</span>ratings
+                    <span>{avgRating}</span> ratings
                   </p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
@@ -165,8 +210,11 @@ const ProductDetails = () => {
                     <ul>
                       {reviews?.map((item, index) => (
                         <li key={index} className="mb-4">
-                          <h6>John Doe</h6>
-                          <span>{item.rating}( rating)</span>
+                          <h6>{item.userName}</h6>
+                          <span className="d-flex align-items-center">
+                            {item.rating}
+                            <i className="ri-star-s-fill"></i>
+                          </span>
                           <p>{item.text}</p>
                         </li>
                       ))}
