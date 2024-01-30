@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/product-details.css";
 
 import { Container, Row, Col } from "reactstrap";
@@ -19,13 +19,12 @@ import { updateDoc, arrayUnion } from "firebase/firestore";
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [tab, setTab] = useState("desc");
-  const reviewUser = useRef("");
-  const reviewMsg = useRef("");
   const dispatch = useDispatch();
   const [rating, setRating] = useState(null);
   const { id } = useParams();
   const { data: products } = useGetData("products");
   const docRef = doc(db, "products", id);
+  const [reviewText, setReviewText] = useState("");
 
   const { currentUser } = useAuth();
 
@@ -85,27 +84,40 @@ const ProductDetails = () => {
       toast.error("You must be logged in to submit a review.");
       return;
     }
-
-    const reviewUserName = reviewUser.current.value;
-    const reviewUserMsg = reviewMsg.current.value;
+    if (rating === null) {
+      toast.error("Please select a rating before submitting your review.");
+      return;
+    }
+    const reviewUserMsg = reviewText;
     const reviewObj = {
-      userName: reviewUserName,
+      userName: currentUser.displayName || "Anonymous",
       text: reviewUserMsg,
       rating,
-      userId: currentUser.uid, // Include the user ID in the review
-      createdAt: new Date(), // Optional: include timestamp
+      userId: currentUser.uid,
+      createdAt: new Date(),
     };
-
     try {
-      // Update the product document in Firebase with the new review
-      await updateDoc(docRef, {
+      const productRef = doc(db, "products", id);
+      const productSnap = await getDoc(productRef);
+      if (!productSnap.exists()) {
+        console.log("No product found with id:", id);
+        return;
+      }
+      const productData = productSnap.data();
+      if (!productData.reviews) {
+        await updateDoc(productRef, {
+          reviews: [],
+        });
+      }
+      await updateDoc(productRef, {
         reviews: arrayUnion(reviewObj),
       });
-      // Update the local state to reflect the new review
       setProduct((prevState) => ({
         ...prevState,
         reviews: [...prevState.reviews, reviewObj],
       }));
+      setReviewText("");
+      setRating(null);
       toast.success("Review submitted successfully");
     } catch (error) {
       console.error("Error submitting review:", error);
@@ -223,15 +235,6 @@ const ProductDetails = () => {
                     <div className="review__form">
                       <h4>Leave your experience</h4>
                       <form action="" onSubmit={submitHandler}>
-                        <div className="form__group">
-                          <input
-                            type="text"
-                            placeholder="Enter name"
-                            ref={reviewUser}
-                            required
-                          />
-                        </div>
-
                         <div className="form__group d-flex align-items-center gap-5 rating__group">
                           <motion.span
                             whileTap={{ scale: 1.2 }}
@@ -267,7 +270,8 @@ const ProductDetails = () => {
 
                         <div className="form__group">
                           <textarea
-                            ref={reviewMsg}
+                            value={reviewText}
+                            onChange={(e) => setReviewText(e.target.value)}
                             rows={4}
                             type="text"
                             placeholder="Review Message...."
