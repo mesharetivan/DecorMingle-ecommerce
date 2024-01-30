@@ -43,6 +43,13 @@
   }
   .filter__widget select {
     padding: 7px 20px;
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
   }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px;
 }

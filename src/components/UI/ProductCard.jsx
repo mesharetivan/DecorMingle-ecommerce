@@ -26,6 +26,18 @@ const ProductCard = ({ item }) => {
     toast.success("Product added successfully");
   };
 
+  const addToWishlist = () => {
+    dispatch(
+      cartActions.addToWishlist({
+        id: item.id,
+        productName: item.productName,
+        price: item.price,
+        imgUrl: item.imgUrl,
+      })
+    );
+    toast.success("Product added to wishlist successfully");
+  };
+
   return (
     <Col lg="3" md="4" className="mb-2">
       <div className="product__item">
@@ -39,9 +51,14 @@ const ProductCard = ({ item }) => {
           </div>
           <div className="product__card-bottom d-flex align-items-center justify-content-between pt-2">
             <span className="price">${item.price}</span>
-            <motion.span whileTap={{ scale: 1.2 }} onClick={addToCart}>
-              <i className="ri-add-line"></i>
-            </motion.span>
+            <div className="d-flex align-items-center gap-2">
+              <motion.span whileTap={{ scale: 1.2 }} onClick={addToWishlist}>
+                <i className="ri-heart-add-line"></i>
+              </motion.span>
+              <motion.span whileTap={{ scale: 1.2 }} onClick={addToCart}>
+                <i className="ri-add-line"></i>
+              </motion.span>
+            </div>
           </div>
         </div>
       </div>
