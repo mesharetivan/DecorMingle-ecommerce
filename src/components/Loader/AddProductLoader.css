@@ -1,0 +1,32 @@
+.loader-addproduct {
+  width: fit-content;
+  font-weight: bold;
+  font-size: 1rem;
+  background: radial-gradient(
+      circle closest-side,
+      var(--primary-color) 94%,
+      #0000
+    )
+    right/calc(200% - 1em) 100%;
+  animation: l24 1s infinite alternate linear;
+}
+
+.loader-addproduct::before {
+  content: "Adding product.....";
+  line-height: 1em;
+  color: #0000;
+  background: inherit;
+  background-image: radial-gradient(
+    circle closest-side,
+    #fff 94%,
+    var(--primary-color)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes l24 {
+  100% {
+    background-position: left;
+  }
+}

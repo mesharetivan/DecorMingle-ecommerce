@@ -6,6 +6,8 @@ import { db, storage } from "../firebase.config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 
+import AddProductLoader from "../components/Loader/AddProductLoader";
+
 const AddProducts = () => {
   const [productTitle, setProductTitle] = useState("");
   const [shortDescription, setShortDescription] = useState("");
@@ -38,7 +40,6 @@ const AddProducts = () => {
       return;
     }
 
-   
     const imageRef = ref(
       storage,
       `productImages/${Date.now() + productImage.name}`
@@ -48,33 +49,29 @@ const AddProducts = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
       },
       (error) => {
-   
         toast.error("Image upload failed: " + error);
         setLoading(false);
       },
       () => {
-     
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           console.log("File available at", downloadURL);
 
-         
           try {
             await addDoc(collection(db, "products"), {
               productName: productTitle,
               shortDesc: shortDescription,
               description: description,
               category: category,
-              price: Number(price),  
+              price: Number(price),
               imgUrl: downloadURL,
             });
             toast.success("Product added successfully!");
-           
+
             setProductTitle("");
             setShortDescription("");
             setDescription("");
@@ -135,11 +132,11 @@ const AddProducts = () => {
                     value={price.startsWith("$") ? price : `$${price}`}
                     onChange={(e) => {
                       const value = e.target.value;
-                    
+
                       const formattedValue = value.startsWith("$")
                         ? value
                         : `$${value}`;
-                    
+
                       const numericValue = formattedValue.replace(
                         /[^0-9.]/g,
                         ""
@@ -185,7 +182,7 @@ const AddProducts = () => {
               </div>
 
               <Button className="buy__btn" type="submit" disabled={loading}>
-                {loading ? "Adding..." : "Add Product"}
+                {loading ? <AddProductLoader /> : "Add Product"}
               </Button>
             </Form>
           </Col>
