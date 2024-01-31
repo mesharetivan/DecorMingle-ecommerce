@@ -141,6 +141,45 @@ const ProductDetails = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
+  const renderStars = () => {
+    let stars = [];
+    let fullStars = Math.floor(avgRating);
+    let noStars = Math.floor(5 - avgRating);
+    let halfStar = avgRating - fullStars > 0 ? 1 : 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <i
+          className="ri-star-fill"
+          style={{ color: "coral" }}
+          key={`full${i}`}
+        ></i>
+      );
+    }
+
+    if (halfStar) {
+      stars.push(
+        <i
+          className="ri-star-half-line"
+          style={{ color: "coral" }}
+          key="half"
+        ></i>
+      );
+    }
+
+    for (let i = 0; i < noStars; i++) {
+      stars.push(
+        <i
+          className="ri-star-line"
+          style={{ color: "coral" }}
+          key={`empty${i}`}
+        ></i>
+      );
+    }
+
+    return stars;
+  };
+
   return (
     <Helmet title={productName}>
       <CommonSection title={productName} />
@@ -155,23 +194,7 @@ const ProductDetails = () => {
               <div className="product__details">
                 <h2>{productName}</h2>
                 <div className="product__rating d-flex align-items-center gap-5 mb-3 ">
-                  <div>
-                    <span>
-                      <i className="ri-star-s-fill"></i>
-                    </span>
-                    <span>
-                      <i className="ri-star-s-fill"></i>
-                    </span>
-                    <span>
-                      <i className="ri-star-s-fill"></i>
-                    </span>
-                    <span>
-                      <i className="ri-star-s-fill"></i>
-                    </span>
-                    <span>
-                      <i className="ri-star-half-line"></i>
-                    </span>
-                  </div>
+                  <div>{renderStars()}</div>
                   <p>
                     <span>{avgRating}</span> ratings
                   </p>
