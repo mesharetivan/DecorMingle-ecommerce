@@ -57,9 +57,11 @@ const Cart = () => {
                 taxes and shipping will calculate in checkout
               </p>
               <div>
-                <button className="buy__btn w-100">
-                  <Link to="/checkout">Checkout</Link>
-                </button>
+                {cartItems.length > 0 && (
+                  <button className="buy__btn w-100">
+                    <Link to="/checkout">Checkout</Link>
+                  </button>
+                )}
                 <button className="buy__btn w-100 mt-3">
                   <Link to="/shop">Continue Shopping</Link>
                 </button>

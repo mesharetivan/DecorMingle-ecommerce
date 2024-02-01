@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import axios from "axios";
 import "../styles/checkout.css";
 import {
   Container,
@@ -60,6 +61,42 @@ const Checkout = () => {
     } else {
       // Form is not filled, show toast notification
       toast.warn("Please fill out all billing information fields.");
+    }
+  };
+
+  const handlePaypalClick = async () => {
+    try {
+      // Retrieve form values
+      const form = formRef.current;
+      const name = form.querySelector('input[name="name"]').value;
+      const email = form.querySelector('input[name="email"]').value;
+      const number = form.querySelector('input[name="number"]').value;
+      const address = form.querySelector('input[name="address"]').value;
+      const city = form.querySelector('input[name="city"]').value;
+      const postalCode = form.querySelector('input[name="postalCode"]').value;
+      const country = form.querySelector('input[name="country"]').value;
+
+      const response = await axios.post(
+        "http://localhost:3001/create-payment",
+        {
+          amount: totalAmount,
+          orderInfo: {
+            name,
+            email,
+            number,
+            address,
+            city,
+            postalCode,
+            country,
+          },
+        }
+      );
+      const { approvalUrl } = response.data;
+      // Redirect to PayPal approval page
+      window.location.href = approvalUrl;
+    } catch (error) {
+      console.error("Error during PayPal payment creation:", error);
+      toast.error("Something went wrong with PayPal payment!");
     }
   };
 
@@ -153,7 +190,12 @@ const Checkout = () => {
         <ModalBody>
           <form className="form">
             <div className="payment--options">
-              <Button name="paypal" type="button" color="primary">
+              <Button
+                name="paypal"
+                type="button"
+                color="primary"
+                onClick={handlePaypalClick}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 124 33"
