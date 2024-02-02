@@ -8,10 +8,28 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cartActions } from "../redux/slice/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase.config";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const updateCartInFirebase = async () => {
+    const cartRef = doc(db, "carts", user.uid);
+    try {
+      await setDoc(cartRef, { cartItems });
+    } catch (error) {
+      console.error("Error updating cart in Firebase: ", error);
+    }
+  };
+
+  const deleteProduct = async (itemId) => {
+    dispatch(cartActions.deleteItem(itemId));
+    await updateCartInFirebase();
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,7 +58,11 @@ const Cart = () => {
 
                   <tbody>
                     {cartItems.map((item, index) => (
-                      <Tr item={item} key={index} />
+                      <Tr
+                        item={item}
+                        key={index}
+                        deleteProduct={deleteProduct}
+                      />
                     ))}
                   </tbody>
                 </table>
@@ -74,13 +96,7 @@ const Cart = () => {
   );
 };
 
-const Tr = ({ item }) => {
-  const dispatch = useDispatch();
-
-  const deleteProduct = () => {
-    dispatch(cartActions.deleteItem(item.id));
-  };
-
+const Tr = ({ item, deleteProduct }) => {
   return (
     <tr>
       <td>
@@ -94,7 +110,7 @@ const Tr = ({ item }) => {
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}
-          onClick={deleteProduct}
+          onClick={() => deleteProduct(item.id)}
           className="ri-delete-bin-line"
         ></motion.i>
       </td>

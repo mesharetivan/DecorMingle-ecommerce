@@ -16,6 +16,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { toast } from "react-toastify";
 import useUserRole from "../../custom-hooks/useUserRole";
+import { db } from "../../firebase.config";
+import { doc, setDoc } from "firebase/firestore";
 
 const nav__links = [
   {
@@ -36,6 +38,9 @@ const Header = () => {
   const headerRef = useRef(null);
   const menuRef = useRef(null);
   const profileActionsRef = useRef(null);
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const wishlistItems = useSelector((state) => state.cart.wishlistItems);
 
   const [showProfileActions, setShowProfileActions] = useState(false);
 
@@ -100,13 +105,34 @@ const Header = () => {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-   
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showProfileActions]);
 
+  const updateCartAndWishlistInFirebase = async (userId) => {
+    const cartRef = doc(db, "carts", userId);
+    const wishlistRef = doc(db, "wishlists", userId);
+
+    try {
+      await setDoc(cartRef, {
+        cartItems: cartItems,
+        // Include other properties like totalAmount, totalQuantity if needed
+      });
+
+      await setDoc(wishlistRef, {
+        wishlistItems: wishlistItems,
+        // Include totalWishlistQuantity if needed
+      });
+    } catch (error) {
+      console.error("Error updating cart or wishlist data: ", error);
+    }
+  };
+
   const logout = () => {
+    if (currentUser) {
+      updateCartAndWishlistInFirebase(currentUser.uid);
+    }
     signOut(auth)
       .then(() => {
         dispatch(cartActions.resetCart());

@@ -9,6 +9,10 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase.config";
+import { db } from "../firebase.config";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { cartActions } from "../redux/slice/cartSlice";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 import LoaderLogin from "../components/Loader/LoaderLogin";
@@ -18,6 +22,38 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const fetchCartAndWishlist = async (userId) => {
+    const cartRef = doc(db, "carts", userId);
+    const wishlistRef = doc(db, "wishlists", userId);
+
+    try {
+      let cartSnap = await getDoc(cartRef);
+      if (!cartSnap.exists()) {
+        await setDoc(cartRef, { cartItems: [] });
+        cartSnap = await getDoc(cartRef);
+      }
+      dispatch(
+        cartActions.setCartItems({ cartItems: cartSnap.data().cartItems })
+      );
+
+      let wishlistSnap = await getDoc(wishlistRef);
+
+      if (!wishlistSnap.exists()) {
+        await setDoc(wishlistRef, { wishlistItems: [] });
+        wishlistSnap = await getDoc(wishlistRef);
+      }
+      dispatch(
+        cartActions.setWishlistItems({
+          wishlistItems: wishlistSnap.data().wishlistItems,
+        })
+      );
+    } catch (error) {
+      console.error("Error fetching or creating cart/wishlist data: ", error);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -33,7 +69,13 @@ const Login = () => {
 
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      fetchCartAndWishlist(user.uid);
       setTimeout(() => {
         setLoading(false);
         toast.success("Login successful");

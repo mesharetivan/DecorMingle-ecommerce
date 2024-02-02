@@ -87,6 +87,22 @@ const cartSlice = createSlice({
       state.wishlistItems = [];
       state.totalWishlistQuantity = 0;
     },
+
+    setCartItems: (state, action) => {
+      state.cartItems = action.payload.cartItems;
+      state.totalAmount = state.cartItems.reduce(
+        (total, item) => total + item.totalPrice,
+        0
+      );
+      state.totalQuantity = state.cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+    },
+    setWishlistItems: (state, action) => {
+      state.wishlistItems = action.payload.wishlistItems;
+      state.totalWishlistQuantity = state.wishlistItems.length;
+    },
   },
 });
 
