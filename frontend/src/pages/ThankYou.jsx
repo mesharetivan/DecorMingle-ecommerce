@@ -28,10 +28,7 @@ const ThankYou = () => {
   }, [currentUser, dispatch]);
 
   useEffect(() => {
-    const fetchPaymentDetails = async () => {
-      const query = new URLSearchParams(location.search);
-      const token = query.get("token");
-
+    const fetchPaymentDetails = async (token) => {
       try {
         const response = await fetch(
           `http://localhost:3001/get-payment-details?paymentId=${token}`
@@ -62,7 +59,17 @@ const ThankYou = () => {
       }
     };
 
-    fetchPaymentDetails();
+    const query = new URLSearchParams(location.search);
+    const token = query.get("token");
+    const bankDetailsAmount = query.get("amount");
+
+    if (token) {
+      fetchPaymentDetails(token);
+    } else if (bankDetailsAmount) {
+      // Bank details payment; set the amount directly and clear the cart
+      setPaidAmount(bankDetailsAmount);
+      clearUserCart();
+    }
   }, [location.search, clearUserCart]);
 
   const savePaymentInfo = async (token, payerID, paidAmount) => {

@@ -28,7 +28,11 @@ const Cart = () => {
 
   const deleteProduct = async (itemId) => {
     dispatch(cartActions.deleteItem(itemId));
-    await updateCartInFirebase();
+    try {
+      await updateCartInFirebase();
+    } catch (error) {
+      console.error("Error deleting product: ", error);
+    }
   };
 
   useEffect(() => {

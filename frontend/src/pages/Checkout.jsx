@@ -15,12 +15,20 @@ import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { db } from "../firebase.config";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../custom-hooks/useAuth";
 
 const Checkout = () => {
+  const { currentUser } = useAuth();
   const totalQty = useSelector((state) => state.cart.totalQuantity);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const formRef = useRef(null);
 
@@ -66,6 +74,10 @@ const Checkout = () => {
 
   const handlePaypalClick = async () => {
     try {
+      if (!currentUser) {
+        toast.error("You must be logged in to place an order.");
+        return;
+      }
       // Retrieve form values
       const form = formRef.current;
       const name = form.querySelector('input[name="name"]').value;
@@ -76,9 +88,31 @@ const Checkout = () => {
       const postalCode = form.querySelector('input[name="postalCode"]').value;
       const country = form.querySelector('input[name="country"]').value;
 
-      const response = await axios.post(
-        "http://localhost:3001/create-payment",
-        {
+      // Create order object
+      const order = {
+        customerId: currentUser.uid,
+        customer: {
+          name,
+          email,
+          number,
+          address,
+          city,
+          postalCode,
+          country,
+        },
+        items: cartItems,
+        totalQuantity: totalQty,
+        totalAmount: totalAmount,
+        paymentMethod: "PayPal",
+        createdAt: new Date(),
+      };
+
+      // Save order to Firestore
+      const orderId = `${currentUser.uid}-${Date.now()}`;
+      const orderRef = doc(db, "orders", orderId);
+      await setDoc(orderRef, order);
+      const response = await axios
+        .post("http://localhost:3001/create-payment", {
           amount: totalAmount,
           orderInfo: {
             name,
@@ -89,14 +123,93 @@ const Checkout = () => {
             postalCode,
             country,
           },
-        }
-      );
-      const { approvalUrl } = response.data;
-      // Redirect to PayPal approval page
-      window.location.href = approvalUrl;
+          orderID: orderRef.id, // Include the order ID
+        })
+        .catch((error) => {
+          console.error(
+            "Error during PayPal payment creation or saving order:",
+            error
+          );
+          toast.error("Something went wrong with PayPal payment!");
+          return; // Stop further execution in case of an error
+        });
+
+      if (response && response.data.approvalUrl) {
+        // Redirect to PayPal approval page
+        window.location.href = response.data.approvalUrl;
+      } else {
+        console.error("No approval URL received");
+        toast.error("Error during PayPal payment creation!");
+      }
     } catch (error) {
-      console.error("Error during PayPal payment creation:", error);
-      toast.error("Something went wrong with PayPal payment!");
+      console.error(
+        "Error during PayPal payment creation or saving order:",
+        error
+      );
+      toast.error("Something went wrong!");
+    }
+  };
+
+  const handleBankDetailsCheckout = async () => {
+    try {
+      const form = formRef.current;
+
+      if (!form) {
+        console.error("Form is not rendered or the ref is not attached.");
+        return;
+      }
+
+      if (!currentUser) {
+        toast.error("You must be logged in to place an order.");
+        return;
+      }
+
+      // Manually retrieving form values
+      const name = form.querySelector('input[name="name"]')?.value || "";
+      const email = form.querySelector('input[name="email"]')?.value || "";
+      const number = form.querySelector('input[name="number"]')?.value || "";
+      const address = form.querySelector('input[name="address"]')?.value || "";
+      const city = form.querySelector('input[name="city"]')?.value || "";
+      const postalCode =
+        form.querySelector('input[name="postalCode"]')?.value || "";
+      const country = form.querySelector('input[name="country"]')?.value || "";
+      const cardHolderName =
+        form.querySelector('input[id="cardHolder"]')?.value || "";
+      const cardNumber =
+        form.querySelector('input[id="cardNumber"]')?.value || "";
+      const expiryDate =
+        form.querySelector('input[id="expiryDate"]')?.value || "";
+      const cvv = form.querySelector('input[id="cvv"]')?.value || "";
+
+      // Create order object
+      const order = {
+        customerId: currentUser.uid,
+        customer: {
+          name,
+          email,
+          number,
+          address,
+          city,
+          postalCode,
+          country,
+        },
+        items: cartItems,
+        totalQuantity: totalQty,
+        totalAmount: totalAmount,
+        paymentMethod: "Bank Details",
+        bankDetails: { cardHolderName, cardNumber, expiryDate, cvv },
+        createdAt: new Date(),
+      };
+
+      // Save order to Firebase without using the docRef variable
+      const orderId = `${currentUser.uid}-${Date.now()}`;
+      await setDoc(doc(db, "orders", orderId), order);
+      toast.success("Order placed successfully!");
+      navigate(`/thankyou?amount=${totalAmount}`);
+      // Additional steps like redirecting the user or clearing the cart go here
+    } catch (error) {
+      console.error("Error saving order to Firestore:", error);
+      toast.error("Failed to place order.");
     }
   };
 
@@ -371,7 +484,11 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
-            <Button className="purchase--btn" color="primary">
+            <Button
+              className="purchase--btn"
+              color="primary"
+              onClick={handleBankDetailsCheckout}
+            >
               Checkout
             </Button>
           </form>

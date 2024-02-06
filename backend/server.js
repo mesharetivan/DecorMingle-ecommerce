@@ -36,7 +36,7 @@ const fetchPaymentDetails = async (paymentId) => {
 
 // Create PayPal Payment
 app.post("/create-payment", async (req, res) => {
-  const { amount, orderInfo } = req.body;
+  const { amount, orderInfo, orderID } = req.body;
 
   const formattedAmount = Number.parseFloat(amount).toFixed(2);
 
@@ -46,7 +46,7 @@ app.post("/create-payment", async (req, res) => {
     });
   }
 
-  const countryCode = getCode(orderInfo.country);
+  const countryCode = orderInfo.country ? getCode(orderInfo.country) : null;
   if (!countryCode) {
     return res.status(400).json({
       error: "Invalid or missing country name.",
@@ -74,11 +74,14 @@ app.post("/create-payment", async (req, res) => {
             country_code: countryCode,
           },
         },
+        invoice_id: orderID, // PayPal recommends setting this to ensure idempotency
       },
     ],
     application_context: {
-      return_url: "http://localhost:3000/thankyou",
-      cancel_url: "http://localhost:3000/thankyou",
+      return_url: `http://localhost:3000/thankyou?orderID=${encodeURIComponent(
+        orderID
+      )}`,
+      cancel_url: "http://localhost:3000/home",
     },
   });
 

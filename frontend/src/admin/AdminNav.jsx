@@ -30,11 +30,6 @@ const admin__nav = [
     role: ["seller"],
   },
   {
-    display: "Orders",
-    path: "/dashboard/orders",
-    role: ["seller", "buyer"],
-  },
-  {
     display: "Profile",
     path: "/dashboard/profile",
     role: ["seller", "buyer"],
