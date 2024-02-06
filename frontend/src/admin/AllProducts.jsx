@@ -5,12 +5,13 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
+
 import useGetData from "../custom-hooks/useGetData";
 
 import defaultProductImg from "../assets/images/arm-chair-01.jpg";
 
 const AllProducts = () => {
-  const { data: products, loading } = useGetData("products"); // Destructure loading from useGetData
+  const { data: products, loading } = useGetData("products");
   const [isDeleting, setIsDeleting] = useState(false);
 
   const deleteProduct = async (productId) => {
@@ -44,14 +45,12 @@ const AllProducts = () => {
               </thead>
               <tbody>
                 {loading ? (
-                 
                   <tr>
                     <td colSpan="5" className="text-center">
                       <h5 className="pt-5 fw-bold">Loading....</h5>
                     </td>
                   </tr>
                 ) : products.length > 0 ? (
-                 
                   products.map((product) => (
                     <tr key={product.id}>
                       <td>
@@ -76,7 +75,6 @@ const AllProducts = () => {
                     </tr>
                   ))
                 ) : (
-                 
                   <tr>
                     <td colSpan="5" className="text-center">
                       No products available.

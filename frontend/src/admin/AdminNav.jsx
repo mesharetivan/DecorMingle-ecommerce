@@ -11,34 +11,45 @@ import { auth } from "../firebase.config";
 import { toast } from "react-toastify";
 
 import userIcon from "../assets/images/user-icon.png";
-import useAuth from "../custom-hooks/useAuth";
+import useUserRole from "../custom-hooks/useUserRole";
 
 const admin__nav = [
   {
     display: "Dashboard",
     path: "/dashboard",
+    role: ["seller", "buyer"], // Both roles can see
   },
   {
     display: "All-Products",
     path: "/dashboard/all-products",
+    role: ["seller"],
+  },
+  {
+    display: "Sales",
+    path: "/dashboard/sales",
+    role: ["seller"],
   },
   {
     display: "Orders",
     path: "/dashboard/orders",
+    role: ["seller", "buyer"],
   },
-  // {
-  //   display: "Users",
-  //   path: "/dashboard/users",
-  // },
+  {
+    display: "Profile",
+    path: "/dashboard/profile",
+    role: ["seller", "buyer"],
+  },
 ];
 
 const AdminNav = () => {
   const menuRef = useRef(null);
   const profileActionsRef = useRef(null);
 
-  const { currentUser } = useAuth();
+  const { currentUser, role } = useUserRole();
 
   const [showProfileActions, setShowProfileActions] = useState(false);
+
+  const visibleNavItems = admin__nav.filter((item) => item.role.includes(role));
 
   const navigate = useNavigate();
 
@@ -64,7 +75,6 @@ const AdminNav = () => {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-    
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -198,7 +208,7 @@ const AdminNav = () => {
           <Row>
             <div className="admin__navigation">
               <ul className="admin__menu-list">
-                {admin__nav.map((item, index) => (
+                {visibleNavItems.map((item, index) => (
                   <li className="admin__menu-item" key={index}>
                     <NavLink
                       to={item.path}
