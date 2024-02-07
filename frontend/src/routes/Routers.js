@@ -18,6 +18,7 @@ import ThankYou from "../pages/ThankYou";
 import Orders from "../admin/Orders";
 import Sales from "../admin/Sales";
 import Profile from "../admin/Profile";
+import VerifyEmail from "../admin/VerifyEmail";
 
 const Routers = () => {
   return (
@@ -32,6 +33,7 @@ const Routers = () => {
       <Route path="/*" element={<ProtectedRoute />}>
         <Route path="checkout" element={<Checkout />} />
         <Route path="thankyou" element={<ThankYou />} />
+        <Route path="verify-email" element={<VerifyEmail />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="dashboard/all-products" element={<AllProducts />} />
         <Route path="dashboard/add-product" element={<AddProducts />} />

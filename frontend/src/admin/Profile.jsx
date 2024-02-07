@@ -13,7 +13,12 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import LoaderSignUp from "../components/Loader/LoaderSignUp";
-import { updateProfile } from "firebase/auth";
+import {
+  updateProfile,
+  signOut,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+} from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { updateDoc, doc } from "firebase/firestore";
 import { auth, storage, db } from "../firebase.config";
@@ -21,6 +26,7 @@ import { toast } from "react-toastify";
 import useUserRole from "../custom-hooks/useUserRole";
 import userIcon from "../assets/images/user-icon.png";
 import Orders from "./Orders";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -30,6 +36,9 @@ const Profile = () => {
   const [role, setRole] = useState("buyer");
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const { currentUser } = useUserRole();
 
@@ -87,22 +96,71 @@ const Profile = () => {
     );
   };
 
-  const updateSettings = async (e) => {
+  const handleUpdateCredentials = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
+    if (!email || !password || !currentPassword) {
+      toast.error("Please provide email, current password, and new password.");
+      return;
+    }
 
     try {
-      await updateDoc(doc(db, "users", auth.currentUser.uid), {
-        displayName: username,
-        email,
-        role,
-      });
+      setLoading(true);
 
-      await updateProfile(auth.currentUser, { displayName: username });
-      toast.success("Settings updated successfully!");
+      // Define when re-authentication is needed
+      const needReauthentication = true; // Replace with your actual condition
+
+      // Reauthenticate user if necessary
+      if (needReauthentication) {
+        const credential = EmailAuthProvider.credential(
+          auth.currentUser.email,
+          currentPassword // The user inputs their current password
+        );
+
+        await reauthenticateWithCredential(auth.currentUser, credential);
+
+        // Update display name in Firebase Authentication profile
+        // Moved inside the reauthentication block
+        await updateProfile(auth.currentUser, {
+          displayName: username,
+        });
+      }
+
+      // Send a request to your server endpoint to update email and password
+      const response = await fetch(
+        "http://localhost:3001/update-user-credentials",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uid: auth.currentUser.uid,
+            newEmail: email, // New email
+            newPassword: password, // New password
+            newUsername: username, // New username
+            newRole: role, // New role
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Log the user out
+        await signOut(auth);
+
+        // Display success message
+        toast.success(data.message);
+
+        // Redirect user to login page
+        navigate("/login");
+      } else {
+        throw new Error(data.error);
+      }
     } catch (error) {
-      console.error("Update settings error:", error);
-      toast.error("Failed to update account settings.");
+      console.error("Error updating credentials:", error);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -129,6 +187,11 @@ const Profile = () => {
                 style={{ display: "none" }}
                 onChange={handleImageChange}
               />
+              <div className="d-flex flex-column gap-3 justify-content-center align-items-center mt-3">
+                <h5>Name: {currentUser.displayName}</h5>
+                <h5>Name: {currentUser.email}</h5>
+              </div>
+
               <button
                 className="buy__btn"
                 onClick={() =>
@@ -164,7 +227,7 @@ const Profile = () => {
                 <Orders currentUser={currentUser} />
               </TabPane>
               <TabPane tabId="2">
-                <Form className="auth__form" onSubmit={updateSettings}>
+                <Form className="auth__form" onSubmit={handleUpdateCredentials}>
                   <FormGroup className="form__group">
                     <input
                       type="text"
@@ -186,7 +249,16 @@ const Profile = () => {
                   <FormGroup className="form__group">
                     <input
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder="Enter your current password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup className="form__group">
+                    <input
+                      type="password"
+                      placeholder="Enter your new password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
