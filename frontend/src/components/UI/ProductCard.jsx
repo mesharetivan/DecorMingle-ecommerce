@@ -50,7 +50,7 @@ const ProductCard = ({ item }) => {
             <span>{item.category}</span>
           </div>
           <div className="product__card-bottom d-flex align-items-center justify-content-between pt-2">
-            <span className="price">${item.price}</span>
+            <span className="price">₱{item.price}</span>
             <div className="d-flex align-items-center gap-2">
               <motion.span whileTap={{ scale: 1.2 }} onClick={addToWishlist}>
                 <i className="ri-heart-add-line"></i>

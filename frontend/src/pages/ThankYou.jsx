@@ -92,7 +92,7 @@ const ThankYou = () => {
     <Helmet title="Payment Success">
       <CommonSection
         title={`Thank you for your payment${
-          paidAmount ? ` of $${paidAmount}` : ""
+          paidAmount ? ` of ₱${paidAmount}` : ""
         }!`}
       />
       {/* Optionally, you can include more details or actions for the user here. */}

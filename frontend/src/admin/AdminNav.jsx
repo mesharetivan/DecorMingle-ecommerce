@@ -17,22 +17,27 @@ const admin__nav = [
   {
     display: "Dashboard",
     path: "/dashboard",
-    role: ["seller", "buyer"], // Both roles can see
+    role: ["seller", "admin", "buyer"],
   },
   {
     display: "All-Products",
     path: "/dashboard/all-products",
-    role: ["seller"],
+    role: ["admin"],
   },
   {
     display: "Sales",
     path: "/dashboard/sales",
-    role: ["seller"],
+    role: ["seller", "admin", "buyer"],
   },
   {
     display: "Profile",
     path: "/dashboard/profile",
     role: ["seller", "buyer"],
+  },
+  {
+    display: "Users",
+    path: "/dashboard/users",
+    role: ["admin"],
   },
 ];
 

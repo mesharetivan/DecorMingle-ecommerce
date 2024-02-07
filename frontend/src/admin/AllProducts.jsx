@@ -5,7 +5,6 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-
 import useGetData from "../custom-hooks/useGetData";
 
 import defaultProductImg from "../assets/images/arm-chair-01.jpg";
@@ -62,7 +61,7 @@ const AllProducts = () => {
                       </td>
                       <td>{product.productName}</td>
                       <td>{product.category}</td>
-                      <td>${product.price}</td>
+                      <td>₱{product.price}</td>
                       <td>
                         <button
                           className="btn btn-danger"

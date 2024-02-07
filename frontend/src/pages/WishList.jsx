@@ -99,7 +99,7 @@ const Tr = ({ item, deleteFromWishlist }) => {
       <td>
         <Link to={`/shop/${item.id}`}>{item.productName}</Link>
       </td>
-      <td>${item.price}</td>
+      <td>₱{item.price}</td>
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}
