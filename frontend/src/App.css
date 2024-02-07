@@ -68,6 +68,25 @@ section {
   font-weight: 600;
 }
 
+.active-tab-color {
+  color: var(--primary-color);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.active-tab-color:hover {
+  color: var(--primary-color);
+}
+
+.inactive-tab-color {
+  color: #666;
+  cursor: pointer;
+}
+
+.inactive-tab-color:hover {
+  color: var(--primary-color);
+}
+
 @media only screen and (max-width: 768px) {
   section {
     padding: 40px 0px;

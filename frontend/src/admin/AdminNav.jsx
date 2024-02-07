@@ -112,7 +112,9 @@ const AdminNav = () => {
                   <i className="ri-notification-3-line"></i>
                 </span>
                 <span>
-                  <i className="ri-settings-2-line"></i>
+                  <Link to="/dashboard/profile">
+                    <i className="ri-settings-2-line"></i>
+                  </Link>
                 </span>
                 <div className="profile">
                   <motion.img

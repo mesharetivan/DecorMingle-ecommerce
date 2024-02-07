@@ -207,7 +207,10 @@ const Profile = () => {
             <Nav tabs>
               <NavItem className="mr-3 mb-4">
                 <NavLink
-                  className={classnames({ active: activeTab === "1" })}
+                  className={classnames({
+                    "active-tab-color": activeTab === "1",
+                    "inactive-tab-color": activeTab !== "1",
+                  })}
                   onClick={() => toggleTab("1")}
                 >
                   My Orders
@@ -215,7 +218,10 @@ const Profile = () => {
               </NavItem>
               <NavItem>
                 <NavLink
-                  className={classnames({ active: activeTab === "2" })}
+                  className={classnames({
+                    "active-tab-color": activeTab === "2",
+                    "inactive-tab-color": activeTab !== "2",
+                  })}
                   onClick={() => toggleTab("2")}
                 >
                   Settings
