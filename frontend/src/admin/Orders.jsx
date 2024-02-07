@@ -35,7 +35,6 @@ const Orders = () => {
 
     const fetchUserOrders = async () => {
       const userOrders = await fetchOrdersForUser();
-      console.log("User orders:", userOrders);
       setOrders(userOrders);
     };
 
