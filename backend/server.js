@@ -14,7 +14,7 @@ const paymentsDatabase = {};
 // Use cors middleware
 app.use(
   cors({
-    origin: "https://wd92pt-group-3-capstone.netlify.app",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -69,7 +69,7 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
         purchase_units: [
           {
             amount: {
-              currency_code: "USD",
+              currency_code: "PHP",
               value: formattedAmount,
             },
             shipping: {
@@ -87,10 +87,10 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
           },
         ],
         application_context: {
-          return_url: `https://wd92pt-group-3-capstone.netlify.app/thankyou?orderID=${encodeURIComponent(
+          return_url: `http://localhost:3000/thankyou?orderID=${encodeURIComponent(
             orderID
           )}`,
-          cancel_url: "https://wd92pt-group-3-capstone.netlify.app/home",
+          cancel_url: "http://localhost:3000/home",
         },
       });
 
@@ -154,22 +154,41 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
 
     // Endpoint to update user's email, password, displayName, and role
     app.post("/update-user-credentials", async (req, res) => {
-      const { uid, newEmail, newPassword, newUsername, newRole } = req.body;
+      const {
+        uid,
+        newEmail,
+        newPassword,
+        newUsername,
+        newRole,
+        firstName,
+        lastName,
+      } = req.body;
 
       try {
-        // Update the user's email and password in Firebase Authentication
+        // Update the user's email, password, and displayName in Firebase Authentication
         const userRecord = await admin.auth().updateUser(uid, {
           ...(newEmail && { email: newEmail }),
           ...(newPassword && { password: newPassword }),
           ...(newUsername && { displayName: newUsername }),
         });
 
-        // Update user's username (displayName) and role in Firestore
+        // Initialize an update object for Firestore
+        const firestoreUpdate = {
+          ...(newUsername && { displayName: newUsername }),
+          ...(newRole && { role: newRole }),
+        };
+
+        // If firstName or lastName are provided, include them in the Firestore update
+        if (firstName || lastName) {
+          firestoreUpdate.profile = {
+            ...(firstName && { firstName }),
+            ...(lastName && { lastName }),
+          };
+        }
+
+        // Update user's username (displayName), role, firstName, and lastName in Firestore
         const userRef = db.collection("users").doc(uid);
-        await userRef.update({
-          displayName: newUsername,
-          role: newRole,
-        });
+        await userRef.update(firestoreUpdate);
 
         res
           .status(200)

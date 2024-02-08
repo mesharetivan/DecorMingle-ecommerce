@@ -37,10 +37,12 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
+  const [updateFirstName, setUpdateFirstName] = useState("");
+  const [updateLastName, setUpdateLastName] = useState("");
 
   const navigate = useNavigate();
 
-  const { currentUser } = useUserRole();
+  const { currentUser, firstName, lastName } = useUserRole();
 
   const fileInputRef = useRef(null);
 
@@ -126,7 +128,7 @@ const Profile = () => {
         });
       }
 
-      // Send a request to your server endpoint to update email and password
+      // Now include firstName and lastName in the request to your server endpoint
       const response = await fetch(
         "https://bpckgcpnpq.ap-southeast-1.awsapprunner.com/update-user-credentials",
         {
@@ -140,6 +142,8 @@ const Profile = () => {
             newPassword: password, // New password
             newUsername: username, // New username
             newRole: role, // New role
+            firstName: updateFirstName, // Updated first name
+            lastName: updateLastName, // Updated last name
           }),
         }
       );
@@ -188,8 +192,9 @@ const Profile = () => {
                 onChange={handleImageChange}
               />
               <div className="d-flex flex-column gap-3 align-items-center mt-3 w-full">
-                <h5>Name: {currentUser.displayName}</h5>
-                <h5 className="text-center">Email: {currentUser.email}</h5>
+                <h5>
+                  Hi, {firstName} {lastName}
+                </h5>
               </div>
 
               <button
@@ -234,6 +239,24 @@ const Profile = () => {
               </TabPane>
               <TabPane tabId="2">
                 <Form className="auth__form" onSubmit={handleUpdateCredentials}>
+                  <FormGroup className="form__group">
+                    <input
+                      type="text"
+                      placeholder="First Name"
+                      value={updateFirstName}
+                      onChange={(e) => setUpdateFirstName(e.target.value)}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup className="form__group">
+                    <input
+                      type="text"
+                      placeholder="Last Name"
+                      value={updateLastName}
+                      onChange={(e) => setUpdateLastName(e.target.value)}
+                      required
+                    />
+                  </FormGroup>
                   <FormGroup className="form__group">
                     <input
                       type="text"

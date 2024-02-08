@@ -11,15 +11,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
+import useAuth from "../custom-hooks/useAuth";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
-  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  const { currentUser } = useAuth();
+
   const updateCartInFirebase = async () => {
-    const cartRef = doc(db, "carts", user.uid);
+    // Ensure user object and user.uid are defined
+    if (!currentUser || !currentUser.uid) {
+      console.error("User is not defined, cannot update cart in Firebase.");
+      return;
+    }
+
+    const cartRef = doc(db, "carts", currentUser.uid);
     try {
       await setDoc(cartRef, { cartItems });
     } catch (error) {
@@ -71,6 +79,24 @@ const Cart = () => {
     }
   };
 
+  const updateQuantityDirectly = async (itemId, quantity) => {
+    // Check if the input is not a number or less than 1
+    if (isNaN(quantity) || quantity < 1) {
+      toast.error("Quantity must be at least 1");
+      // Reset the quantity to 1 if the current input is invalid
+      dispatch(cartActions.updateItemQuantityDirectly({ itemId, quantity: 1 }));
+    } else {
+      // Proceed with the valid quantity
+      dispatch(cartActions.updateItemQuantityDirectly({ itemId, quantity }));
+    }
+
+    try {
+      await updateCartInFirebase();
+    } catch (error) {
+      console.error("Error updating cart quantity in Firebase: ", error);
+    }
+  };
+
   return (
     <Helmet title="Cart">
       <CommonSection title="Shopping Cart" />
@@ -100,6 +126,7 @@ const Cart = () => {
                         deleteProduct={deleteProduct}
                         incrementQuantity={incrementQuantity}
                         decrementQuantity={decrementQuantity}
+                        updateQuantityDirectly={updateQuantityDirectly}
                       />
                     ))}
                   </tbody>
@@ -134,7 +161,13 @@ const Cart = () => {
   );
 };
 
-const Tr = ({ item, deleteProduct, incrementQuantity, decrementQuantity }) => {
+const Tr = ({
+  item,
+  deleteProduct,
+  incrementQuantity,
+  decrementQuantity,
+  updateQuantityDirectly,
+}) => {
   return (
     <tr>
       <td>
@@ -155,9 +188,21 @@ const Tr = ({ item, deleteProduct, incrementQuantity, decrementQuantity }) => {
             }}
             onClick={() => decrementQuantity(item.id)}
           >
-            <i class="ri-subtract-fill"></i>
+            <i className="ri-subtract-fill"></i>
           </motion.button>
-          {item.quantity}
+          <input
+            type="number"
+            min="1"
+            value={item.quantity}
+            onChange={(e) => {
+              const newQuantity = parseInt(e.target.value, 10);
+              updateQuantityDirectly(
+                item.id,
+                isNaN(newQuantity) ? 1 : newQuantity
+              );
+            }}
+            style={{ width: "45px", textAlign: "center", borderRadius: "8px" }}
+          />
           <motion.button
             whileTap={{ scale: 1.2 }}
             style={{
@@ -167,7 +212,7 @@ const Tr = ({ item, deleteProduct, incrementQuantity, decrementQuantity }) => {
             }}
             onClick={() => incrementQuantity(item.id)}
           >
-            <i class="ri-add-circle-fill"></i>
+            <i className="ri-add-circle-fill"></i>
           </motion.button>
         </div>
       </td>

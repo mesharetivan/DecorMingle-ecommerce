@@ -26,6 +26,8 @@ const Signup = () => {
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState("seller");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const navigate = useNavigate();
 
@@ -61,6 +63,8 @@ const Signup = () => {
                 });
                 await setDoc(doc(db, "users", user.uid), {
                   uid: user.uid,
+                  firstName: firstName,
+                  lastName: lastName,
                   displayName: username,
                   email,
                   photoURL: downloadURL,
@@ -106,6 +110,24 @@ const Signup = () => {
               <h3 className="fw-bold mb-4">Signup</h3>
 
               <Form className="auth__form" onSubmit={signup}>
+                <FormGroup className="form__group">
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup className="form__group">
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                  />
+                </FormGroup>
                 <FormGroup className="form__group">
                   <input
                     type="text"

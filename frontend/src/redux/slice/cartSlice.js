@@ -133,6 +133,24 @@ const cartSlice = createSlice({
         0
       );
     },
+    // Add this reducer in cartSlice reducers
+    updateItemQuantityDirectly: (state, action) => {
+      const { itemId, quantity } = action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === itemId);
+      if (existingItem) {
+        existingItem.quantity = quantity;
+        existingItem.totalPrice = Number(existingItem.price) * quantity;
+      }
+      // Recalculate totalAmount and totalQuantity after the update
+      state.totalAmount = state.cartItems.reduce(
+        (total, item) => total + Number(item.totalPrice),
+        0
+      );
+      state.totalQuantity = state.cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+    },
   },
 });
 
