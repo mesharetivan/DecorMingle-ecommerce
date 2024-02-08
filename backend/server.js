@@ -24,7 +24,7 @@ const environment = new paypal.core.SandboxEnvironment(
 const client = new paypal.core.PayPalHttpClient(environment);
 
 // Import and initialize Firebase Admin SDK
-import("./decormingle-b79a5-firebase-adminsdk-ict07-085dbf77c5.json", {
+import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
   assert: { type: "json" },
 })
   .then((serviceAccount) => {
