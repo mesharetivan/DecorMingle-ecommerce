@@ -154,22 +154,41 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
 
     // Endpoint to update user's email, password, displayName, and role
     app.post("/update-user-credentials", async (req, res) => {
-      const { uid, newEmail, newPassword, newUsername, newRole } = req.body;
+      const {
+        uid,
+        newEmail,
+        newPassword,
+        newUsername,
+        newRole,
+        firstName,
+        lastName,
+      } = req.body;
 
       try {
-        // Update the user's email and password in Firebase Authentication
+        // Update the user's email, password, and displayName in Firebase Authentication
         const userRecord = await admin.auth().updateUser(uid, {
           ...(newEmail && { email: newEmail }),
           ...(newPassword && { password: newPassword }),
           ...(newUsername && { displayName: newUsername }),
         });
 
-        // Update user's username (displayName) and role in Firestore
+        // Initialize an update object for Firestore
+        const firestoreUpdate = {
+          ...(newUsername && { displayName: newUsername }),
+          ...(newRole && { role: newRole }),
+        };
+
+        // If firstName or lastName are provided, include them in the Firestore update
+        if (firstName || lastName) {
+          firestoreUpdate.profile = {
+            ...(firstName && { firstName }),
+            ...(lastName && { lastName }),
+          };
+        }
+
+        // Update user's username (displayName), role, firstName, and lastName in Firestore
         const userRef = db.collection("users").doc(uid);
-        await userRef.update({
-          displayName: newUsername,
-          role: newRole,
-        });
+        await userRef.update(firestoreUpdate);
 
         res
           .status(200)
