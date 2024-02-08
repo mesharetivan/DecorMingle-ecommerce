@@ -8,14 +8,14 @@ import admin from "firebase-admin";
 const app = express();
 const port = process.env.PORT || 3001;
 
-
 // Mock database (Replace this with your actual database logic)
 const paymentsDatabase = {};
 
 // Use cors middleware
 app.use(
   cors({
-    origin: "https://wd92pt-group-3-capstone.netlify.app",
+    origin:
+      "https://decor-mingle-ecommerce-9jq52h6n0-mesharet-ivan-loricas-projects.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -88,10 +88,11 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
           },
         ],
         application_context: {
-          return_url: `https://wd92pt-group-3-capstone.netlify.app/thankyou?orderID=${encodeURIComponent(
+          return_url: `https://decor-mingle-ecommerce-9jq52h6n0-mesharet-ivan-loricas-projects.vercel.app/thankyou?orderID=${encodeURIComponent(
             orderID
           )}`,
-          cancel_url: "https://wd92pt-group-3-capstone.netlify.app/home",
+          cancel_url:
+            "https://decor-mingle-ecommerce-9jq52h6n0-mesharet-ivan-loricas-projects.vercel.app/home",
         },
       });
 
