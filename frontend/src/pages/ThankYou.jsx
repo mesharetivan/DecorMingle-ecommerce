@@ -31,7 +31,7 @@ const ThankYou = () => {
     const fetchPaymentDetails = async (token) => {
       try {
         const response = await fetch(
-          `http://localhost:3001/get-payment-details?paymentId=${token}`
+          `https://bpckgcpnpq.ap-southeast-1.awsapprunner.com/get-payment-details?paymentId=${token}`
         );
 
         if (!response.ok) {
