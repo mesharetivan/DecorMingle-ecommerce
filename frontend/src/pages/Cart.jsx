@@ -11,15 +11,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
+import useAuth from "../custom-hooks/useAuth";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
-  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  const { currentUser } = useAuth();
+
   const updateCartInFirebase = async () => {
-    const cartRef = doc(db, "carts", user.uid);
+    // Ensure user object and user.uid are defined
+    if (!currentUser || !currentUser.uid) {
+      console.error("User is not defined, cannot update cart in Firebase.");
+      return;
+    }
+
+    const cartRef = doc(db, "carts", currentUser.uid);
     try {
       await setDoc(cartRef, { cartItems });
     } catch (error) {
