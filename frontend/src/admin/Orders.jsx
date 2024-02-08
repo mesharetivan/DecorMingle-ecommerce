@@ -52,7 +52,6 @@ const Orders = () => {
 
   return (
     <div>
-      <h2 className="mb-2 mt-2">My Orders</h2>
       {orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
@@ -74,7 +73,7 @@ const Orders = () => {
                 </td>
                 <td>#{truncateOrderId(order.id)}</td>
                 <td>{order.paymentMethod}</td>
-                <td>${order.totalAmount}</td>
+                <td>₱{order.totalAmount}</td>
               </tr>
             ))}
           </tbody>
