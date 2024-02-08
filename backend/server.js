@@ -11,10 +11,14 @@ const port = 3001;
 // Mock database (Replace this with your actual database logic)
 const paymentsDatabase = {};
 
-const corsOptions = {
-  origin: "https://wd92pt-group-3-capstone.netlify.app",
-  optionsSuccessStatus: 200,
-};
+// Use cors middleware
+app.use(
+  cors({
+    origin: "https://wd92pt-group-3-capstone.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 
 // PayPal client setup
 const environment = new paypal.core.SandboxEnvironment(
@@ -34,8 +38,6 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
 
     const db = admin.firestore();
 
-    // Express app setup
-    app.use(cors(corsOptions));
     app.use(express.json());
 
     app.get("/", (req, res) => {
