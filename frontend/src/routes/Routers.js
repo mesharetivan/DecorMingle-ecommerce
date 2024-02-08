@@ -19,6 +19,7 @@ import Orders from "../admin/Orders";
 import Sales from "../admin/Sales";
 import Profile from "../admin/Profile";
 import DashboardAdmin from "../admin/DashboardAdmin";
+import Shipping from "../admin/Shipping";
 
 const Routers = () => {
   return (
@@ -41,6 +42,7 @@ const Routers = () => {
         <Route path="dashboard/sales" element={<Sales />} />
         <Route path="dashboard/orders" element={<Orders />} />
         <Route path="dashboard/profile" element={<Profile />} />
+        <Route path="dashboard/shipping-info" element={<Shipping />} />
       </Route>
 
       <Route path="login" element={<Login />} />

@@ -39,6 +39,11 @@
   border-radius: 8px;
 }
 
+.product__name {
+  text-align: center;
+  font-size: 1.4rem;
+}
+
 @media only screen and (max-width: 992px) {
   .product__info h3 a {
     font-size: 1.1rem;
