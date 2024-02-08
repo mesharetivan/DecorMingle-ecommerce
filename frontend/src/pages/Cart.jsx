@@ -201,7 +201,7 @@ const Tr = ({
                 isNaN(newQuantity) ? 1 : newQuantity
               );
             }}
-            style={{ width: "45px", textAlign: "center" }}
+            style={{ width: "45px", textAlign: "center", borderRadius: "8px" }}
           />
           <motion.button
             whileTap={{ scale: 1.2 }}

@@ -25,6 +25,7 @@ const Checkout = () => {
   const totalQty = useSelector((state) => state.cart.totalQuantity);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const [cardNumber, setCardNumber] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -211,6 +212,16 @@ const Checkout = () => {
       console.error("Error saving order to Firestore:", error);
       toast.error("Failed to place order.");
     }
+  };
+
+  const handleCardInput = (e) => {
+    const { value } = e.target;
+    // Remove all non-digit characters from the input
+    const numbersOnly = value.replace(/\D/g, "");
+    // Add a space after every 4 digits
+    const spaced = numbersOnly.replace(/(\d{4})(?=\d)/g, "$1 ");
+    // Update state with formatted value
+    setCardNumber(spaced);
   };
 
   return (
@@ -454,10 +465,12 @@ const Checkout = () => {
                 <input
                   id="cardNumber"
                   className="input_field"
-                  type="number"
-                  name="input-name"
-                  title="Input title"
+                  type="text"
+                  name="cardNumber"
+                  title="Card Number"
                   placeholder="0000 0000 0000 0000"
+                  value={cardNumber}
+                  onChange={handleCardInput}
                 />
               </div>
               <div className="input_container">
