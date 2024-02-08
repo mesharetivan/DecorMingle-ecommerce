@@ -10,6 +10,7 @@ import { cartActions } from "../redux/slice/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -39,6 +40,37 @@ const Cart = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const incrementQuantity = async (itemId) => {
+    // Dispatch an action to increment the item quantity
+    dispatch(cartActions.incrementItemQuantity(itemId));
+
+    // Update cart in Firebase
+    try {
+      await updateCartInFirebase();
+    } catch (error) {
+      console.error("Error updating cart quantity in Firebase: ", error);
+    }
+  };
+
+  const decrementQuantity = async (itemId) => {
+    // Find the item to check its quantity before decrementing
+    const item = cartItems.find((item) => item.id === itemId);
+    if (item && item.quantity > 1) {
+      // Only dispatch decrement action if quantity is greater than 1
+      dispatch(cartActions.decrementItemQuantity(itemId));
+
+      // Update cart in Firebase
+      try {
+        await updateCartInFirebase();
+      } catch (error) {
+        console.error("Error updating cart quantity in Firebase: ", error);
+      }
+    } else {
+      // Show toast notification
+      toast.error("Item quantity cannot be less than 1");
+    }
+  };
+
   return (
     <Helmet title="Cart">
       <CommonSection title="Shopping Cart" />
@@ -66,6 +98,8 @@ const Cart = () => {
                         item={item}
                         key={index}
                         deleteProduct={deleteProduct}
+                        incrementQuantity={incrementQuantity}
+                        decrementQuantity={decrementQuantity}
                       />
                     ))}
                   </tbody>
@@ -100,7 +134,7 @@ const Cart = () => {
   );
 };
 
-const Tr = ({ item, deleteProduct }) => {
+const Tr = ({ item, deleteProduct, incrementQuantity, decrementQuantity }) => {
   return (
     <tr>
       <td>
@@ -110,7 +144,33 @@ const Tr = ({ item, deleteProduct }) => {
         <Link to={`/shop/${item.id}`}>{item.productName}</Link>
       </td>
       <td>₱{item.price}</td>
-      <td>{item.quantity}</td>
+      <td>
+        <div className="d-flex align-items-center gap-3">
+          <motion.button
+            whileTap={{ scale: 1.3 }}
+            style={{
+              borderRadius: "100%",
+              border: "none",
+              backgroundColor: "#fff",
+            }}
+            onClick={() => decrementQuantity(item.id)}
+          >
+            <i class="ri-subtract-fill"></i>
+          </motion.button>
+          {item.quantity}
+          <motion.button
+            whileTap={{ scale: 1.2 }}
+            style={{
+              borderRadius: "100%",
+              border: "none",
+              backgroundColor: "#fff",
+            }}
+            onClick={() => incrementQuantity(item.id)}
+          >
+            <i class="ri-add-circle-fill"></i>
+          </motion.button>
+        </div>
+      </td>
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}

@@ -114,18 +114,26 @@ const Header = () => {
     const cartRef = doc(db, "carts", userId);
     const wishlistRef = doc(db, "wishlists", userId);
 
-    try {
-      await setDoc(cartRef, {
-        cartItems: cartItems,
-        // Include other properties like totalAmount, totalQuantity if needed
-      });
+    const cartData = {
+      cartItems,
+      totalAmount: cartItems.reduce((acc, item) => acc + item.totalPrice, 0),
+      totalQuantity: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+    };
 
-      await setDoc(wishlistRef, {
-        wishlistItems: wishlistItems,
-        // Include totalWishlistQuantity if needed
-      });
+    const wishlistData = {
+      wishlistItems,
+      totalWishlistQuantity: wishlistItems.length,
+    };
+
+    try {
+      await setDoc(cartRef, cartData);
+      await setDoc(wishlistRef, wishlistData);
     } catch (error) {
       console.error("Error updating cart or wishlist data: ", error);
+      // Optionally, inform the user about the error.
+      toast.error(
+        "There was a problem updating your cart or wishlist. Please try again."
+      );
     }
   };
 

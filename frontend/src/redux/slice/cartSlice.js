@@ -103,6 +103,36 @@ const cartSlice = createSlice({
       state.wishlistItems = action.payload.wishlistItems;
       state.totalWishlistQuantity = state.wishlistItems.length;
     },
+    incrementItemQuantity: (state, action) => {
+      const item = state.cartItems.find((item) => item.id === action.payload);
+      if (item) {
+        item.quantity += 1;
+        item.totalPrice = Number(item.totalPrice) + Number(item.price);
+        state.totalQuantity += 1; // Increment the total quantity
+      }
+      state.totalAmount = state.cartItems.reduce(
+        (total, item) => total + item.totalPrice,
+        0
+      );
+    },
+
+    decrementItemQuantity: (state, action) => {
+      const item = state.cartItems.find((item) => item.id === action.payload);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+        item.totalPrice = Number(item.totalPrice) - Number(item.price);
+        state.totalQuantity -= 1; // Decrement the total quantity
+      } else if (item && item.quantity === 1) {
+        // If you decide to keep items at quantity 1 without removing them, remove this block
+        state.cartItems = state.cartItems.filter(
+          (item) => item.id !== action.payload
+        );
+      }
+      state.totalAmount = state.cartItems.reduce(
+        (total, item) => total + item.totalPrice,
+        0
+      );
+    },
   },
 });
 
