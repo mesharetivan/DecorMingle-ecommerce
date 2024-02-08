@@ -155,7 +155,7 @@ const Tr = ({ item, deleteProduct, incrementQuantity, decrementQuantity }) => {
             }}
             onClick={() => decrementQuantity(item.id)}
           >
-            <i class="ri-subtract-fill"></i>
+            <i className="ri-subtract-fill"></i>
           </motion.button>
           {item.quantity}
           <motion.button
@@ -167,7 +167,7 @@ const Tr = ({ item, deleteProduct, incrementQuantity, decrementQuantity }) => {
             }}
             onClick={() => incrementQuantity(item.id)}
           >
-            <i class="ri-add-circle-fill"></i>
+            <i className="ri-add-circle-fill"></i>
           </motion.button>
         </div>
       </td>
