@@ -12,7 +12,7 @@ const port = 3001;
 const paymentsDatabase = {};
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://wd92pt-group-3-capstone.netlify.app",
   optionsSuccessStatus: 200,
 };
 
@@ -85,10 +85,10 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-085dbf77c5.json", {
           },
         ],
         application_context: {
-          return_url: `http://localhost:3000/thankyou?orderID=${encodeURIComponent(
+          return_url: `https://wd92pt-group-3-capstone.netlify.app/thankyou?orderID=${encodeURIComponent(
             orderID
           )}`,
-          cancel_url: "http://localhost:3000/home",
+          cancel_url: "https://wd92pt-group-3-capstone.netlify.app/home",
         },
       });
 
