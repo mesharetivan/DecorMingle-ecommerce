@@ -69,7 +69,7 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
         purchase_units: [
           {
             amount: {
-              currency_code: "USD",
+              currency_code: "PHP",
               value: formattedAmount,
             },
             shipping: {
