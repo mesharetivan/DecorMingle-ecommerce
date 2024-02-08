@@ -12,3 +12,26 @@ td,
 th {
   color: var(--primary-color);
 }
+
+/* For Webkit browsers like Chrome, Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Mozilla Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Standard property for all browsers, ensuring future compatibility */
+input[type="number"] {
+  appearance: none;
+}
+
+/* For Microsoft Edge (specifically older versions) */
+input[type="number"]::-ms-clear,
+input[type="number"]::-ms-reveal {
+  display: none;
+}
