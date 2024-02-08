@@ -27,7 +27,7 @@ const admin__nav = [
   {
     display: "Sales",
     path: "/dashboard/sales",
-    role: ["seller", "admin", "buyer"],
+    role: ["admin"],
   },
   {
     display: "Profile",

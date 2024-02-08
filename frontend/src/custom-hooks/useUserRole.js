@@ -19,20 +19,15 @@ const useUserRole = () => {
 
           if (docSnap.exists()) {
             const userData = docSnap.data();
-            // Assuming role is still a top-level field
             setRole(userData.role);
-            // Accessing firstName and lastName from the nested profile object
-            // Ensuring profile exists before trying to access its properties
             if (userData.profile) {
               setFirstName(userData.profile.firstName || "");
               setLastName(userData.profile.lastName || "");
             } else {
-              // If there's no profile object, reset these values
-              setFirstName("");
-              setLastName("");
+              setFirstName(userData.firstName);
+              setLastName(userData.lastName);
             }
           } else {
-            // Handle the case where the user document does not exist
             setRole(null);
             setFirstName("");
             setLastName("");
