@@ -128,7 +128,7 @@ const Profile = () => {
 
       // Send a request to your server endpoint to update email and password
       const response = await fetch(
-        "https://ev2fw2m2mx.ap-southeast-1.awsapprunner.com/update-user-credentials",
+        "https://bpckgcpnpq.ap-southeast-1.awsapprunner.com/update-user-credentials",
         {
           method: "POST",
           headers: {
