@@ -193,9 +193,8 @@ const Profile = () => {
               />
               <div className="d-flex flex-column gap-3 align-items-center mt-3 w-full">
                 <h5>
-                  Name: {firstName} {lastName}
+                  Hi, {firstName} {lastName}
                 </h5>
-                <h5 className="text-center">Email: {currentUser.email}</h5>
               </div>
 
               <button
