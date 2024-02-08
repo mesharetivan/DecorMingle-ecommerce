@@ -4,16 +4,34 @@ import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
-
 import { motion } from "framer-motion";
 import { cartActions } from "../redux/slice/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase.config";
 
 const WishList = () => {
   const wishlistItems = useSelector((state) => state.cart.wishlistItems);
   const totalWishlistQuantity = useSelector(
     (state) => state.cart.totalWishlistQuantity
   );
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const updateWishlistInFirebase = async () => {
+    if (!user || !user.uid) return;
+    const wishlistRef = doc(db, "wishlists", user.uid);
+    try {
+      await setDoc(wishlistRef, { wishlistItems });
+    } catch (error) {
+      console.error("Error updating wishlist in Firebase: ", error);
+    }
+  };
+
+  const deleteFromWishlist = async (itemId) => {
+    dispatch(cartActions.removeFromWishlist(itemId));
+    await updateWishlistInFirebase();
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,10 +58,13 @@ const WishList = () => {
                       <th>Delete</th>
                     </tr>
                   </thead>
-
                   <tbody>
                     {wishlistItems.map((item, index) => (
-                      <Tr item={item} key={index} />
+                      <Tr
+                        item={item}
+                        key={index}
+                        deleteFromWishlist={deleteFromWishlist}
+                      />
                     ))}
                   </tbody>
                 </table>
@@ -69,13 +90,7 @@ const WishList = () => {
   );
 };
 
-const Tr = ({ item }) => {
-  const dispatch = useDispatch();
-
-  const deleteFromWishlist = () => {
-    dispatch(cartActions.removeFromWishlist(item.id));
-  };
-
+const Tr = ({ item, deleteFromWishlist }) => {
   return (
     <tr>
       <td>
@@ -84,11 +99,11 @@ const Tr = ({ item }) => {
       <td>
         <Link to={`/shop/${item.id}`}>{item.productName}</Link>
       </td>
-      <td>${item.price}</td>
+      <td>₱{item.price}</td>
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}
-          onClick={deleteFromWishlist}
+          onClick={() => deleteFromWishlist(item.id)}
           className="ri-delete-bin-line"
         ></motion.i>
       </td>

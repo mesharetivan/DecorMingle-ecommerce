@@ -10,7 +10,7 @@ import useGetData from "../custom-hooks/useGetData";
 import defaultProductImg from "../assets/images/arm-chair-01.jpg";
 
 const AllProducts = () => {
-  const { data: products, loading } = useGetData("products"); // Destructure loading from useGetData
+  const { data: products, loading } = useGetData("products");
   const [isDeleting, setIsDeleting] = useState(false);
 
   const deleteProduct = async (productId) => {
@@ -44,14 +44,12 @@ const AllProducts = () => {
               </thead>
               <tbody>
                 {loading ? (
-                 
                   <tr>
                     <td colSpan="5" className="text-center">
                       <h5 className="pt-5 fw-bold">Loading....</h5>
                     </td>
                   </tr>
                 ) : products.length > 0 ? (
-                 
                   products.map((product) => (
                     <tr key={product.id}>
                       <td>
@@ -63,7 +61,7 @@ const AllProducts = () => {
                       </td>
                       <td>{product.productName}</td>
                       <td>{product.category}</td>
-                      <td>${product.price}</td>
+                      <td>₱{product.price}</td>
                       <td>
                         <button
                           className="btn btn-danger"
@@ -76,7 +74,6 @@ const AllProducts = () => {
                     </tr>
                   ))
                 ) : (
-                 
                   <tr>
                     <td colSpan="5" className="text-center">
                       No products available.

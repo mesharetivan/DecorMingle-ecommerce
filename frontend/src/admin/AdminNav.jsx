@@ -11,34 +11,45 @@ import { auth } from "../firebase.config";
 import { toast } from "react-toastify";
 
 import userIcon from "../assets/images/user-icon.png";
-import useAuth from "../custom-hooks/useAuth";
+import useUserRole from "../custom-hooks/useUserRole";
 
 const admin__nav = [
   {
     display: "Dashboard",
     path: "/dashboard",
+    role: ["seller", "admin", "buyer"],
   },
   {
     display: "All-Products",
     path: "/dashboard/all-products",
+    role: ["admin"],
   },
   {
-    display: "Orders",
-    path: "/dashboard/orders",
+    display: "Sales",
+    path: "/dashboard/sales",
+    role: ["seller", "admin", "buyer"],
   },
-  // {
-  //   display: "Users",
-  //   path: "/dashboard/users",
-  // },
+  {
+    display: "Profile",
+    path: "/dashboard/profile",
+    role: ["seller", "buyer"],
+  },
+  {
+    display: "Users",
+    path: "/dashboard/users",
+    role: ["admin"],
+  },
 ];
 
 const AdminNav = () => {
   const menuRef = useRef(null);
   const profileActionsRef = useRef(null);
 
-  const { currentUser } = useAuth();
+  const { currentUser, role } = useUserRole();
 
   const [showProfileActions, setShowProfileActions] = useState(false);
+
+  const visibleNavItems = admin__nav.filter((item) => item.role.includes(role));
 
   const navigate = useNavigate();
 
@@ -64,7 +75,6 @@ const AdminNav = () => {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-    
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -107,7 +117,9 @@ const AdminNav = () => {
                   <i className="ri-notification-3-line"></i>
                 </span>
                 <span>
-                  <i className="ri-settings-2-line"></i>
+                  <Link to="/dashboard/profile">
+                    <i className="ri-settings-2-line"></i>
+                  </Link>
                 </span>
                 <div className="profile">
                   <motion.img
@@ -198,7 +210,7 @@ const AdminNav = () => {
           <Row>
             <div className="admin__navigation">
               <ul className="admin__menu-list">
-                {admin__nav.map((item, index) => (
+                {visibleNavItems.map((item, index) => (
                   <li className="admin__menu-item" key={index}>
                     <NavLink
                       to={item.path}

@@ -128,14 +128,14 @@ const AddProducts = () => {
                   <span>Price</span>
                   <input
                     type="text"
-                    placeholder="$100"
-                    value={price.startsWith("$") ? price : `$${price}`}
+                    placeholder="₱100"
+                    value={price.startsWith("₱") ? price : `₱${price}`}
                     onChange={(e) => {
                       const value = e.target.value;
 
-                      const formattedValue = value.startsWith("$")
+                      const formattedValue = value.startsWith("₱")
                         ? value
-                        : `$${value}`;
+                        : `₱${value}`;
 
                       const numericValue = formattedValue.replace(
                         /[^0-9.]/g,
