@@ -1,22 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
-
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
-
 import { db } from "../firebase.config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../redux/slice/cartSlice"; // Ensure the import path is correct
+import useAuth from "../custom-hooks/useAuth"; // Ensure this import path is correct
 
 const ThankYou = () => {
   const location = useLocation();
-
   const [paidAmount, setPaidAmount] = useState(null);
+  const { currentUser } = useAuth(); // Use your auth hook to get the current user
+  const dispatch = useDispatch();
+
+  const clearUserCart = useCallback(async () => {
+    if (!currentUser || !currentUser.uid) return;
+
+    const cartRef = doc(db, "carts", currentUser.uid);
+    try {
+      await setDoc(cartRef, { cartItems: [] }); // Set the cartItems to an empty array
+      console.log(`Cart cleared for user ID: ${currentUser.uid}`);
+      dispatch(cartActions.resetCart()); // Reset the cart state in Redux store
+    } catch (error) {
+      console.error("Error clearing cart: ", error);
+    }
+  }, [currentUser, dispatch]);
 
   useEffect(() => {
-    const fetchPaymentDetails = async () => {
-      const query = new URLSearchParams(location.search);
-      const token = query.get("token");
-
+    const fetchPaymentDetails = async (token) => {
       try {
         const response = await fetch(
           `http://localhost:3001/get-payment-details?paymentId=${token}`
@@ -35,34 +47,44 @@ const ThankYou = () => {
 
         if (paymentDetails.paidAmount) {
           setPaidAmount(paymentDetails.paidAmount); // Update the state with the fetched amount
-          savePaymentInfo(
+          await savePaymentInfo(
             token,
             paymentDetails.payerID,
             paymentDetails.paidAmount
           ); // Save payment info to Firestore
+          await clearUserCart(); // Clear the cart after successful payment
         }
       } catch (error) {
         console.error("Failed to fetch payment details:", error);
       }
     };
 
-    fetchPaymentDetails();
-  }, [location.search]); // Add location.search to the dependency array
+    const query = new URLSearchParams(location.search);
+    const token = query.get("token");
+    const bankDetailsAmount = query.get("amount");
+
+    if (token) {
+      fetchPaymentDetails(token);
+    } else if (bankDetailsAmount) {
+      // Bank details payment; set the amount directly and clear the cart
+      setPaidAmount(bankDetailsAmount);
+      clearUserCart();
+    }
+  }, [location.search, clearUserCart]);
 
   const savePaymentInfo = async (token, payerID, paidAmount) => {
     try {
       const paymentsCollectionRef = collection(db, "payments");
-
       const docRef = await addDoc(paymentsCollectionRef, {
-        token: token,
-        payerID: payerID,
-        paidAmount: paidAmount,
+        token,
+        payerID,
+        paidAmount,
         createdAt: new Date(),
       });
 
       console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
+    } catch (error) {
+      console.error("Error adding document: ", error);
     }
   };
 
@@ -70,7 +92,7 @@ const ThankYou = () => {
     <Helmet title="Payment Success">
       <CommonSection
         title={`Thank you for your payment${
-          paidAmount ? ` of $${paidAmount}` : ""
+          paidAmount ? ` of ₱${paidAmount}` : ""
         }!`}
       />
       {/* Optionally, you can include more details or actions for the user here. */}

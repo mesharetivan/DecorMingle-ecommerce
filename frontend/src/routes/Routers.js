@@ -15,6 +15,10 @@ import AllProducts from "../admin/AllProducts";
 import Dashboard from "../admin/Dashboard";
 import Users from "../admin/Users";
 import ThankYou from "../pages/ThankYou";
+import Orders from "../admin/Orders";
+import Sales from "../admin/Sales";
+import Profile from "../admin/Profile";
+import DashboardAdmin from "../admin/DashboardAdmin";
 
 const Routers = () => {
   return (
@@ -30,9 +34,13 @@ const Routers = () => {
         <Route path="checkout" element={<Checkout />} />
         <Route path="thankyou" element={<ThankYou />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="dashboard-admin" element={<DashboardAdmin />} />
         <Route path="dashboard/all-products" element={<AllProducts />} />
         <Route path="dashboard/add-product" element={<AddProducts />} />
         <Route path="dashboard/users" element={<Users />} />
+        <Route path="dashboard/sales" element={<Sales />} />
+        <Route path="dashboard/orders" element={<Orders />} />
+        <Route path="dashboard/profile" element={<Profile />} />
       </Route>
 
       <Route path="login" element={<Login />} />

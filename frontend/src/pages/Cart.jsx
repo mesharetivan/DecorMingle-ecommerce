@@ -8,14 +8,68 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cartActions } from "../redux/slice/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase.config";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const updateCartInFirebase = async () => {
+    const cartRef = doc(db, "carts", user.uid);
+    try {
+      await setDoc(cartRef, { cartItems });
+    } catch (error) {
+      console.error("Error updating cart in Firebase: ", error);
+    }
+  };
+
+  const deleteProduct = async (itemId) => {
+    dispatch(cartActions.deleteItem(itemId));
+    try {
+      await updateCartInFirebase();
+    } catch (error) {
+      console.error("Error deleting product: ", error);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const incrementQuantity = async (itemId) => {
+    // Dispatch an action to increment the item quantity
+    dispatch(cartActions.incrementItemQuantity(itemId));
+
+    // Update cart in Firebase
+    try {
+      await updateCartInFirebase();
+    } catch (error) {
+      console.error("Error updating cart quantity in Firebase: ", error);
+    }
+  };
+
+  const decrementQuantity = async (itemId) => {
+    // Find the item to check its quantity before decrementing
+    const item = cartItems.find((item) => item.id === itemId);
+    if (item && item.quantity > 1) {
+      // Only dispatch decrement action if quantity is greater than 1
+      dispatch(cartActions.decrementItemQuantity(itemId));
+
+      // Update cart in Firebase
+      try {
+        await updateCartInFirebase();
+      } catch (error) {
+        console.error("Error updating cart quantity in Firebase: ", error);
+      }
+    } else {
+      // Show toast notification
+      toast.error("Item quantity cannot be less than 1");
+    }
+  };
 
   return (
     <Helmet title="Cart">
@@ -40,7 +94,13 @@ const Cart = () => {
 
                   <tbody>
                     {cartItems.map((item, index) => (
-                      <Tr item={item} key={index} />
+                      <Tr
+                        item={item}
+                        key={index}
+                        deleteProduct={deleteProduct}
+                        incrementQuantity={incrementQuantity}
+                        decrementQuantity={decrementQuantity}
+                      />
                     ))}
                   </tbody>
                 </table>
@@ -50,7 +110,7 @@ const Cart = () => {
               <div>
                 <h6 className="d-flex align-items-center justify-content-between">
                   Subtotal
-                  <span className="fs-4 fw-bold">${totalAmount}</span>
+                  <span className="fs-4 fw-bold">₱{totalAmount}</span>
                 </h6>
               </div>
               <p className="fs-6 mt-2">
@@ -74,13 +134,7 @@ const Cart = () => {
   );
 };
 
-const Tr = ({ item }) => {
-  const dispatch = useDispatch();
-
-  const deleteProduct = () => {
-    dispatch(cartActions.deleteItem(item.id));
-  };
-
+const Tr = ({ item, deleteProduct, incrementQuantity, decrementQuantity }) => {
   return (
     <tr>
       <td>
@@ -89,12 +143,38 @@ const Tr = ({ item }) => {
       <td>
         <Link to={`/shop/${item.id}`}>{item.productName}</Link>
       </td>
-      <td>${item.price}</td>
-      <td>{item.quantity}</td>
+      <td>₱{item.price}</td>
+      <td>
+        <div className="d-flex align-items-center gap-3">
+          <motion.button
+            whileTap={{ scale: 1.3 }}
+            style={{
+              borderRadius: "100%",
+              border: "none",
+              backgroundColor: "#fff",
+            }}
+            onClick={() => decrementQuantity(item.id)}
+          >
+            <i class="ri-subtract-fill"></i>
+          </motion.button>
+          {item.quantity}
+          <motion.button
+            whileTap={{ scale: 1.2 }}
+            style={{
+              borderRadius: "100%",
+              border: "none",
+              backgroundColor: "#fff",
+            }}
+            onClick={() => incrementQuantity(item.id)}
+          >
+            <i class="ri-add-circle-fill"></i>
+          </motion.button>
+        </div>
+      </td>
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}
-          onClick={deleteProduct}
+          onClick={() => deleteProduct(item.id)}
           className="ri-delete-bin-line"
         ></motion.i>
       </td>
