@@ -1,5 +1,5 @@
 .service__item {
-  padding: 20px;
+  padding: 10px;
   display: flex;
   align-items: center;
   column-gap: 0.5rem;
@@ -17,7 +17,7 @@
 
 .service__item h3 {
   color: var(--primary-color);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
@@ -45,6 +45,9 @@
   .service__item span i {
     font-size: 1.5rem;
     padding: 5px;
+  }
+  .service__item {
+    padding: 20px;
   }
 }
 
