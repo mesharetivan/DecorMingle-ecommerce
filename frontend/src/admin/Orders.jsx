@@ -41,13 +41,20 @@ const Orders = () => {
     fetchUserOrders();
   }, [currentUser]); // Only re-run the effect if currentUser changes
 
-  // Function to truncate the order ID
   const truncateOrderId = (id) => {
-    if (id.length > 15) {
-      // Adjust 15 to your preference for the length of the ID
-      return `${id.substring(0, 7)}...${id.substring(id.length - 7)}`;
+    // Find the index of the dash
+    const dashIndex = id.indexOf("-");
+    if (dashIndex !== -1) {
+      // Extract the part after the dash
+      const afterDash = id.substring(dashIndex + 1);
+      // Now, apply truncation logic if needed
+      if (afterDash.length > 15) {
+        // Adjust 15 to your preference for the length of the ID
+        return `${afterDash.substring(0, 3)}...`;
+      }
+      return afterDash;
     }
-    return id;
+    return id; // Return the original ID if no dash is found
   };
 
   return (
