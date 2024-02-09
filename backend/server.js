@@ -6,7 +6,7 @@ import { getCode } from "country-list";
 import admin from "firebase-admin";
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // Mock database (Replace this with your actual database logic)
 const paymentsDatabase = {};
