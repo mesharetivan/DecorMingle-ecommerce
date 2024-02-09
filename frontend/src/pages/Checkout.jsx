@@ -113,7 +113,7 @@ const Checkout = () => {
       const orderRef = doc(db, "orders", orderId);
       await setDoc(orderRef, order);
       const response = await axios
-        .post("http://localhost:3001/create-payment", {
+        .post("https://pzxi5qxce8.ap-southeast-1.awsapprunner.com/create-payment", {
           amount: totalAmount,
           orderInfo: {
             name,
