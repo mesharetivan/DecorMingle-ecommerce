@@ -53,7 +53,7 @@ const ProductCard = ({ item }) => {
             </div>
             <div className="p-2 product__info">
               <h3 className="product__name">{item.productName}</h3>
-              <span>{item.category}</span>
+              <p className="product__category">{item.category}</p>
             </div>
           </Link>
           <div className="product__card-bottom d-flex align-items-center justify-content-between pt-2">

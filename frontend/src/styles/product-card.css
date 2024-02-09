@@ -41,7 +41,12 @@
 
 .product__name {
   text-align: center;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
+}
+
+.product__category {
+  text-align: center;
+  text-transform: uppercase;
 }
 
 @media only screen and (max-width: 992px) {
