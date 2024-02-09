@@ -218,7 +218,7 @@ const Profile = () => {
                   })}
                   onClick={() => toggleTab("1")}
                 >
-                  My Orders
+                  Order History
                 </NavLink>
               </NavItem>
               <NavItem>

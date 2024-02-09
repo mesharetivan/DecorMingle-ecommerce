@@ -31,6 +31,24 @@
   border-radius: 50px;
 }
 
+.product__img .product-image {
+  width: 100%;
+  height: auto;
+  max-width: 250px;
+  max-height: 250px;
+  border-radius: 8px;
+}
+
+.product__name {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.product__category {
+  text-align: center;
+  text-transform: uppercase;
+}
+
 @media only screen and (max-width: 992px) {
   .product__info h3 a {
     font-size: 1.1rem;

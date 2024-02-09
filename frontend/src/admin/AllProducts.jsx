@@ -56,7 +56,7 @@ const AllProducts = () => {
                         <img
                           src={product.imgUrl || defaultProductImg}
                           alt={product.productName}
-                          style={{ width: "50px" }}
+                          style={{ width: "50px", borderRadius: "8px" }}
                         />
                       </td>
                       <td>{product.productName}</td>

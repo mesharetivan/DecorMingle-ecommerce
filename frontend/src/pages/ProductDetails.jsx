@@ -183,11 +183,11 @@ const ProductDetails = () => {
   return (
     <Helmet title={productName}>
       <CommonSection title={productName} />
-      <section className="pt-0">
+      <section className="pt-5">
         <Container>
           <Row>
             <Col lg="6">
-              <img src={imgUrl} alt="" />
+              <img src={imgUrl} alt="" style={{ borderRadius: "8px" }} />
             </Col>
 
             <Col lg="6">
@@ -200,7 +200,7 @@ const ProductDetails = () => {
                   </p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
-                  <span className="product__price">${price}</span>
+                  <span className="product__price">₱{price}</span>
                   <span>Category: {category?.toUpperCase()}</span>
                 </div>
                 <p className="mt-3">{shortDesc}</p>
@@ -316,7 +316,7 @@ const ProductDetails = () => {
               )}
             </Col>
             <Col lg="12" className="mt-5">
-              <h2 className="related__title">You might also like</h2>
+              <h2 className="related__title mb-3">You might also like</h2>
             </Col>
 
             <ProductsList data={relatedProducts} />

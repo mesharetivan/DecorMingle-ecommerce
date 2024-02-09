@@ -49,6 +49,23 @@ const Shop = () => {
     }
   };
 
+  const handleSort = (e) => {
+    const sortValue = e.target.value;
+    let sortedProducts = [...productsData];
+
+    if (sortValue === "ascending") {
+      sortedProducts = sortedProducts.sort((a, b) =>
+        a.productName.localeCompare(b.productName)
+      );
+    } else if (sortValue === "descending") {
+      sortedProducts = sortedProducts.sort((a, b) =>
+        b.productName.localeCompare(a.productName)
+      );
+    }
+
+    setProductsData(sortedProducts);
+  };
+
   if (loading) {
     return (
       <div className="loader">
@@ -58,9 +75,7 @@ const Shop = () => {
   }
 
   if (error) {
-    return (
-      <div>Error: {error.message}</div> 
-    );
+    return <div>Error: {error.message}</div>;
   }
 
   return (
@@ -70,28 +85,33 @@ const Shop = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="3" md="6">
-              <div className="filter__widget">
-                <select onChange={handleFilter}>
-                  <option value="all">All</option>
-                  <option value="sofa">Sofa</option>
-                  <option value="mobile">Mobile</option>
-                  <option value="chair">Chair</option>
-                  <option value="watch">Watch</option>
-                  <option value="wireless">Wireless</option>
-                </select>
+            <Col lg="4">
+              <div className="filter__all-sort">
+                <Col lg="3" md="6">
+                  <div className="filter__widget">
+                    <select onChange={handleFilter}>
+                      <option value="all">All</option>
+                      <option value="sofa">Sofa</option>
+                      <option value="mobile">Mobile</option>
+                      <option value="chair">Chair</option>
+                      <option value="watch">Watch</option>
+                      <option value="wireless">Wireless</option>
+                    </select>
+                  </div>
+                </Col>
+                <Col lg="3" md="6" className="text-end">
+                  <div className="filter__widget">
+                    <select onChange={handleSort}>
+                      <option>Sort By</option>
+                      <option value="ascending">Ascending</option>
+                      <option value="descending">Descending</option>
+                    </select>
+                  </div>
+                </Col>
               </div>
             </Col>
-            <Col lg="3" md="6" className="text-end">
-              <div className="filter__widget">
-                <select>
-                  <option>Sort By</option>
-                  <option value="ascending">Ascending</option>
-                  <option value="descending">Descending</option>
-                </select>
-              </div>
-            </Col>
-            <Col lg="6" md="12">
+
+            <Col lg="8">
               <div className="search__box">
                 <input
                   type="text"

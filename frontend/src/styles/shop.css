@@ -37,6 +37,13 @@
   color: var(--primary-color);
 }
 
+.filter__all-sort {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 70px;
+}
+
 @media only screen and (max-width: 768px) {
   .filter__widget {
     margin-bottom: 30px;
@@ -44,6 +51,15 @@
   .filter__widget select {
     padding: 7px 20px;
     font-size: 0.9rem;
+  }
+  .filter__all-sort {
+    gap: 0px;
+  }
+}
+
+@media only screen and (max-width: 568px) {
+  .filter__all-sort {
+    justify-content: space-between;
   }
 }
 

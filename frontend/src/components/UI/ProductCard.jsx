@@ -43,10 +43,17 @@ const ProductCard = ({ item }) => {
       <div className="product__item">
         <div className="product__img">
           <Link to={`/shop/${item.id}`}>
-            <motion.img whileHover={{ scale: 0.9 }} src={item.imgUrl} alt="" />
+            <div className="d-flex flex-column align-items-center justify-content-center">
+              <motion.img
+                whileHover={{ scale: 0.9 }}
+                src={item.imgUrl}
+                alt=""
+                className="product-image"
+              />
+            </div>
             <div className="p-2 product__info">
               <h3 className="product__name">{item.productName}</h3>
-              <span>{item.category}</span>
+              <p className="product__category">{item.category}</p>
             </div>
           </Link>
           <div className="product__card-bottom d-flex align-items-center justify-content-between pt-2">

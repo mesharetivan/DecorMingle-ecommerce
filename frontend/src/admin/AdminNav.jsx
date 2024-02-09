@@ -30,9 +30,14 @@ const admin__nav = [
     role: ["admin"],
   },
   {
+    display: "Shipping Information",
+    path: "/dashboard/shipping-info",
+    role: ["seller", "buyer"],
+  },
+  {
     display: "Profile",
     path: "/dashboard/profile",
-    role: ["seller", "buyer"],
+    role: ["seller", "admin", "buyer"],
   },
   {
     display: "Users",
