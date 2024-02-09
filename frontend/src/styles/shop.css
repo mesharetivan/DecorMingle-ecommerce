@@ -45,6 +45,11 @@
     padding: 7px 20px;
     font-size: 0.9rem;
   }
+  .filter__all-sort {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .loader {
