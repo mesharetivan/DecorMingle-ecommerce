@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { db } from "../firebase.config";
 import { doc, getDoc } from "firebase/firestore";
 import useGetData from "../custom-hooks/useGetData";
-import useAuth from "../custom-hooks/useAuth";
+import useUserRole from "../custom-hooks/useUserRole";
 import { updateDoc, arrayUnion } from "firebase/firestore";
 
 const ProductDetails = () => {
@@ -26,7 +26,7 @@ const ProductDetails = () => {
   const docRef = doc(db, "products", id);
   const [reviewText, setReviewText] = useState("");
 
-  const { currentUser } = useAuth();
+  const { currentUser, firstName, lastName } = useUserRole();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -90,9 +90,9 @@ const ProductDetails = () => {
     }
     const reviewUserMsg = reviewText;
     const reviewObj = {
-      userName: currentUser.displayName || "Anonymous",
+      userName: `${firstName} ${lastName}` || "Anonymous",
       text: reviewUserMsg,
-      rating,
+      rating: rating,
       userId: currentUser.uid,
       createdAt: new Date(),
     };
@@ -245,11 +245,14 @@ const ProductDetails = () => {
                     <ul>
                       {reviews?.map((item, index) => (
                         <li key={index} className="mb-4">
-                          <h6>{item.userName}</h6>
-                          <span className="d-flex align-items-center">
-                            {item.rating}
-                            <i className="ri-star-s-fill"></i>
-                          </span>
+                          <div className="d-flex align-items-center gap-3">
+                            <h6>{item.userName}</h6>
+                            <span className="d-flex align-items-center">
+                              {item.rating}
+                              <i className="ri-star-s-fill"></i>
+                            </span>
+                          </div>
+
                           <p>{item.text}</p>
                         </li>
                       ))}

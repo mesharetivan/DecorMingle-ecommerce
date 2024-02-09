@@ -171,7 +171,7 @@ const Tr = ({
   return (
     <tr>
       <td>
-        <img src={item.imgUrl} alt="" />
+        <img src={item.imgUrl} alt="" style={{ borderRadius: "8px" }} />
       </td>
       <td>
         <Link to={`/shop/${item.id}`}>{item.productName}</Link>

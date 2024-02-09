@@ -53,14 +53,27 @@ const Shop = () => {
     const sortValue = e.target.value;
     let sortedProducts = [...productsData];
 
-    if (sortValue === "ascending") {
-      sortedProducts = sortedProducts.sort((a, b) =>
-        a.productName.localeCompare(b.productName)
-      );
-    } else if (sortValue === "descending") {
-      sortedProducts = sortedProducts.sort((a, b) =>
-        b.productName.localeCompare(a.productName)
-      );
+    // Adding price sorting options
+    switch (sortValue) {
+      case "priceLowToHigh":
+        sortedProducts.sort((a, b) => a.price - b.price);
+        break;
+      case "priceHighToLow":
+        sortedProducts.sort((a, b) => b.price - a.price);
+        break;
+      case "ascending": // Keep existing name sorting
+        sortedProducts.sort((a, b) =>
+          a.productName.localeCompare(b.productName)
+        );
+        break;
+      case "descending":
+        sortedProducts.sort((a, b) =>
+          b.productName.localeCompare(a.productName)
+        );
+        break;
+      default:
+        // No default sorting or you can set one as per your requirement
+        break;
     }
 
     setProductsData(sortedProducts);
@@ -105,6 +118,8 @@ const Shop = () => {
                       <option>Sort By</option>
                       <option value="ascending">Ascending</option>
                       <option value="descending">Descending</option>
+                      <option value="priceLowToHigh">Price Low to High</option>
+                      <option value="priceHighToLow">Price High to Low</option>
                     </select>
                   </div>
                 </Col>
