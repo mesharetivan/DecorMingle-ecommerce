@@ -14,7 +14,8 @@ const paymentsDatabase = {};
 // Use cors middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin:
+      "https://decor-mingle-ecommerce-9jq52h6n0-mesharet-ivan-loricas-projects.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -87,10 +88,11 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
           },
         ],
         application_context: {
-          return_url: `http://localhost:3000/thankyou?orderID=${encodeURIComponent(
+          return_url: `https://decor-mingle-ecommerce-9jq52h6n0-mesharet-ivan-loricas-projects.vercel.app/thankyou?orderID=${encodeURIComponent(
             orderID
           )}`,
-          cancel_url: "http://localhost:3000/home",
+          cancel_url:
+            "https://decor-mingle-ecommerce-9jq52h6n0-mesharet-ivan-loricas-projects.vercel.app/home",
         },
       });
 
