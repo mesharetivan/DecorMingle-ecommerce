@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "../styles/cart.css";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
@@ -113,8 +113,8 @@ const Cart = () => {
                       <th>Image</th>
                       <th>Title</th>
                       <th>Price</th>
-                      <th>Qty</th>
-                      <th>Delete</th>
+                      <th className="cart__qty-delete">Qty</th>
+                      <th className="cart__delete">Delete</th>
                     </tr>
                   </thead>
 
@@ -177,8 +177,8 @@ const Tr = ({
         <Link to={`/shop/${item.id}`}>{item.productName}</Link>
       </td>
       <td>₱{item.price}</td>
-      <td>
-        <div className="d-flex align-items-center gap-3">
+      <td className="td__qty">
+        <div className="d-flex align-items-center gap-3 td__qty">
           <motion.button
             whileTap={{ scale: 1.3 }}
             style={{
@@ -201,7 +201,11 @@ const Tr = ({
                 isNaN(newQuantity) ? 1 : newQuantity
               );
             }}
-            style={{ width: "45px", textAlign: "center", borderRadius: "8px" }}
+            style={{
+              width: "45px",
+              textAlign: "center",
+              borderRadius: "8px",
+            }}
           />
           <motion.button
             whileTap={{ scale: 1.2 }}
@@ -216,7 +220,7 @@ const Tr = ({
           </motion.button>
         </div>
       </td>
-      <td>
+      <td className="td__delete">
         <motion.i
           whileTap={{ scale: 1.2 }}
           onClick={() => deleteProduct(item.id)}

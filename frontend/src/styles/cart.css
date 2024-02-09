@@ -35,3 +35,40 @@ input[type="number"]::-ms-clear,
 input[type="number"]::-ms-reveal {
   display: none;
 }
+
+.cart__qty-delete {
+  text-align: center;
+}
+
+.td__delete {
+  text-align: center;
+}
+.cart__delete {
+  text-align: center;
+}
+
+@media only screen and (max-width: 568px) {
+  .cart__delete {
+    display: none;
+  }
+
+  .td__qty {
+    border-bottom: none;
+  }
+
+  .td__delete {
+    margin-top: 1rem;
+  }
+
+  .td__qty,
+  .td__delete {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .td__qty {
+    gap: 5px !important;
+  }
+}

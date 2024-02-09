@@ -113,22 +113,19 @@ const Checkout = () => {
       const orderRef = doc(db, "orders", orderId);
       await setDoc(orderRef, order);
       const response = await axios
-        .post(
-          "https://bpckgcpnpq.ap-southeast-1.awsapprunner.com/create-payment",
-          {
-            amount: totalAmount,
-            orderInfo: {
-              name,
-              email,
-              number,
-              address,
-              city,
-              postalCode,
-              country,
-            },
-            orderID: orderRef.id, // Include the order ID
-          }
-        )
+        .post("http://localhost:3001/create-payment", {
+          amount: totalAmount,
+          orderInfo: {
+            name,
+            email,
+            number,
+            address,
+            city,
+            postalCode,
+            country,
+          },
+          orderID: orderRef.id, // Include the order ID
+        })
         .catch((error) => {
           console.error(
             "Error during PayPal payment creation or saving order:",
