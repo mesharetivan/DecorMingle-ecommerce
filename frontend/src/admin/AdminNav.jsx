@@ -225,8 +225,9 @@ const AdminNav = () => {
                     <NavLink
                       to={item.path}
                       className={(navClass) =>
-                        navClass.isActive ? "active__admin-menu" : ""
+                        navClass.isActive ? "active__admin-bg" : ""
                       }
+                      end
                     >
                       {item.display}
                     </NavLink>
