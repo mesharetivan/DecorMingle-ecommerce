@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/orders.css";
 import { Table } from "reactstrap";
 import useAuth from "../custom-hooks/useAuth";
 import { collection, query, where, getDocs } from "firebase/firestore";

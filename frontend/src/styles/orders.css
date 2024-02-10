@@ -1,0 +1,17 @@
+@media only screen and (max-width: 568px) {
+  th {
+    padding: 0 !important;
+    text-align: center;
+  }
+
+  td {
+    padding: 2px !important;
+    text-align: center;
+  }
+  .table > thead {
+    vertical-align: middle !important;
+  }
+  .table > tbody {
+    vertical-align: middle !important;
+  }
+}

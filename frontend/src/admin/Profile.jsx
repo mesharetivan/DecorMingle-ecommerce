@@ -28,6 +28,8 @@ import userIcon from "../assets/images/user-icon.png";
 import Orders from "./Orders";
 import { useNavigate } from "react-router-dom";
 
+import "../styles/profile.css";
+
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("1");
   const [username, setUsername] = useState("");
@@ -174,7 +176,7 @@ const Profile = () => {
     <section>
       <Container>
         <Row>
-          <Col lg="3">
+          <Col lg="4">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <img
                 src={
@@ -208,9 +210,9 @@ const Profile = () => {
               </button>
             </div>
           </Col>
-          <Col lg="9">
+          <Col lg="8">
             <Nav tabs>
-              <NavItem className="mr-3 mb-4">
+              <NavItem className="nav__item-profile">
                 <NavLink
                   className={classnames({
                     "active-tab-color": activeTab === "1",
@@ -221,7 +223,7 @@ const Profile = () => {
                   Order History
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem className="nav__item-profile">
                 <NavLink
                   className={classnames({
                     "active-tab-color": activeTab === "2",
