@@ -11,6 +11,8 @@ import defaultProductImg from "../assets/images/arm-chair-01.jpg";
 
 import "../styles/all-products.css";
 
+import HomeLoader from "../components/Loader/HomeLoader";
+
 const AllProducts = () => {
   const { data: products, loading } = useGetData("products");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -47,8 +49,10 @@ const AllProducts = () => {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan="5" className="text-center">
-                      <h5 className="pt-5 fw-bold">Loading....</h5>
+                    <td colSpan="5" style={{ textAlign: "center" }}>
+                      <div className="d-flex justify-content-center align-items-center">
+                        <HomeLoader />
+                      </div>
                     </td>
                   </tr>
                 ) : products.length > 0 ? (
