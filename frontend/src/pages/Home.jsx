@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import Helmet from "../components/Helmet/Helmet";
 import "../styles/home.css";
 
+import HomeLoader from "../components/Loader/HomeLoader";
+
 import { Container, Row, Col } from "reactstrap";
 import heroImg from "../assets/images/hero-img.png";
 import counterImg from "../assets/images/counter-timer-img.png";
@@ -96,7 +98,9 @@ const Home = () => {
               <h2 className="section__title">Trending Products</h2>
             </Col>
             {loading ? (
-              <h5 className="fw-bold">Loading.....</h5>
+              <div className="d-flex align-items-center justify-content-center">
+                <HomeLoader />
+              </div>
             ) : (
               <ProductsList data={trendingProducts} />
             )}
@@ -112,7 +116,9 @@ const Home = () => {
               <h2 className="section__title">Best Sales</h2>
             </Col>
             {loading ? (
-              <h5 className="fw-bold">Loading.....</h5>
+              <div className="d-flex align-items-center justify-content-center">
+                <HomeLoader />
+              </div>
             ) : (
               <ProductsList data={bestSalesProducts} />
             )}
@@ -152,7 +158,9 @@ const Home = () => {
               <h2 className="section__title">New Arrivals</h2>
             </Col>
             {loading ? (
-              <h5 className="fw-bold">Loading.....</h5>
+              <div className="d-flex align-items-center justify-content-center">
+                <HomeLoader />
+              </div>
             ) : (
               <>
                 <ProductsList data={wirelessProducts} />
@@ -170,7 +178,9 @@ const Home = () => {
               <h2 className="section__title">Popular in Category</h2>
             </Col>
             {loading ? (
-              <h5 className="fw-bold">Loading.....</h5>
+              <div className="d-flex align-items-center justify-content-center">
+                <HomeLoader />
+              </div>
             ) : (
               <ProductsList data={popularProducts} />
             )}

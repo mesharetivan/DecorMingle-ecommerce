@@ -97,7 +97,8 @@ const AdminNav = () => {
       });
   };
 
-  const menuToggle = () => menuRef.current.classList.toggle("active__menu");
+  const menuToggle = () =>
+    menuRef.current.classList.toggle("active__admin-menu");
   return (
     <>
       <header className="admin__header">
@@ -213,7 +214,11 @@ const AdminNav = () => {
       <section className="admin__menu p-0">
         <Container>
           <Row>
-            <div className="admin__navigation">
+            <div
+              className="admin__navigation"
+              ref={menuRef}
+              onClick={menuToggle}
+            >
               <ul className="admin__menu-list">
                 {visibleNavItems.map((item, index) => (
                   <li className="admin__menu-item" key={index}>
