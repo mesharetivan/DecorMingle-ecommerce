@@ -1,0 +1,21 @@
+@media only screen and (max-width: 568px) {
+  .orders__th {
+    padding: 0 !important;
+    text-align: center;
+  }
+
+  .users__th-action {
+    display: none;
+  }
+
+  .orders__td {
+    padding: 2px !important;
+    text-align: center;
+  }
+  .table > thead {
+    vertical-align: middle !important;
+  }
+  .table > tbody {
+    vertical-align: middle !important;
+  }
+}

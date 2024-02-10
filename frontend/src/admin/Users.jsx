@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
+import "../styles/users.css";
+
 import useGetData from "../custom-hooks/useGetData";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.config";
@@ -16,17 +18,14 @@ const Users = () => {
         return;
       }
 
-   
       const userDocRef = doc(db, "users", id);
 
-     
       await deleteDoc(userDocRef);
 
-     
       toast.success("User deleted successfully!");
     } catch (error) {
       console.error("Error deleting user:", error);
-    
+
       toast.error("Error deleting user. Please try again later.");
     }
   };
@@ -42,11 +41,11 @@ const Users = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Action</th>
+                  <th className="users__th">Image</th>
+                  <th className="users__th-user">Username</th>
+                  <th className="users__th-email">Email</th>
+                  <th className="users__th-role">Role</th>
+                  <th className="users__th-action">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -59,13 +58,13 @@ const Users = () => {
                 ) : (
                   usersData?.map((user, index) => (
                     <tr key={index}>
-                      <td>
+                      <td className="users__td">
                         <img src={user.photoURL} alt="" />
                       </td>
-                      <td>{user.displayName}</td>
-                      <td>{user.email}</td>
-                      <td>{user.role}</td>
-                      <td>
+                      <td className="users__td-user">{user.displayName}</td>
+                      <td className="users__td-email">{user.email}</td>
+                      <td className="users__td-role">{user.role}</td>
+                      <td className="users__td-delete">
                         <button
                           className="btn btn-danger"
                           onClick={() => deleteUser(user.id)}

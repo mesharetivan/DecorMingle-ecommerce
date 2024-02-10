@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/orders.css";
 import { Table } from "reactstrap";
 import useAuth from "../custom-hooks/useAuth";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -65,22 +66,22 @@ const Orders = () => {
         <Table striped>
           <thead>
             <tr>
-              <th>Order Date</th>
-              <th>Order ID</th>
-              <th>Payment Method</th>
-              <th>Total Amount</th>
+              <th className="orders__th">Order Date</th>
+              <th className="orders__th">Order ID</th>
+              <th className="orders__th">Payment Method</th>
+              <th className="orders__th">Total Amount</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
               <tr key={order.id}>
-                <td>
+                <td className="orders__td">
                   {order.createdAt &&
                     new Date(order.createdAt.seconds * 1000).toLocaleString()}
                 </td>
-                <td>#{truncateOrderId(order.id)}</td>
-                <td>{order.paymentMethod}</td>
-                <td>₱{order.totalAmount}</td>
+                <td className="orders__td">#{truncateOrderId(order.id)}</td>
+                <td className="orders__td">{order.paymentMethod}</td>
+                <td className="orders__td">₱{order.totalAmount}</td>
               </tr>
             ))}
           </tbody>
