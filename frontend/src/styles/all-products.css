@@ -1,0 +1,30 @@
+@media only screen and (max-width: 568px) {
+  .products__th {
+    padding: 0 !important;
+    text-align: center;
+  }
+
+  .products__th-action {
+    display: none;
+  }
+
+  .products__td-price,
+  .products__td-delete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 0 3px 0 !important;
+  }
+
+  .products__td {
+    padding: 0 !important;
+    text-align: center;
+  }
+  .table > thead {
+    vertical-align: middle !important;
+  }
+  .table > tbody {
+    vertical-align: middle !important;
+  }
+}

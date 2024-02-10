@@ -9,6 +9,8 @@ import useGetData from "../custom-hooks/useGetData";
 
 import defaultProductImg from "../assets/images/arm-chair-01.jpg";
 
+import "../styles/all-products.css";
+
 const AllProducts = () => {
   const { data: products, loading } = useGetData("products");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -35,11 +37,11 @@ const AllProducts = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th>Title</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Action</th>
+                  <th className="products__th">Image</th>
+                  <th className="products__th">Title</th>
+                  <th className="products__th">Category</th>
+                  <th className="products__th">Price</th>
+                  <th className="products__th-action">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -52,17 +54,17 @@ const AllProducts = () => {
                 ) : products.length > 0 ? (
                   products.map((product) => (
                     <tr key={product.id}>
-                      <td>
+                      <td className="products__td">
                         <img
                           src={product.imgUrl || defaultProductImg}
                           alt={product.productName}
                           style={{ width: "50px", borderRadius: "8px" }}
                         />
                       </td>
-                      <td>{product.productName}</td>
-                      <td>{product.category}</td>
-                      <td>₱{product.price}</td>
-                      <td>
+                      <td className="products__td">{product.productName}</td>
+                      <td className="products__td">{product.category}</td>
+                      <td className="products__td-price">₱{product.price}</td>
+                      <td className="products__td-delete">
                         <button
                           className="btn btn-danger"
                           onClick={() => deleteProduct(product.id)}

@@ -1,0 +1,47 @@
+@media only screen and (max-width: 568px) {
+  .users__th-user {
+    text-align: center;
+    visibility: hidden;
+    position: relative;
+  }
+
+  .users__th-user:after {
+    content: "Details";
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .users__td {
+    padding: 2px !important;
+    text-align: center;
+  }
+
+  .users__th-role {
+    display: none;
+  }
+
+  .users__th-email {
+    display: none;
+  }
+
+  .users__td-role,
+  .users__td-delete,
+  .users__td-email,
+  .users__td-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 10px 0 !important;
+  }
+
+  .table > thead {
+    vertical-align: middle !important;
+  }
+  .table > tbody {
+    vertical-align: middle !important;
+  }
+}
