@@ -55,6 +55,12 @@
   .filter__all-sort {
     gap: 0px;
   }
+  .search__box {
+    position: absolute;
+    top: 52% !important;
+    left: 4% !important;
+    width: 92% !important;
+  }
 }
 
 @media only screen and (max-width: 568px) {
@@ -68,4 +74,13 @@
   align-items: center;
   justify-content: center;
   padding: 100px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .search__box {
+    position: absolute;
+    top: 44.8%;
+    left: 40%;
+    width: 59%;
+  }
 }
