@@ -8,13 +8,11 @@ const useGetData = (collectionName, filter = null) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
- 
   const serializedFilter = JSON.stringify(filter);
 
   useEffect(() => {
     const collectionRef = collection(db, collectionName);
 
-   
     const queryObj = filter
       ? query(collectionRef, where(filter.field, filter.operator, filter.value))
       : collectionRef;
@@ -27,17 +25,16 @@ const useGetData = (collectionName, filter = null) => {
           id: doc.id,
         }));
         setData(updatedData);
-       
+
         setTimeout(() => setLoading(false), 1000);
       },
       (error) => {
         setError(error);
-      
+
         setTimeout(() => setLoading(false), 1000);
       }
     );
 
-   
     return () => unsubscribe();
   }, [collectionName, serializedFilter]);
 

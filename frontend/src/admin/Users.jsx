@@ -7,6 +7,7 @@ import useGetData from "../custom-hooks/useGetData";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
+import HomeLoader from "../components/Loader/HomeLoader";
 
 const Users = () => {
   const { data: usersData, loading } = useGetData("users");
@@ -51,8 +52,10 @@ const Users = () => {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan="4" className="text-center">
-                      <h5 className="pt-5 fw-bold">Loading....</h5>
+                    <td colSpan="5" style={{ textAlign: "center" }}>
+                      <div className="d-flex justify-content-center align-items-center">
+                        <HomeLoader />
+                      </div>
                     </td>
                   </tr>
                 ) : (
