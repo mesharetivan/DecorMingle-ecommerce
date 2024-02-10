@@ -132,7 +132,7 @@ const Profile = () => {
 
       // Now include firstName and lastName in the request to your server endpoint
       const response = await fetch(
-        "http://localhost:3001/update-user-credentials",
+        "https://pzxi5qxce8.ap-southeast-1.awsapprunner.com/update-user-credentials",
         {
           method: "POST",
           headers: {
