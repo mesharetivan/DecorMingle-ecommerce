@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import Helmet from "../components/Helmet/Helmet";
+import CommonSection from "../components/UI/CommonSection";
 import {
   Col,
   Container,
@@ -173,164 +175,170 @@ const Profile = () => {
   };
 
   return (
-    <section>
-      <Container>
-        <Row>
-          <Col lg="4">
-            <div className="d-flex flex-column justify-content-center align-items-center">
-              <img
-                src={
-                  preview || (currentUser && currentUser.photoURL) || userIcon
-                }
-                alt="User Profile"
-                style={{
-                  borderRadius: "50%",
-                }}
-              />
-              <input
-                ref={fileInputRef}
-                type="file"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-              />
-              <div className="d-flex flex-column gap-3 align-items-center mt-3 w-full">
-                <h5>
-                  Hi, {firstName} {lastName}
-                </h5>
-              </div>
+    <Helmet title="Profile">
+      <CommonSection title="Profile Page" />
+      <section>
+        <Container>
+          <Row>
+            <Col lg="4">
+              <div className="d-flex flex-column justify-content-center align-items-center">
+                <img
+                  src={
+                    preview || (currentUser && currentUser.photoURL) || userIcon
+                  }
+                  alt="User Profile"
+                  style={{
+                    borderRadius: "50%",
+                  }}
+                />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+                <div className="d-flex flex-column gap-3 align-items-center mt-3 w-full">
+                  <h5>
+                    Hi, {firstName} {lastName}
+                  </h5>
+                </div>
 
-              <button
-                className="buy__btn"
-                onClick={() =>
-                  fileInputRef.current && fileInputRef.current.click()
-                }
-                disabled={loading}
-              >
-                {loading ? "Updating..." : "Change Profile Picture"}
-              </button>
-            </div>
-          </Col>
-          <Col lg="8">
-            <Nav tabs>
-              <NavItem className="nav__item-profile">
-                <NavLink
-                  className={classnames({
-                    "active-tab-color": activeTab === "1",
-                    "inactive-tab-color": activeTab !== "1",
-                  })}
-                  onClick={() => toggleTab("1")}
+                <button
+                  className="buy__btn"
+                  onClick={() =>
+                    fileInputRef.current && fileInputRef.current.click()
+                  }
+                  disabled={loading}
                 >
-                  Order History
-                </NavLink>
-              </NavItem>
-              <NavItem className="nav__item-profile">
-                <NavLink
-                  className={classnames({
-                    "active-tab-color": activeTab === "2",
-                    "inactive-tab-color": activeTab !== "2",
-                  })}
-                  onClick={() => toggleTab("2")}
-                >
-                  Settings
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <TabContent activeTab={activeTab}>
-              <TabPane tabId="1">
-                <Orders currentUser={currentUser} />
-              </TabPane>
-              <TabPane tabId="2">
-                <Form className="auth__form" onSubmit={handleUpdateCredentials}>
-                  <FormGroup className="form__group">
-                    <input
-                      type="text"
-                      placeholder="First Name"
-                      value={updateFirstName}
-                      onChange={(e) => setUpdateFirstName(e.target.value)}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup className="form__group">
-                    <input
-                      type="text"
-                      placeholder="Last Name"
-                      value={updateLastName}
-                      onChange={(e) => setUpdateLastName(e.target.value)}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup className="form__group">
-                    <input
-                      type="text"
-                      placeholder="Username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup className="form__group">
-                    <input
-                      type="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup className="form__group">
-                    <input
-                      type="password"
-                      placeholder="Enter your current password"
-                      value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup className="form__group">
-                    <input
-                      type="password"
-                      placeholder="Enter your new password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup className="form__group">
-                    <p>
-                      Are you a :{" "}
-                      <select
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        required
-                      >
-                        <option value="buyer">Buyer</option>
-                        <option value="seller">Seller</option>
-                      </select>
-                    </p>
-                  </FormGroup>
-                  <button
-                    type="submit"
-                    className="buy__auth auth__btn"
-                    disabled={loading}
+                  {loading ? "Updating..." : "Change Profile Picture"}
+                </button>
+              </div>
+            </Col>
+            <Col lg="8">
+              <Nav tabs>
+                <NavItem className="nav__item-profile">
+                  <NavLink
+                    className={classnames({
+                      "active-tab-color": activeTab === "1",
+                      "inactive-tab-color": activeTab !== "1",
+                    })}
+                    onClick={() => toggleTab("1")}
                   >
-                    {loading ? (
-                      <h4>
-                        Updating account{" "}
-                        <span>
-                          <LoaderSignUp />
-                        </span>
-                      </h4>
-                    ) : (
-                      "Update Account"
-                    )}
-                  </button>
-                </Form>
-              </TabPane>
-            </TabContent>
-          </Col>
-        </Row>
-      </Container>
-    </section>
+                    Order History
+                  </NavLink>
+                </NavItem>
+                <NavItem className="nav__item-profile">
+                  <NavLink
+                    className={classnames({
+                      "active-tab-color": activeTab === "2",
+                      "inactive-tab-color": activeTab !== "2",
+                    })}
+                    onClick={() => toggleTab("2")}
+                  >
+                    Settings
+                  </NavLink>
+                </NavItem>
+              </Nav>
+              <TabContent activeTab={activeTab}>
+                <TabPane tabId="1">
+                  <Orders currentUser={currentUser} />
+                </TabPane>
+                <TabPane tabId="2">
+                  <Form
+                    className="auth__form"
+                    onSubmit={handleUpdateCredentials}
+                  >
+                    <FormGroup className="form__group">
+                      <input
+                        type="text"
+                        placeholder="First Name"
+                        value={updateFirstName}
+                        onChange={(e) => setUpdateFirstName(e.target.value)}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup className="form__group">
+                      <input
+                        type="text"
+                        placeholder="Last Name"
+                        value={updateLastName}
+                        onChange={(e) => setUpdateLastName(e.target.value)}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup className="form__group">
+                      <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup className="form__group">
+                      <input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup className="form__group">
+                      <input
+                        type="password"
+                        placeholder="Enter your current password"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup className="form__group">
+                      <input
+                        type="password"
+                        placeholder="Enter your new password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup className="form__group">
+                      <p>
+                        Are you a :{" "}
+                        <select
+                          value={role}
+                          onChange={(e) => setRole(e.target.value)}
+                          required
+                        >
+                          <option value="buyer">Buyer</option>
+                          <option value="seller">Seller</option>
+                        </select>
+                      </p>
+                    </FormGroup>
+                    <button
+                      type="submit"
+                      className="buy__auth auth__btn"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <h4>
+                          Updating account{" "}
+                          <span>
+                            <LoaderSignUp />
+                          </span>
+                        </h4>
+                      ) : (
+                        "Update Account"
+                      )}
+                    </button>
+                  </Form>
+                </TabPane>
+              </TabContent>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    </Helmet>
   );
 };
 
