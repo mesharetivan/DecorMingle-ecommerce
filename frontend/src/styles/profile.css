@@ -1,3 +1,7 @@
 .nav__item-profile {
   padding: 10px;
 }
+.active-tab-color {
+  background-color: whitesmoke !important;
+  border-radius: 8px !important;
+}
