@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../styles/checkout.css";
 import {
@@ -26,6 +26,7 @@ const Checkout = () => {
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [cardNumber, setCardNumber] = useState("");
+  const [areaCodes, setAreaCodes] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,7 +49,9 @@ const Checkout = () => {
     // Manually retrieving form values
     const name = form.querySelector('input[name="name"]').value;
     const email = form.querySelector('input[name="email"]').value;
-    const number = form.querySelector('input[name="number"]').value;
+    // Assuming the country code select has a name attribute "areaCodes"
+    const areaCodes = form.querySelector('select[name="areaCodes"]').value;
+    const number = areaCodes + form.querySelector('input[name="number"]').value; // Concatenate country code with number
     const address = form.querySelector('input[name="address"]').value;
     const city = form.querySelector('input[name="city"]').value;
     const postalCode = form.querySelector('input[name="postalCode"]').value;
@@ -65,10 +68,11 @@ const Checkout = () => {
       country.trim();
 
     if (isFormFilled) {
-      // Form is filled, toggle modal
+      // Form is filled, proceed with the order placement logic
+      // For example, toggle modal, send data to server, etc.
       toggleModal();
     } else {
-      // Form is not filled, show toast notification
+      // Form is not filled, show toast notification or another form of user feedback
       toast.warn("Please fill out all billing information fields.");
     }
   };
@@ -79,11 +83,12 @@ const Checkout = () => {
         toast.error("You must be logged in to place an order.");
         return;
       }
-      // Retrieve form values
       const form = formRef.current;
       const name = form.querySelector('input[name="name"]').value;
       const email = form.querySelector('input[name="email"]').value;
-      const number = form.querySelector('input[name="number"]').value;
+      const areaCodes = form.querySelector('select[name="areaCodes"]').value;
+      const number =
+        areaCodes + form.querySelector('input[name="number"]').value;
       const address = form.querySelector('input[name="address"]').value;
       const city = form.querySelector('input[name="city"]').value;
       const postalCode = form.querySelector('input[name="postalCode"]').value;
@@ -95,7 +100,7 @@ const Checkout = () => {
         customer: {
           name,
           email,
-          number,
+          number, // This now includes the country code
           address,
           city,
           postalCode,
@@ -171,7 +176,12 @@ const Checkout = () => {
       // Manually retrieving form values
       const name = form.querySelector('input[name="name"]')?.value || "";
       const email = form.querySelector('input[name="email"]')?.value || "";
-      const number = form.querySelector('input[name="number"]')?.value || "";
+      // Retrieve country code and number, then concatenate
+      const areaCodes =
+        form.querySelector('select[name="areaCodes"]')?.value || "";
+      const number = `${areaCodes}${
+        form.querySelector('input[name="number"]')?.value || ""
+      }`;
       const address = form.querySelector('input[name="address"]')?.value || "";
       const city = form.querySelector('input[name="city"]')?.value || "";
       const postalCode =
@@ -191,7 +201,7 @@ const Checkout = () => {
         customer: {
           name,
           email,
-          number,
+          number, // This now includes the country code
           address,
           city,
           postalCode,
@@ -205,7 +215,7 @@ const Checkout = () => {
         createdAt: new Date(),
       };
 
-      // Save order to Firebase without using the docRef variable
+      // Save order to Firebase
       const orderId = `${currentUser.uid}-${Date.now()}`;
       await setDoc(doc(db, "orders", orderId), order);
       toast.success("Order placed successfully!");
@@ -227,6 +237,26 @@ const Checkout = () => {
     setCardNumber(spaced);
   };
 
+  useEffect(() => {
+    const fetchAreaCodes = async () => {
+      try {
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        const data = await response.json();
+        const codes = data.map((country) => ({
+          code:
+            country.idd.root +
+            (country.idd.suffixes ? country.idd.suffixes[0] : ""),
+          country: country.name.common,
+        }));
+        setAreaCodes(codes);
+      } catch (error) {
+        console.error("Error fetching country codes:", error);
+      }
+    };
+
+    fetchAreaCodes();
+  }, []);
+
   return (
     <Helmet title="Checkout">
       <CommonSection title="Checkout" />
@@ -235,7 +265,7 @@ const Checkout = () => {
         <Container>
           <Row>
             <Col lg="8">
-              <h6 className="mb-4 fw-bold">Billing Information</h6>
+              <h6 className="mb-4 fw-bold">Shipping Information</h6>
               <form className="billing__form" ref={formRef}>
                 <FormGroup className="form__group">
                   <input
@@ -252,11 +282,24 @@ const Checkout = () => {
                   />
                 </FormGroup>
                 <FormGroup className="form__group">
-                  <input
-                    type="number"
-                    placeholder="Enter your number"
-                    name="number"
-                  />
+                  <div className="phone__number">
+                    <div className="area__code">
+                      <select name="areaCodes">
+                        {areaCodes.map((item, index) => (
+                          <option key={index} value={item.code}>
+                            {item.country} ({item.code})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <input
+                        type="number"
+                        placeholder="Enter your number"
+                        name="number"
+                      />
+                    </div>
+                  </div>
                 </FormGroup>
                 <FormGroup className="form__group">
                   <input

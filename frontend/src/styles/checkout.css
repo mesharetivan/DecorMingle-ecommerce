@@ -183,6 +183,25 @@ h4 {
   appearance: textfield;
 }
 
+.area__code {
+  width: 45px;
+  background-color: #f2f2f2;
+}
+
+.area__code select {
+  width: 175px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--card-bg-02);
+}
+
+.phone__number {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 135px;
+}
+
 @media only screen and (max-width: 568px) {
   .payment--options {
     display: flex;
