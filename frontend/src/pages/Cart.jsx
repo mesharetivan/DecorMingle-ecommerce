@@ -74,8 +74,15 @@ const Cart = () => {
         console.error("Error updating cart quantity in Firebase: ", error);
       }
     } else {
-      // Show toast notification
-      toast.error("Item quantity cannot be less than 1");
+      // Remove the item from the cart
+      dispatch(cartActions.deleteItem(itemId));
+
+      // Update cart in Firebase
+      try {
+        await updateCartInFirebase();
+      } catch (error) {
+        console.error("Error updating cart quantity in Firebase: ", error);
+      }
     }
   };
 
