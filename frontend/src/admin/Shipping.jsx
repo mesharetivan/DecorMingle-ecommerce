@@ -7,6 +7,7 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import useAuth from "../custom-hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import "../styles/shipping.css";
 
 const Shipping = () => {
   const formRef = useRef(null);
