@@ -16,7 +16,7 @@ import CommonSection from "../components/UI/CommonSection";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { db } from "../firebase.config";
-import { doc, setDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../custom-hooks/useAuth";
 
@@ -27,6 +27,7 @@ const Checkout = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [cardNumber, setCardNumber] = useState("");
   const [areaCodes, setAreaCodes] = useState([]);
+  const [existingShippingInfo, setExistingShippingInfo] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,7 +39,7 @@ const Checkout = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handlePlaceOrderClick = () => {
+  const handlePlaceOrderClick = async () => {
     const form = formRef.current;
 
     if (!form) {
@@ -49,7 +50,6 @@ const Checkout = () => {
     // Manually retrieving form values
     const name = form.querySelector('input[name="name"]').value;
     const email = form.querySelector('input[name="email"]').value;
-    // Assuming the country code select has a name attribute "areaCodes"
     const areaCodes = form.querySelector('select[name="areaCodes"]').value;
     const number = areaCodes + form.querySelector('input[name="number"]').value; // Concatenate country code with number
     const address = form.querySelector('input[name="address"]').value;
@@ -68,9 +68,28 @@ const Checkout = () => {
       country.trim();
 
     if (isFormFilled) {
-      // Form is filled, proceed with the order placement logic
-      // For example, toggle modal, send data to server, etc.
-      toggleModal();
+      try {
+        // Update shipping information in Firestore
+        if (currentUser) {
+          const docRef = doc(db, "shippingInfo", currentUser.uid);
+          await setDoc(docRef, {
+            name,
+            email,
+            number,
+            address,
+            city,
+            postalCode,
+            country,
+          });
+          toast.success("Shipping information updated successfully!");
+        }
+
+        // Proceed with the order placement logic (in this case, showing a modal)
+        toggleModal();
+      } catch (error) {
+        console.error("Error updating shipping information:", error);
+        toast.error("Failed to update shipping information.");
+      }
     } else {
       // Form is not filled, show toast notification or another form of user feedback
       toast.warn("Please fill out all billing information fields.");
@@ -257,6 +276,47 @@ const Checkout = () => {
     fetchAreaCodes();
   }, []);
 
+  useEffect(() => {
+    const fetchShippingInfo = async () => {
+      if (!currentUser || !currentUser.uid) {
+        // If currentUser is not defined or doesn't have a uid,
+        // initialize existingShippingInfo with default values
+        setExistingShippingInfo({
+          name: "",
+          email: "",
+          number: "",
+          address: "",
+          city: "",
+          postalCode: "",
+          country: "",
+        });
+        return;
+      }
+      try {
+        const docRef = doc(db, "shippingInfo", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setExistingShippingInfo(docSnap.data());
+        } else {
+          // If no data exists in the database, initialize existingShippingInfo with default values
+          setExistingShippingInfo({
+            name: "",
+            email: "",
+            number: "",
+            address: "",
+            city: "",
+            postalCode: "",
+            country: "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching shipping information:", error);
+      }
+    };
+
+    fetchShippingInfo();
+  }, [currentUser]);
+
   return (
     <Helmet title="Checkout">
       <CommonSection title="Checkout" />
@@ -266,12 +326,15 @@ const Checkout = () => {
           <Row>
             <Col lg="8">
               <h6 className="mb-4 fw-bold">Shipping Information</h6>
-              <form className="billing__form" ref={formRef}>
+              <form className="auth__form" ref={formRef}>
                 <FormGroup className="form__group">
                   <input
                     type="text"
                     placeholder="Enter your name"
                     name="name"
+                    defaultValue={
+                      existingShippingInfo ? existingShippingInfo.name : ""
+                    }
                   />
                 </FormGroup>
                 <FormGroup className="form__group">
@@ -279,12 +342,22 @@ const Checkout = () => {
                     type="email"
                     placeholder="Enter your email"
                     name="email"
+                    defaultValue={
+                      existingShippingInfo ? existingShippingInfo.email : ""
+                    }
                   />
                 </FormGroup>
                 <FormGroup className="form__group">
                   <div className="phone__number">
                     <div className="area__code">
-                      <select name="areaCodes">
+                      <select
+                        name="areaCodes"
+                        defaultValue={
+                          existingShippingInfo
+                            ? existingShippingInfo.number?.substring(0, 3)
+                            : ""
+                        }
+                      >
                         {areaCodes.map((item, index) => (
                           <option key={index} value={item.code}>
                             {item.country} ({item.code})
@@ -297,6 +370,11 @@ const Checkout = () => {
                         type="number"
                         placeholder="Enter your number"
                         name="number"
+                        defaultValue={
+                          existingShippingInfo
+                            ? existingShippingInfo.number?.substring(3)
+                            : ""
+                        }
                       />
                     </div>
                   </div>
@@ -306,20 +384,42 @@ const Checkout = () => {
                     type="text"
                     placeholder="Enter your Street address"
                     name="address"
+                    defaultValue={
+                      existingShippingInfo ? existingShippingInfo.address : ""
+                    }
                   />
                 </FormGroup>
                 <FormGroup className="form__group">
-                  <input type="text" placeholder="City" name="city" />
+                  <input
+                    type="text"
+                    placeholder="City"
+                    name="city"
+                    defaultValue={
+                      existingShippingInfo ? existingShippingInfo.city : ""
+                    }
+                  />
                 </FormGroup>
                 <FormGroup className="form__group">
                   <input
                     type="text"
                     placeholder="Postal code"
                     name="postalCode"
+                    defaultValue={
+                      existingShippingInfo
+                        ? existingShippingInfo.postalCode
+                        : ""
+                    }
                   />
                 </FormGroup>
                 <FormGroup className="form__group">
-                  <input type="text" placeholder="Country" name="country" />
+                  <input
+                    type="text"
+                    placeholder="Country"
+                    name="country"
+                    defaultValue={
+                      existingShippingInfo ? existingShippingInfo.country : ""
+                    }
+                  />
                 </FormGroup>
               </form>
             </Col>
