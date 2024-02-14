@@ -197,7 +197,7 @@ h4 {
 
 .phone__number {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   gap: 135px;
 }
