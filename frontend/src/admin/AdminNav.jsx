@@ -17,7 +17,12 @@ const admin__nav = [
   {
     display: "Dashboard",
     path: "/dashboard",
-    role: ["seller", "admin", "buyer"],
+    role: ["seller", "buyer"],
+  },
+  {
+    display: "Dashboard",
+    path: "/dashboard-admin",
+    role: ["admin"],
   },
   {
     display: "All-Products",

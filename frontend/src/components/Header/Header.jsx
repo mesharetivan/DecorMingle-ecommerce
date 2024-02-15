@@ -45,7 +45,7 @@ const Header = () => {
   const [showProfileActions, setShowProfileActions] = useState(false);
 
   const navigate = useNavigate();
-  const { currentUser } = useUserRole();
+  const { currentUser, role } = useUserRole();
 
   const dispatch = useDispatch();
 
@@ -212,7 +212,12 @@ const Header = () => {
                 >
                   {currentUser ? (
                     <span className="d-flex align-items-center justify-content-center flex-column gap-2">
-                      <Link to="/dashboard" onClick={closeProfileActions}>
+                      <Link
+                        to={
+                          role === "admin" ? "/dashboard-admin" : "/dashboard"
+                        }
+                        onClick={closeProfileActions}
+                      >
                         <button className="Btn">
                           <div className="sign">
                             <svg
