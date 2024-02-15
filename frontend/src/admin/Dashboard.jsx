@@ -42,7 +42,7 @@ const Dashboard = () => {
               <Col className="lg-3">
                 <div className="revenue__box">
                   <h5>Total Sales Amount:</h5>
-                  <span>{totalSalesAmount}</span>
+                  <span>₱{totalSalesAmount}</span>
                 </div>
               </Col>
               <Col className="lg-3">

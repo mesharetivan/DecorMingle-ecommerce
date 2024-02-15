@@ -52,7 +52,7 @@ const Sales = () => {
             <Col className="lg-3">
               <div className="revenue__box">
                 <h5>Total Sales Amount:</h5>
-                <span>{totalSalesAmount}</span>
+                <span>₱{totalSalesAmount}</span>
               </div>
             </Col>
             <Col className="lg-3">
@@ -118,7 +118,7 @@ const Sales = () => {
                         <td className="sales__payment-td">
                           {order.paymentMethod}
                         </td>
-                        <td className="sales__total-td">{order.totalAmount}</td>
+                        <td className="sales__total-td">₱{order.totalAmount}</td>
                       </tr>
                     ))
                   )}
