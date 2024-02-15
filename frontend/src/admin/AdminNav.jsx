@@ -110,7 +110,7 @@ const AdminNav = () => {
         <div className="admin__nav-top">
           <Container>
             <div className="admin__nav-wrapper-top">
-              <Link to="/dashboard">
+              <Link to={role === "admin" ? "/dashboard-admin" : "/dashboard"}>
                 <div className="logo">
                   <h2>DecorMingle</h2>
                 </div>
