@@ -66,7 +66,11 @@ const Users = () => {
                     usersData?.map((user, index) => (
                       <tr key={index}>
                         <td className="users__td">
-                          <img src={user.photoURL} alt="" />
+                          <img
+                            src={user.photoURL}
+                            alt=""
+                            style={{ borderRadius: "8px" }}
+                          />
                         </td>
                         <td className="users__td-user">{user.displayName}</td>
                         <td className="users__td-email">{user.email}</td>
