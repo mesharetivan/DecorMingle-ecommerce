@@ -1,0 +1,104 @@
+.export__data {
+  display: flex;
+  justify-content: center;
+  background: var(--card-bg-04);
+  align-items: center;
+}
+.sales {
+  margin-bottom: 40px;
+}
+
+.export__data {
+  background: var(--card-bg-04);
+  height: 100%;
+  border-radius: 8px;
+}
+
+.table > thead {
+  vertical-align: middle;
+  text-align: center;
+}
+.table > tbody {
+  vertical-align: middle;
+  text-align: center;
+}
+@media only screen and (max-width: 1024px) {
+  .revenue__box,
+  .order__box,
+  .products__box,
+  .export__data {
+    padding: 10px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .revenue__box,
+  .order__box,
+  .products__box,
+  .export__data {
+    padding: 5px;
+  }
+  .revenue__box h5,
+  .order__box h5,
+  .products__box h5 {
+    font-size: 0.8rem;
+  }
+
+  .revenue__box span,
+  .order__box span,
+  .products__box span {
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  .export__data button {
+    padding: 5px;
+  }
+  .export__data span {
+    font-size: 0.8rem;
+  }
+}
+
+@media only screen and (max-width: 568px) {
+  .sales {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    flex-direction: column;
+  }
+  .export__data {
+    padding: 15px;
+  }
+
+  .sales__payment-method,
+  .sales__total {
+    display: none;
+  }
+
+  .sales__qty {
+    text-align: center;
+    visibility: hidden;
+    position: relative;
+  }
+
+  .sales__qty:after {
+    content: "Details";
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .sales__qty-td,
+  .sales__payment-td,
+  .sales__total-td {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0 12px 0 !important;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import useGetData from "../custom-hooks/useGetData";
 import HomeLoader from "../components/Loader/HomeLoader";
 import exportToExcel from "../utils/exportToExcel";
@@ -48,7 +48,7 @@ const Sales = () => {
       <CommonSection title="Sales" />
       <section>
         <Container>
-          <Row className="mb-4">
+          <Row className="sales">
             <Col className="lg-3">
               <div className="revenue__box">
                 <h5>Total Sales Amount:</h5>
@@ -67,14 +67,20 @@ const Sales = () => {
                 <span>{totalReturns}</span>
               </div>
             </Col>
-            <Col className="lg-3 d-flex justify-content-center align-items-center">
-              <Button
-                color="primary"
-                onClick={handleExport}
-                disabled={loading || exporting}
-              >
-                {exporting ? "Exporting..." : "Export Sales Data"}
-              </Button>
+            <Col className="lg-3">
+              <div className="export__data">
+                <button
+                  className="buy__btn mt-0"
+                  onClick={handleExport}
+                  disabled={loading || exporting}
+                >
+                  {exporting ? (
+                    <span>Exporting...</span>
+                  ) : (
+                    <span>Export Sales Data</span>
+                  )}
+                </button>
+              </div>
             </Col>
           </Row>
           <Row>
@@ -83,10 +89,10 @@ const Sales = () => {
                 <thead>
                   <tr>
                     <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Payment Method</th>
-                    <th>Total Sales</th>
+                    <th className="sales_product-name">Product Name</th>
+                    <th className="sales__qty">Quantity</th>
+                    <th className="sales__payment-method">Payment Method</th>
+                    <th className="sales__total">Total Sales</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -107,10 +113,12 @@ const Sales = () => {
                             alt={order.items[0].productName}
                           />
                         </td>
-                        <td>{order.items[0].productName}</td>
-                        <td>{order.totalQuantity}</td>
-                        <td>{order.paymentMethod}</td>
-                        <td>{order.totalAmount}</td>
+                        <td className="sales_name-td">{order.items[0].productName}</td>
+                        <td className="sales__qty-td">{order.totalQuantity}</td>
+                        <td className="sales__payment-td">
+                          {order.paymentMethod}
+                        </td>
+                        <td className="sales__total-td">{order.totalAmount}</td>
                       </tr>
                     ))
                   )}
