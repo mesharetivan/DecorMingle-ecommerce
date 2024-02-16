@@ -41,34 +41,34 @@ const DashboardAdmin = () => {
         <CommonSection title="Dashboard" />
         <section>
           <Container>
-            <Row>
+            <Row className="dashboard-admin">
               <Col className="lg-3">
-                <div className="revenue__box">
+                <div className="revenue__box-admin">
                   <h5>Total Sales Amount:</h5>
                   <span>₱{totalSalesAmount}</span>
                 </div>
               </Col>
               <Col className="lg-3">
-                <div className="order__box">
-                  <h5>Total Orders</h5>
+                <div className="order__box-admin">
+                  <h5>Total Orders:</h5>
                   <span>{totalOrders}</span>
                 </div>
               </Col>
               <Col className="lg-3">
-                <div className="products__box">
-                  <h5>Total Returns</h5>
+                <div className="products__return-admin">
+                  <h5>Total Returns:</h5>
                   <span>{totalReturns}</span>
                 </div>
               </Col>
               <Col className="lg-3">
-                <div className="products__box">
-                  <h5>Total Products</h5>
+                <div className="products__box-admin">
+                  <h5>Total Products:</h5>
                   <span>{products.length}</span>
                 </div>
               </Col>
               <Col className="lg-3">
-                <div className="users__box">
-                  <h5>Total Users</h5>
+                <div className="users__box-admin">
+                  <h5>Total Users:</h5>
                   <span>{users.length}</span>
                 </div>
               </Col>

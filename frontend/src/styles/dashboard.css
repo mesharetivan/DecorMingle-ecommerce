@@ -21,6 +21,25 @@
   background: var(--card-bg-04);
 }
 
+.revenue__box-admin {
+  background: var(--card-bg-01);
+}
+
+.products__box-admin {
+  background: var(--card-bg-03);
+}
+
+.order__box-admin {
+  background: var(--card-bg-04);
+}
+.users__box-admin {
+  background: var(--card-bg-04);
+}
+
+.products__return-admin {
+  background: var(--card-bg-02);
+}
+
 .revenue__box h5,
 .order__box h5,
 .products__box h5,
@@ -38,6 +57,97 @@
   font-size: 2rem;
   font-weight: 600;
   color: var(--primary-color);
+}
+
+.revenue__box-admin,
+.order__box-admin,
+.products__box-admin,
+.users__box-admin,
+.products__return-admin {
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.revenue__box-admin span,
+.order__box-admin span,
+.products__box-admin span,
+.users__box-admin span,
+.products__return-admin span {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.revenue__box-admin h5,
+.order__box-admin h5,
+.products__box-admin h5,
+.users__box-admin h5,
+.products__return-admin h5 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: start;
+}
+
+@media only screen and (max-width: 1024px) {
+  .revenue__box-admin,
+  .order__box-admin,
+  .products__box-admin,
+  .users__box-admin,
+  .products__return-admin {
+    padding: 15px;
+  }
+
+  .revenue__box-admin span,
+  .order__box-admin span,
+  .products__box-admin span,
+  .users__box-admin span,
+  .products__return-admin span {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .revenue__box-admin h5,
+  .order__box-admin h5,
+  .products__box-admin h5,
+  .users__box-admin h5,
+  .products__return-admin h5 {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .revenue__box-admin,
+  .order__box-admin,
+  .products__box-admin,
+  .users__box-admin,
+  .products__return-admin {
+    padding: 15px;
+  }
+
+  .revenue__box-admin h5,
+  .order__box-admin h5,
+  .products__box-admin h5,
+  .users__box-admin h5,
+  .products__return-admin h5 {
+    font-size: 0.6rem;
+    margin-bottom: 10px;
+  }
+  .revenue__box-admin {
+    width: 140px;
+  }
+
+  .revenue__box-admin span,
+  .order__box-admin span,
+  .products__box-admin span,
+  .users__box-admin span,
+  .products__return-admin span {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
 }
 
 @media only screen and (max-width: 568px) {
@@ -68,5 +178,34 @@
   .users__box span {
     display: flex;
     align-items: center;
+  }
+
+  .dashboard-admin {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+  .revenue__box-admin,
+  .order__box-admin,
+  .products__box-admin,
+  .users__box-admin,
+  .products__return-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  .revenue__box-admin h5,
+  .order__box-admin h5,
+  .products__box-admin h5,
+  .users__box-admin h5,
+  .products__return-admin h5 {
+    font-size: 1rem;
+    margin-bottom: 0px;
+  }
+  .revenue__box-admin {
+    width: 100% !important;
   }
 }
