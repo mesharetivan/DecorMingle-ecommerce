@@ -116,13 +116,6 @@ const AdminNav = () => {
                 </div>
               </Link>
 
-              <div className="search__box-admin">
-                <input type="text" placeholder="Search....." />
-                <span>
-                  <i className="ri-search-line"></i>
-                </span>
-              </div>
-
               <div className="admin__icons">
                 <span>
                   <i className="ri-notification-3-line"></i>
