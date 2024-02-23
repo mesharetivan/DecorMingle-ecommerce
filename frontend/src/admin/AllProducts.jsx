@@ -40,7 +40,7 @@ const AllProducts = () => {
         <Container>
           <Row>
             <Col lg="12">
-              <div className="d-flex justify-content-center align-items-center">
+              <div className="d-flex justify-content-start align-items-center mb-4">
                 <Link to="/dashboard/add-product">
                   <button className="buy__btn">Add Product</button>
                 </Link>
