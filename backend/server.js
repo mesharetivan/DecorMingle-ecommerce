@@ -184,7 +184,7 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
             handleCodeInApp: true,
           };
 
-          // Send email verification
+          // Send email verification with callback URL
           await admin.auth().sendEmailVerification(email, actionCodeSettings);
         }
 
