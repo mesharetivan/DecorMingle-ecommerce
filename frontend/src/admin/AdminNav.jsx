@@ -27,7 +27,7 @@ const admin__nav = [
   {
     display: "All-Products",
     path: "/dashboard/all-products",
-    role: ["admin"],
+    role: ["admin", "seller"],
   },
   {
     display: "Sales",
@@ -42,7 +42,7 @@ const admin__nav = [
   {
     display: "Profile",
     path: "/dashboard/profile",
-    role: ["seller", "buyer"],
+    role: ["seller", "admin", "buyer"],
   },
   {
     display: "Users",
