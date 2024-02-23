@@ -112,7 +112,7 @@ const AddProducts = () => {
                   <span>Short Description</span>
                   <input
                     type="text"
-                    placeholder="lorem...."
+                    placeholder="Short description......."
                     value={shortDescription}
                     onChange={(e) => setShortDescription(e.target.value)}
                   />
