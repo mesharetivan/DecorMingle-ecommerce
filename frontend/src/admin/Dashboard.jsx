@@ -13,8 +13,6 @@ const Dashboard = () => {
     window.scrollTo(0, 0);
   }, []);
 
-
-
   return (
     <>
       <Helmet title="Dashboard">
@@ -25,7 +23,7 @@ const Dashboard = () => {
               <Col className="lg-3">
                 <div className="revenue__box">
                   <h5>My Total Sales</h5>
-                  <span>₱7894</span>
+                  <span>₱0</span>
                 </div>
               </Col>
               <Col className="lg-3">
