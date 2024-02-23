@@ -172,22 +172,6 @@ import("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json", {
           ...(newUsername && { displayName: newUsername }),
         });
 
-        // If the new role is either "buyer" or "seller", send email verification
-        if (newRole === "buyer" || newRole === "seller") {
-          // Get user's email
-          const user = await admin.auth().getUser(uid);
-          const email = user.email;
-
-          // Customize the email verification action
-          const actionCodeSettings = {
-            url: "https://decor-mingle-ecommerce.vercel.app/login", // Your callback URL
-            handleCodeInApp: true,
-          };
-
-          // Send email verification with callback URL
-          await admin.auth().sendEmailVerification(email, actionCodeSettings);
-        }
-
         // Initialize an update object for Firestore
         const firestoreUpdate = {
           ...(newUsername && { displayName: newUsername }),
