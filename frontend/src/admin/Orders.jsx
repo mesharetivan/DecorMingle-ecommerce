@@ -64,7 +64,7 @@ const Orders = () => {
         <p>No orders found.</p>
       ) : (
         <Table striped>
-          <thead>
+          <thead style={{ textAlign: "start" }}>
             <tr>
               <th className="orders__th">Order Date</th>
               <th className="orders__th">Order ID</th>
@@ -72,7 +72,7 @@ const Orders = () => {
               <th className="orders__th">Total Amount</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ textAlign: "start" }}>
             {orders.map((order) => (
               <tr key={order.id}>
                 <td className="orders__td">
