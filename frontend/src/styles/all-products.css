@@ -27,4 +27,8 @@
   .table > tbody {
     vertical-align: middle !important;
   }
+  .edit__btn {
+    gap: 10px !important;
+    flex-direction: column;
+  }
 }

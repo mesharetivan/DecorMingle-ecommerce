@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap";
 import { toast } from "react-toastify";
 
@@ -89,6 +89,10 @@ const AddProducts = () => {
       }
     );
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Helmet title="Add Product">
