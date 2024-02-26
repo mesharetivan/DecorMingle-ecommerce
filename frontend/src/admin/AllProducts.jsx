@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { db } from "../firebase.config";
 import { doc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+//import { useHistory } from "react-router-dom"; // Remove useHistory
 
 import useGetData from "../custom-hooks/useGetData";
 
@@ -18,6 +19,8 @@ import CommonSection from "../components/UI/CommonSection";
 const AllProducts = () => {
   const { data: products, loading } = useGetData("products");
   const [isDeleting, setIsDeleting] = useState(false);
+  //const history = useHistory(); // Remove useHistory
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const deleteProduct = async (productId) => {
     try {
@@ -33,6 +36,14 @@ const AllProducts = () => {
     }
   };
 
+  const handleEdit = (productId) => {
+    navigate(`/dashboard/edit-product/${productId}`); // Use navigate to navigate to edit route
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Helmet title="All Products">
       <CommonSection title="All Products" />
@@ -46,7 +57,7 @@ const AllProducts = () => {
                 </Link>
               </div>
               <table className="table">
-                <thead>
+                <thead style={{ textAlign: "start" }}>
                   <tr>
                     <th className="products__th">Image</th>
                     <th className="products__th">Title</th>
@@ -55,7 +66,7 @@ const AllProducts = () => {
                     <th className="products__th-action">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody style={{ textAlign: "start" }}>
                   {loading ? (
                     <tr>
                       <td colSpan="5" style={{ textAlign: "center" }}>
@@ -76,15 +87,23 @@ const AllProducts = () => {
                         </td>
                         <td className="products__td">{product.productName}</td>
                         <td className="products__td">{product.category}</td>
-                        <td className="products__td-price">₱{product.price}</td>
+                        <td className="products__td-price">{`₱${product.price}`}</td>
                         <td className="products__td-delete">
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => deleteProduct(product.id)}
-                            disabled={isDeleting}
-                          >
-                            {isDeleting ? "Deleting..." : "Delete"}
-                          </button>
+                          <div className="d-flex align-items-center justify-content-start gap-3 edit__btn">
+                            <button
+                              className="btn btn-primary mr-2"
+                              onClick={() => handleEdit(product.id)} // Call handleEdit function
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="btn btn-danger"
+                              onClick={() => deleteProduct(product.id)}
+                              disabled={isDeleting}
+                            >
+                              {isDeleting ? "Deleting..." : "Delete"}
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))

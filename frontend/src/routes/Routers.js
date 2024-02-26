@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import WishList from "../pages/WishList";
 
 import AddProducts from "../admin/AddProducts";
+import EditProduct from "../admin/EditProduct";
 import AllProducts from "../admin/AllProducts";
 import Dashboard from "../admin/Dashboard";
 import Users from "../admin/Users";
@@ -38,6 +39,7 @@ const Routers = () => {
         <Route path="dashboard-admin" element={<DashboardAdmin />} />
         <Route path="dashboard/all-products" element={<AllProducts />} />
         <Route path="dashboard/add-product" element={<AddProducts />} />
+        <Route path="dashboard/edit-product/:id" element={<EditProduct />} />
         <Route path="dashboard/users" element={<Users />} />
         <Route path="dashboard/sales" element={<Sales />} />
         <Route path="dashboard/orders" element={<Orders />} />

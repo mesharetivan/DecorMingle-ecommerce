@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
@@ -33,6 +33,10 @@ const Users = () => {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Helmet title="Users">
       <CommonSection title="All Users" />
@@ -41,7 +45,7 @@ const Users = () => {
           <Row>
             <Col lg="12" className="pt-5">
               <table className="table">
-                <thead>
+                <thead style={{ textAlign: "start" }}>
                   <tr>
                     <th className="users__th">Image</th>
                     <th className="users__th-user">Username</th>
@@ -50,7 +54,7 @@ const Users = () => {
                     <th className="users__th-action">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody style={{ textAlign: "start" }}>
                   {loading ? (
                     <tr>
                       <td colSpan="5" style={{ textAlign: "center" }}>

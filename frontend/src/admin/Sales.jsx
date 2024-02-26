@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import { Container, Row, Col } from "reactstrap";
@@ -43,6 +43,10 @@ const Sales = () => {
       });
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Helmet title="Sales">
       <CommonSection title="Sales" />
@@ -86,7 +90,7 @@ const Sales = () => {
           <Row>
             <Col lg="12">
               <table className="table">
-                <thead>
+                <thead style={{ textAlign: "start" }}>
                   <tr>
                     <th>Image</th>
                     <th className="sales_product-name">Product Name</th>
@@ -95,7 +99,7 @@ const Sales = () => {
                     <th className="sales__total">Total Sales</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody style={{ textAlign: "start" }}>
                   {loading ? (
                     <tr>
                       <td colSpan="5" style={{ textAlign: "center" }}>
@@ -113,12 +117,16 @@ const Sales = () => {
                             alt={order.items[0].productName}
                           />
                         </td>
-                        <td className="sales_name-td">{order.items[0].productName}</td>
+                        <td className="sales_name-td">
+                          {order.items[0].productName}
+                        </td>
                         <td className="sales__qty-td">{order.totalQuantity}</td>
                         <td className="sales__payment-td">
                           {order.paymentMethod}
                         </td>
-                        <td className="sales__total-td">₱{order.totalAmount}</td>
+                        <td className="sales__total-td">
+                          ₱{order.totalAmount}
+                        </td>
                       </tr>
                     ))
                   )}
