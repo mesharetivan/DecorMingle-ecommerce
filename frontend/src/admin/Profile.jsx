@@ -249,7 +249,7 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="text"
-                        defaultValue={updateFirstName || firstName}
+                        value={updateFirstName || firstName || ""}
                         placeholder="First Name"
                         onChange={(e) => setUpdateFirstName(e.target.value)}
                         required
@@ -258,7 +258,7 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="text"
-                        defaultValue={updateLastName || lastName}
+                        value={updateLastName || lastName || ""}
                         placeholder="Last Name"
                         onChange={(e) => setUpdateLastName(e.target.value)}
                         required
@@ -267,8 +267,10 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="text"
-                        defaultValue={
-                          username || (currentUser && currentUser.displayName)
+                        value={
+                          username ||
+                          (currentUser && currentUser.displayName) ||
+                          ""
                         }
                         placeholder="Username"
                         onChange={(e) => setUsername(e.target.value)}
@@ -278,8 +280,8 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="email"
-                        defaultValue={
-                          email || (currentUser && currentUser.email)
+                        value={
+                          email || (currentUser && currentUser.email) || ""
                         }
                         placeholder="Enter your email"
                         onChange={(e) => setEmail(e.target.value)}
