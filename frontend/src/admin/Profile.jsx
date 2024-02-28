@@ -37,7 +37,6 @@ const Profile = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("buyer");
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -145,7 +144,6 @@ const Profile = () => {
             newEmail: email, // New email
             newPassword: password, // New password
             newUsername: username, // New username
-            newRole: role, // New role
             firstName: updateFirstName, // Updated first name
             lastName: updateLastName, // Updated last name
           }),
@@ -199,7 +197,7 @@ const Profile = () => {
                 />
                 <div className="d-flex flex-column gap-3 align-items-center mt-3 w-full">
                   <h5>
-                    Hi, {firstName} {lastName}
+                    Hi, {currentUser && firstName} {currentUser && lastName}
                   </h5>
                 </div>
 
@@ -251,8 +249,8 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="text"
+                        defaultValue={updateFirstName || firstName}
                         placeholder="First Name"
-                        value={updateFirstName}
                         onChange={(e) => setUpdateFirstName(e.target.value)}
                         required
                       />
@@ -260,8 +258,8 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="text"
+                        defaultValue={updateLastName || lastName}
                         placeholder="Last Name"
-                        value={updateLastName}
                         onChange={(e) => setUpdateLastName(e.target.value)}
                         required
                       />
@@ -269,8 +267,10 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="text"
+                        defaultValue={
+                          username || (currentUser && currentUser.displayName)
+                        }
                         placeholder="Username"
-                        value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
                       />
@@ -278,8 +278,10 @@ const Profile = () => {
                     <FormGroup className="form__group">
                       <input
                         type="email"
+                        defaultValue={
+                          email || (currentUser && currentUser.email)
+                        }
                         placeholder="Enter your email"
-                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                       />
@@ -302,19 +304,7 @@ const Profile = () => {
                         required
                       />
                     </FormGroup>
-                    <FormGroup className="form__group">
-                      <p>
-                        Are you a :{" "}
-                        <select
-                          value={role}
-                          onChange={(e) => setRole(e.target.value)}
-                          required
-                        >
-                          <option value="buyer">Buyer</option>
-                          <option value="seller">Seller</option>
-                        </select>
-                      </p>
-                    </FormGroup>
+
                     <button
                       type="submit"
                       className="buy__auth auth__btn"
