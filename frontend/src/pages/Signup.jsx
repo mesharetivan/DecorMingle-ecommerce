@@ -25,7 +25,6 @@ const Signup = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState("seller");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
@@ -68,7 +67,7 @@ const Signup = () => {
                   displayName: username,
                   email,
                   photoURL: downloadURL,
-                  role: role,
+                  role: "user",
                 });
                 toast.success("Account created successfully!");
                 setTimeout(() => {
@@ -155,19 +154,6 @@ const Signup = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                </FormGroup>
-                <FormGroup className="form__group">
-                  <p>
-                    Are you a :{" "}
-                    <select
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
-                      required
-                    >
-                      <option value="buyer">Buyer</option>
-                      <option value="seller">Seller</option>
-                    </select>
-                  </p>
                 </FormGroup>
                 <FormGroup className="form__group">
                   <input type="file" onChange={handleImageChange} required />

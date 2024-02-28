@@ -89,9 +89,9 @@ const AllProducts = () => {
                         <td className="products__td">{product.category}</td>
                         <td className="products__td-price">{`₱${product.price}`}</td>
                         <td className="products__td-delete">
-                          <div className="d-flex align-items-center justify-content-start gap-3 edit__btn">
+                          <div className="d-flex align-items-center justify-content-center gap-3 edit__btn">
                             <button
-                              className="btn btn-primary mr-2"
+                              className="buy__btn mr-2 mt-0"
                               onClick={() => handleEdit(product.id)} // Call handleEdit function
                             >
                               Edit
