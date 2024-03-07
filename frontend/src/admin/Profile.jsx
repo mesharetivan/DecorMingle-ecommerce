@@ -162,12 +162,7 @@ const Profile = () => {
         // Redirect user to login page
         navigate("/login");
       } else {
-        if (response.status === 409) {
-          // Email already exists
-          toast.error("Email address is already in use.");
-        } else {
-          throw new Error(data.error);
-        }
+        throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error updating credentials:", error);
