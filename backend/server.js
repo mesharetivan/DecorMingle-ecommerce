@@ -15,7 +15,7 @@ const paymentsDatabase = {};
 // Use cors middleware
 app.use(
   cors({
-    origin: "localhttp://localhost:3000",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
