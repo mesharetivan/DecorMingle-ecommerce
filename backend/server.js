@@ -166,6 +166,15 @@ app.post("/update-user-credentials", async (req, res) => {
   } = req.body;
 
   try {
+    // Check if the new email already exists
+    if (newEmail) {
+      const userRecord = await admin.auth().getUserByEmail(newEmail);
+      if (userRecord.uid !== uid) {
+        // If the email belongs to another user, throw a conflict error
+        throw new Error("Email address is already in use.");
+      }
+    }
+
     // Update the user's email and password in Firebase Authentication
     if (newEmail || newPassword) {
       await admin.auth().updateUser(uid, {
@@ -199,7 +208,11 @@ app.post("/update-user-credentials", async (req, res) => {
     res.status(200).json({ message: "User credentials updated successfully." });
   } catch (error) {
     console.error("Error updating user credentials:", error);
-    res.status(500).json({ error: error.message });
+    if (error.message === "Email address is already in use.") {
+      res.status(409).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
   }
 });
 
