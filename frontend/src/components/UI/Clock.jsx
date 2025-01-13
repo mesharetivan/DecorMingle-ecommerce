@@ -12,7 +12,7 @@ const Clock = () => {
 
   useEffect(() => {
     const countDown = () => {
-      const destination = new Date("March 30,2024").getTime();
+      const destination = new Date("January 1, 2026").getTime();
       interval = setInterval(() => {
         const now = new Date().getTime();
         const difference = destination - now;

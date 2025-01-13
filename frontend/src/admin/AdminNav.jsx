@@ -112,7 +112,7 @@ const AdminNav = () => {
             <div className="admin__nav-wrapper-top">
               <Link to={role === "admin" ? "/dashboard-admin" : "/dashboard"}>
                 <div className="logo">
-                  <h2>DecorMingle</h2>
+                  <h2>Printamom</h2>
                 </div>
               </Link>
 

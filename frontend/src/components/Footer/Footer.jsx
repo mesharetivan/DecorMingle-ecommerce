@@ -13,11 +13,11 @@ const Footer = () => {
           <Col lg="4" className="mb-4" md="6">
             <div className="logo">
               <div>
-                <h1 className="text-white">DecorMingle</h1>
+                <h1 className="text-white">Printamom</h1>
               </div>
             </div>
             <p className="footer__text mt-4">
-              DecorMingle is where your dream space comes alive. We bring you an
+              Printamom is where your dream space comes alive. We bring you an
               exclusive range of furniture and decor to style your space with
               elegance and sophistication. Embrace the art of living with our
               timeless collections.

@@ -64,14 +64,13 @@ const Home = () => {
             <Col lg="6" md="6">
               <div className="hero__content">
                 <p className="hero__subtitle">Trending Products {year}</p>
-                <h2>Enhance Your Space with DecorMingle</h2>
+                <h2>Enhance Your Space with Printamom</h2>
                 <p>
-                  Dive into the world of modern interior design with
-                  DecorMingle. Discover our curated selection of trending
-                  furniture pieces and decor that promise to bring a fresh,
-                  sophisticated touch to your living space. Join us in
-                  celebrating the art of contemporary living where style meets
-                  functionality.
+                  Dive into the world of modern interior design with Printamom.
+                  Discover our curated selection of trending furniture pieces
+                  and decor that promise to bring a fresh, sophisticated touch
+                  to your living space. Join us in celebrating the art of
+                  contemporary living where style meets functionality.
                 </p>
                 <motion.button whileTap={{ scale: 1.2 }} className="buy__btn">
                   <Link to={"/shop"}>SHOP NOW</Link>

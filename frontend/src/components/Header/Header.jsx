@@ -164,7 +164,7 @@ const Header = () => {
               <div className="logo">
                 <motion.img whileTap={{ scale: 1.2 }} src={logo} alt="logo" />
                 <div>
-                  <h1>DecorMingle</h1>
+                  <h1>Printamom</h1>
                 </div>
               </div>
             </Link>

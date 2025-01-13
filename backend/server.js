@@ -30,7 +30,7 @@ const client = new paypal.core.PayPalHttpClient(environment);
 
 // Load Firebase service account JSON file
 const serviceAccount = JSON.parse(
-  fs.readFileSync("./decormingle-b79a5-firebase-adminsdk-ict07-9018a8fe95.json")
+  fs.readFileSync("./Printamom-b79a5-firebase-adminsdk-ict07-9018a8fe95.json")
 );
 
 // Initialize Firebase Admin SDK
