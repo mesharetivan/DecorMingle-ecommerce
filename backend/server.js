@@ -15,7 +15,7 @@ const paymentsDatabase = {};
 // Use cors middleware
 app.use(
   cors({
-    origin: "https://decor-mingle-ecommerce.vercel.app",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -89,10 +89,10 @@ app.post("/create-payment", async (req, res) => {
       },
     ],
     application_context: {
-      return_url: `https://decor-mingle-ecommerce.vercel.app/thankyou?orderID=${encodeURIComponent(
+      return_url: `http://localhost:3000/thankyou?orderID=${encodeURIComponent(
         orderID
       )}`,
-      cancel_url: "https://decor-mingle-ecommerce.vercel.app/home",
+      cancel_url: "http://localhost:3000/home",
     },
   });
 
